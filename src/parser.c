@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:38:23 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 18:49:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/01 20:08:53 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ms_count_words(char *str)
 	int	i;
 
 	i = 0;
+	if (str[0] == '\0')
+		return (0);
 	while (*str != '\0')
 	{
 		while (*str == ' ' || *str == '\t' || *str == '\n')
@@ -64,7 +66,7 @@ t_token	*ms_parser(char *user_input)
 		new_token = ms_new_token(content);
 		// error
 		ms_token_add_back(&tokens, new_token);
-		while (ft_isspace(*user_input) == false)
+		while (*user_input != '\0' && ft_isspace(*user_input) == false)
 			user_input++;
 		i++;
 	}

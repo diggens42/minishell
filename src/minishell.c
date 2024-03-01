@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 19:19:46 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/01 20:57:18 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,34 +28,40 @@ void	ms_interactive_mode(void)
 {
 	char	*user_input;
 	t_token	*tokens;
-	int	i;
+	// int	i;
 	// char	*temp;
 
 	while (true)
 	{
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
-		// ft_printf("%s\n", user_input);
-		if (ft_strncmp(user_input, "exit", 5) == 0)
-		{
-			free(user_input);
-			break ;
-		}
-		else
-		{
+		// ft_printf("%s", user_input);
+		// if (ft_strncmp(user_input, "exit", 5) == 0)
+		// {
+		// 	free(user_input);
+		// 	break ;
+		// }
+		// else if ()
+		// else
+		// {
 			tokens = ms_parser(user_input);
-			if (ft_strncmp(user_input, "ls", 3) == 0)
-				ms_executor(tokens);
-
-			i = 0;
+			// if (tokens == NULL)
+			// 	return;
 			// ft_putchar_fd('X', STDERR_FILENO);
-			while (tokens != NULL)
-			{
-				ft_printf("i: %d, %s\n", i, tokens->content);
-				tokens = tokens->next;
-				i++;
-			}
-		}
+			ms_execute_commands(tokens);
+			// ft_putchar_fd('X', STDERR_FILENO);
+			// if (ft_strncmp(user_input, "ls", 3) == 0)
+			// 	ms_executor(tokens);
+
+			// i = 0;
+			// ft_putchar_fd('X', STDERR_FILENO);
+			// while (tokens != NULL)
+			// {
+			// 	ft_printf("i: %d, %s\n", i, tokens->content);
+			// 	tokens = tokens->next;
+			// 	i++;
+			// }
+		// }
 		free(user_input);
 	}
 	// while (ft_strncmp(line, "exit\n", 6) != 0)

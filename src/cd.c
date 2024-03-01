@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/01 19:04:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:54:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,23 @@
 // 	return (rel_path);
 // }
 
+// TODO
+// '~' ???
 void	ms_cd(t_token *tokens)
-{	
+{
 	char	*path;
-	
-	tokens = tokens->next;
-	path = tokens->token;
-	if (tokens == NULL)
-		return ; //TODO errorhandling
-	if (chdir(path) != 0)
-		return ; //TODO errorhandling
+
+	// if (tokens == NULL)
+	// 	return ; //TODO errorhandling
+	if (tokens->next == NULL)
+		path = getenv("HOME");
+	else
+		path = tokens->next->content;
+	if (chdir(path) == -1)
+	// {
+		perror("chdir");
+		// return ; //TODO errorhandling
+	// }
 }
 
 	// if (tokens->token[0] != '/')

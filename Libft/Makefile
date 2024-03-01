@@ -6,7 +6,7 @@
 #    By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/13 13:29:46 by mott              #+#    #+#              #
-#    Updated: 2024/02/16 15:56:45 by mott             ###   ########.fr        #
+#    Updated: 2024/03/01 19:44:13 by mott             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS = ft_atoi.c \
        ft_strlcpy.c \
        ft_strlen.c \
        ft_strmapi.c \
+	   ft_strcmp.c \
        ft_strncmp.c \
        ft_strnstr.c \
        ft_strrchr.c \

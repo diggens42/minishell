@@ -6,7 +6,7 @@
 #    By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 17:46:19 by mott              #+#    #+#              #
-#    Updated: 2024/03/01 19:03:42 by mott             ###   ########.fr        #
+#    Updated: 2024/03/01 19:39:37 by mott             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,11 @@ NAME = minishell
 
 SRCS = ./src/minishell.c \
        ./src/parser.c \
-	   ./src/executor.c
+	   ./src/executor.c \
+	   ./src/cd.c \
+	   ./src/echo.c \
+	   ./src/exec.c \
+	   ./src/pwd.c
 
 OBJS = $(SRCS:.c=.o)
 
