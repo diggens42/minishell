@@ -6,19 +6,19 @@
 #    By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/27 17:46:19 by mott              #+#    #+#              #
-#    Updated: 2024/02/27 17:49:55 by mott             ###   ########.fr        #
+#    Updated: 2024/03/01 19:03:42 by mott             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
 NAME = minishell
 
-SRCS = ./src/
+SRCS = ./src/minishell.c \
+       ./src/parser.c \
+	   ./src/executor.c
 
 OBJS = $(SRCS:.c=.o)
-
-HEADER = ./include/minishell.h
 
 LIBFT = ./Libft/libft.a
 
@@ -31,10 +31,10 @@ B = "\033[34m"
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline  -o $@
 	@echo $(B)$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@$(X)
 
-%.o: %.c $(HEADER)
+%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo $(Y)$(CC) $(CFLAGS) -c $< -o $@$(X)
 
