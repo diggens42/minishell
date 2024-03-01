@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:47:43 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 17:08:42 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/01 19:34:54 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// readline, rl_clear_history, rl_on_new_line, re_replace_line, re_redisplay
+# include "../Libft/libft.h"
+
+// printf, perror
+#include <stdio.h>
+
+// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
 #include <readline/readline.h>
 
 // add_history
 #include <readline/history.h>
-
-// printf, perror
-#include <stdio.h>
 
 // malloc, free, exit, getenv
 #include <stdlib.h>
@@ -54,12 +56,32 @@
 #include <curses.h>
 #include <term.h>
 
+# define PROMPT_STD "% "
+# define PROMPT_MULTI_LINE "> "
+# define PROMPT_HEREDOC "heredoc> "
+
+typedef struct	s_token
+{
+	char			*content;
+	struct s_token	*next;
+}	t_token;
+
+// minishell.c
+int		main(void);
+void	ms_interactive_mode(void);
+
+// parser.c
+int	ms_count_words(char *str);
+int	ms_count_characters(char *str);
+t_token	*ms_parser(char *user_input);
+t_token	*ms_new_token(char *content);
+t_token	*ms_last_token(t_token *token);
+void	ms_token_add_back(t_token **token, t_token *new_token);
+
+// executor.c
+void	ms_executor(t_token *tokens);
+
 
 #include <stdbool.h>
-#include "../Libft/libft.h"
 
-typedef struct s_token
-{
-	char			*token;
-	struct s_token	*next;
-} t_token;
+
