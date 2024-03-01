@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:47:43 by mott              #+#    #+#             */
-/*   Updated: 2024/02/28 13:20:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/01 17:08:42 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,3 +53,13 @@
 // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 #include <curses.h>
 #include <term.h>
+
+
+#include <stdbool.h>
+#include "../Libft/libft.h"
+
+typedef struct s_token
+{
+	char			*token;
+	struct s_token	*next;
+} t_token;
