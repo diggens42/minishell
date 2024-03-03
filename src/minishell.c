@@ -6,25 +6,26 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 20:57:18 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 17:08:47 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// TODO
-// main() with char **envp or function getenv()?
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	ms_interactive_mode();
-	// system("leaks minishell");
+	(void)argc;
+	(void)argv;
+
+	ms_interactive_mode(envp);
+	system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 
 // TODO
 // Multi line commands '\'
 // heredoc detector '<<'
-void	ms_interactive_mode(void)
+void	ms_interactive_mode(char **envp)
 {
 	char	*user_input;
 	t_token	*tokens;
@@ -35,20 +36,13 @@ void	ms_interactive_mode(void)
 	{
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
-		// ft_printf("%s", user_input);
-		// if (ft_strncmp(user_input, "exit", 5) == 0)
-		// {
-		// 	free(user_input);
-		// 	break ;
-		// }
-		// else if ()
-		// else
-		// {
-			tokens = ms_parser(user_input);
+
+		tokens = ms_parser(user_input);
 			// if (tokens == NULL)
 			// 	return;
 			// ft_putchar_fd('X', STDERR_FILENO);
-			ms_execute_commands(tokens);
+			ms_execute_builtins(tokens, envp);
+			// ms_execute_commands(tokens);
 			// ft_putchar_fd('X', STDERR_FILENO);
 			// if (ft_strncmp(user_input, "ls", 3) == 0)
 			// 	ms_executor(tokens);

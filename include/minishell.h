@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:47:43 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 19:53:35 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 17:08:45 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,10 @@ typedef struct	s_token
 	struct s_token	*next;
 }	t_token;
 
+
 // minishell.c
-int		main(void);
-void	ms_interactive_mode(void);
+int		main(int argc, char **argv, char **envp);
+void	ms_interactive_mode(char **envp);
 
 // parser.c
 int	ms_count_words(char *str);
@@ -81,10 +82,11 @@ void	ms_token_add_back(t_token **token, t_token *new_token);
 // executor.c
 void	ms_executor(t_token *tokens);
 
+// exec.c
+void	ms_execute_builtins(t_token *tokens, char **envp);
 
 void	ms_cd(t_token *tokens);
 void	ms_echo(t_token *tokens);
-void	ms_execute_commands(t_token *tokens);
 void	ms_pwd(void);
 
 #include <stdbool.h>
