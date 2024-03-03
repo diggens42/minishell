@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:47:43 by mott              #+#    #+#             */
-/*   Updated: 2024/03/03 18:51:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 20:04:27 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,13 @@ typedef struct	s_token
 	char			*content;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct	s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}
 
 // minishell.c
 int		main(int argc, char **argv, char **envp);
