@@ -6,75 +6,72 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:38:23 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 20:08:53 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 19:48:28 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ms_count_words(char *str)
+t_token	*ms_parser(t_token *tokens, char *user_input)
 {
-	int	i;
-
-	i = 0;
-	if (str[0] == '\0')
-		return (0);
-	while (*str != '\0')
-	{
-		while (*str == ' ' || *str == '\t' || *str == '\n')
-			str++;
-		if (*str != '\0')
-			i++;
-		while (*str != ' ' && *str != '\t' && *str != '\n' && *str != '\0')
-			str++;
-	}
-	return (i);
-}
-
-int	ms_count_characters(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != ' ' && str[i] != '\t' && str[i] != '\n' && str[i] != '\0')
-		i++;
-	return (i);
-}
-
-t_token	*ms_parser(char *user_input)
-{
-	t_token	*tokens;
 	t_token	*new_token;
-	int		words;
-	int		characters;
+	int		n_words;
+	int		n_characters;
 	char	*content;
 	int		i;
 
-	words = ms_count_words(user_input);
-	tokens = NULL;
-	// tokens = malloc(sizeof(t_token *) * (words + 1));
-	// if (tokens == NULL)
-	// 	return (NULL);
+	n_words = ms_count_words(user_input);
 	i = 0;
-	while (i < words)
+	while (i < n_words)
 	{
 		while (ft_isspace(*user_input) == true)
 			user_input++;
-		characters = ms_count_characters(user_input);
-		content = ft_substr(user_input, 0, characters);
-		//error
+		n_characters = ms_count_characters(user_input);
+		content = ft_substr(user_input, 0, n_characters);
+		if (content == NULL)
+			ms_exit();
 		new_token = ms_new_token(content);
-		// error
+		if (new_token == NULL)
+			ms_exit();
 		ms_token_add_back(&tokens, new_token);
 		while (*user_input != '\0' && ft_isspace(*user_input) == false)
 			user_input++;
 		i++;
 	}
+	ms_print_token(tokens);
 	return (tokens);
 }
 
-// TODO
-// malloc content with malloc?
+int	ms_count_words(char *user_input)
+{
+	int	n_words;
+
+	n_words = 0;
+	while (*user_input != '\0')
+	{
+		while (ft_isspace(*user_input) == true)
+			user_input++;
+		if (*user_input != '\0')
+			n_words++;
+		while (*user_input != '\0' && ft_isspace(*user_input) == false)
+			user_input++;
+	}
+	return (n_words);
+}
+
+int	ms_count_characters(char *user_input)
+{
+	int	n_characters;
+
+	n_characters = 0;
+	while (*user_input != '\0' && ft_isspace(*user_input) == false)
+	{
+		n_characters++;
+		user_input++;
+	}
+	return (n_characters);
+}
+
 t_token	*ms_new_token(char *content)
 {
 	t_token	*new_token;
@@ -109,3 +106,11 @@ void	ms_token_add_back(t_token **token, t_token *new_token)
 	}
 }
 
+void ms_print_token(t_token *tokens)
+{
+	while (tokens != NULL)
+	{
+		ft_printf("%s\n", tokens->content);
+		tokens = tokens->next;
+	}
+}

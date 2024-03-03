@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/03 17:08:47 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 19:21:54 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,80 +22,61 @@ int	main(int argc, char **argv, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-// TODO
-// Multi line commands '\'
-// heredoc detector '<<'
 void	ms_interactive_mode(char **envp)
 {
 	char	*user_input;
+	char	*user_input2;
+	char	*temp;
 	t_token	*tokens;
-	// int	i;
-	// char	*temp;
 
 	while (true)
 	{
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
+		if (user_input[0] == '\0')
+		{
+			free(user_input);
+			continue ;
+		}
+		while (user_input[ft_strlen(user_input) - 1] == '\\')
+		{
+			user_input[ft_strlen(user_input) - 1] = '\0';
+			user_input2 = readline(PROMPT_MULTI_LINE);
+			temp = user_input;
+			user_input = ft_strjoin(user_input, user_input2);
+			free (temp);
+			free (user_input2);
+		}
+		// if (user_input == '<<')
+		// 	continue ;
+		tokens = NULL;
+		tokens = ms_parser(tokens, user_input);
+		if (tokens == NULL)
+			ms_exit();
 
-		tokens = ms_parser(user_input);
-			// if (tokens == NULL)
-			// 	return;
-			// ft_putchar_fd('X', STDERR_FILENO);
-			ms_execute_builtins(tokens, envp);
-			// ms_execute_commands(tokens);
-			// ft_putchar_fd('X', STDERR_FILENO);
-			// if (ft_strncmp(user_input, "ls", 3) == 0)
-			// 	ms_executor(tokens);
+		ms_execute_builtins(tokens, envp);
+		// ms_execute_commands(tokens);
 
-			// i = 0;
-			// ft_putchar_fd('X', STDERR_FILENO);
-			// while (tokens != NULL)
-			// {
-			// 	ft_printf("i: %d, %s\n", i, tokens->content);
-			// 	tokens = tokens->next;
-			// 	i++;
-			// }
-		// }
 		free(user_input);
+		ms_free_token_list(tokens);
 	}
-	// while (ft_strncmp(line, "exit\n", 6) != 0)
-	// {
-	// 	ms_print_prompt(PROMPT_STD);
-	// 	line = get_next_line(STDIN_FILENO);
-	// 	if (line == NULL)
-	// 		exit(EXIT_FAILURE);
-	// 	else if (line[0] == '\n')
-	// 		continue ;
-	// 	else if (line[ft_strlen(line) - 2] == '\\')
-	// 	{
-	// 		ms_print_prompt(PROMPT_MULTI_LINE);
-	// 		temp = line;
-	// 		temp[ft_strlen(temp) - 2] = '\0';
-	// 		line = get_next_line(STDIN_FILENO);
-	// 		line = ft_strjoin(temp, line);
-	// 		free(temp);
-	// 	}
-	// 	else if (ft_strncmp(line, "exit\n", 6) == 0)
-	// 	{
-	// 		free(line);
-	// 		return ;
-	// 	}
-	// 	ft_printf("-> %s", line);
-	// 	free(line);
-	// }
 }
 
-// char	*ms_read_user_input(void)
-// {
+void	ms_exit(void)
+{
+	system("leaks minishell");
+	exit(EXIT_SUCCESS);
+}
 
-// }
+void	ms_free_token_list(t_token *tokens)
+{
+	t_token *temp;
 
-// void	ms_print_prompt(int prompt)
-// {
-// 	if (prompt == PROMPT_STD)
-// 		ft_putstr_fd("% ", STDOUT_FILENO);
-// 	else if (prompt == PROMPT_MULTI_LINE)
-// 		ft_putstr_fd("> ", STDOUT_FILENO);
-// 	else if (prompt == PROMPT_HEREDOC)
-// 		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
-// }
+	while (tokens != NULL)
+	{
+		temp = tokens->next;
+		free(tokens->content);
+		free(tokens);
+		tokens = temp;
+	}
+}

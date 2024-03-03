@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 19:17:46 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 19:29:27 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ms_executor(t_token *tokens)
+void	ms_execute_commands(t_token *tokens)
 {
 	pid_t	pid;
 	char	*path = "/bin/ls";
@@ -32,4 +32,3 @@ void	ms_executor(t_token *tokens)
 	else
 		waitpid(pid, NULL, 0);
 }
-

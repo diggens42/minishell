@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:47:43 by mott              #+#    #+#             */
-/*   Updated: 2024/03/03 17:08:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 18:51:45 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 #include <curses.h>
 #include <term.h>
 
+#include <stdbool.h>
+
 # define PROMPT_STD "% "
 # define PROMPT_MULTI_LINE "> "
 # define PROMPT_HEREDOC "heredoc> "
@@ -66,29 +68,29 @@ typedef struct	s_token
 	struct s_token	*next;
 }	t_token;
 
-
 // minishell.c
 int		main(int argc, char **argv, char **envp);
 void	ms_interactive_mode(char **envp);
+void	ms_exit(void);
+void	ms_free_token_list(t_token *tokens);
 
 // parser.c
-int	ms_count_words(char *str);
-int	ms_count_characters(char *str);
-t_token	*ms_parser(char *user_input);
+t_token	*ms_parser(t_token *tokens, char *user_input);
+int		ms_count_words(char *str);
+int		ms_count_characters(char *str);
 t_token	*ms_new_token(char *content);
 t_token	*ms_last_token(t_token *token);
 void	ms_token_add_back(t_token **token, t_token *new_token);
+void 	ms_print_token(t_token *tokens);
 
-// executor.c
-void	ms_executor(t_token *tokens);
-
-// exec.c
+// exec_builtins.c
 void	ms_execute_builtins(t_token *tokens, char **envp);
+
+// exec_commands.c
+void	ms_execute_commands(t_token *tokens);
+
+
 
 void	ms_cd(t_token *tokens);
 void	ms_echo(t_token *tokens);
 void	ms_pwd(void);
-
-#include <stdbool.h>
-
-

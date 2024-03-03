@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 12:35:56 by mott              #+#    #+#             */
-/*   Updated: 2024/03/01 19:43:59 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/03 17:59:14 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
-int		ft_isspace(int c);
+bool	ft_isspace(int c);
 
 int		ft_toupper(int c);
 int		ft_tolower(int c);
