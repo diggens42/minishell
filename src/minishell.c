@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/04 15:35:07 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/04 15:42:47 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
+	t_env *env;
 
-	ms_interactive_mode(envp);
+	env = init_env(envp);
+	ms_interactive_mode(env);
 	system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 
-void	ms_interactive_mode(char **envp)
+void	ms_interactive_mode(t_env *env)
 {
 	char	*user_input;
 	char	*user_input2;
@@ -42,6 +44,7 @@ void	ms_interactive_mode(char **envp)
 		{
 			user_input[ft_strlen(user_input) - 1] = '\0';
 			user_input2 = readline(PROMPT_MULTI_LINE);
+			//consider also checking for NULL return from readline to handle EOF (Ctrl+D)
 			temp = user_input;
 			user_input = ft_strjoin(user_input, user_input2);
 			free (temp);
@@ -54,7 +57,7 @@ void	ms_interactive_mode(char **envp)
 		if (tokens == NULL)
 			ms_exit();
 
-		ms_execute_builtins(tokens, envp);
+		ms_execute_builtins(tokens, env);
 		ms_execute_commands(tokens);
 
 		free(user_input);

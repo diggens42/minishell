@@ -1,23 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/08 17:52:13 by fwahl             #+#    #+#             */
-/*   Updated: 2023/12/08 17:56:32 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/03 23:39:23 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../include/minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	ms_unset(t_env **env, char *key)
 {
-	while (*s1 != '\0' && *s1 == *s2)
+	t_env	*current;
+	t_env	*prev;
+
+	current	= *env;
+	prev = NULL;
+	while (current != NULL)
 	{
-		s1++;
-		s2++;
+		if (ft_strcmp(current->key, key) == 0)
+		{
+			if (prev == NULL)
+				*env = current->next;
+			else
+				prev->next = current->next;
+			free_env_node(current);
+			return ;
+		}
+		prev = current;
+		current = current->next;
 	}
-	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }
