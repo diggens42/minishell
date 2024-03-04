@@ -38,7 +38,6 @@ t_token	*ms_parser(t_token *tokens, char *user_input)
 			user_input++;
 		i++;
 	}
-	ms_print_token(tokens);
 	return (tokens);
 }
 

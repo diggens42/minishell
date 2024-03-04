@@ -1,0 +1,22 @@
+echo
+	echo -n
+	echo test
+	echo $USER
+	echo '$USER'
+	echo "$USER"
+	echo test | cat -e
+
+cd
+	cd
+	cd ..
+	cd /bin
+	cd ~
+	cd ~/test
+	cd -
+
+mkdir
+
+ls
+	ls
+	/bin/ls
+	../../../../../bin/ls

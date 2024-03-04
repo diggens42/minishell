@@ -94,9 +94,11 @@ void 	ms_print_token(t_token *tokens);
 void	ms_execute_builtins(t_token *tokens, t_env *env);
 
 // exec_commands.c
-void	ms_execute_commands(t_token *tokens);
-char	**ms_create_pathname(t_token *tokens);
+void	ms_execute_commands(t_token *tokens, t_env *env);
+char	**ms_create_pathname(t_token *tokens, t_env *env);
 char	*ms_find_pathname(char **path);
+char	**ms_list_to_char_array(t_token *tokens);
+int		ms_tokens_size(t_token *tokens);
 
 
 void	ms_cd(t_token *tokens);
@@ -105,8 +107,7 @@ void	ms_pwd(void);
 void	ms_export(t_token *token, t_env *env);
 void	ms_unset(t_env **env, char *key);
 
-// exec_commands.c
-void	ms_execute_commands(t_token *tokens);
+
 
 //env
 void	ms_env(t_env *env);
