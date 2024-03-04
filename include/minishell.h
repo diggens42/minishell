@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:47:43 by mott              #+#    #+#             */
-/*   Updated: 2024/03/03 18:51:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/04 15:23:26 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ void	ms_execute_builtins(t_token *tokens, char **envp);
 
 // exec_commands.c
 void	ms_execute_commands(t_token *tokens);
-
+char	**ms_create_pathname(t_token *tokens);
+char	*ms_find_pathname(char **path);
 
 
 void	ms_cd(t_token *tokens);

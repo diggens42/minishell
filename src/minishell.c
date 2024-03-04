@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/03 19:21:54 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/04 15:35:07 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ms_interactive_mode(char **envp)
 			ms_exit();
 
 		ms_execute_builtins(tokens, envp);
-		// ms_execute_commands(tokens);
+		ms_execute_commands(tokens);
 
 		free(user_input);
 		ms_free_token_list(tokens);
@@ -64,7 +64,7 @@ void	ms_interactive_mode(char **envp)
 
 void	ms_exit(void)
 {
-	system("leaks minishell");
+	// system("leaks minishell");
 	exit(EXIT_SUCCESS);
 }
 
