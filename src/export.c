@@ -12,70 +12,53 @@
 
 #include "../include/minishell.h"
 
-void	ms_export(t_token *tokens, char **envp)
+void	update_env_vars(t_env **env, char key, char *value)
 {
-	char	*key;
-	char	*val;
-	char	*new_env_var;
-	char	**envp_update;
-	size_t	i;
-	size_t	envp_size;
-	size_t	new_env_var_size;
-	
-	if (tokens == NULL || envp == NULL)
-		return ;
-	envp_size = 0;
-	while(envp[envp_size] != NULL)
-		envp_size++;
-	envp_update = (char **)malloc(sizeof(char *) * (envp_size + 1));
-	if (envp_update == NULL)
+	t_env	*current;
+	t_env	*last;
+	t_env	*new_env_var;
+
+	current = env;
+	last = NULL;
+	while (current != NULL)
 	{
-		perror("malloc error");
-		exit(EXIT_FAILURE);
-	}
-	i = 0;
-	while (i < envp_size)
-	{
-		envp_update[i] = ft_strdup(envp[i]);
-		if (envp_update[i] == NULL)
+		if (ft_strcmp(current->key, key) == 0)
 		{
-			perror("malloc error");
-			exit(EXIT_FAILURE);
+			free(current->value);
+			current->value = ft_strdup(value);
+			return ;
 		}
-		i++;
+		last = current;
+		current = current->next;
 	}
-	while (tokens != NULL)
-	{
-		//TODO key & val into a struct
-		key = ft_strtok(tokens->content, "=");
-		val = ft_strtok(NULL, "=");
-		if (key != NULL && val != NULL)
-		{
-			new_env_var_size = ft_strlen(key) + ft_strlen(val) + 2;
-			new_env_var = (char *)malloc(new_env_var_size); //??
-			if (new_env_var == NULL)
-			{
-				perror("malloc error");
-				exit(EXIT_FAILURE);
-			}
-			ft_strlcpy(new_env_var, key, new_env_var_size);
-			ft_strlcat(new_env_var, "=", new_env_var_size);
-			ft_strlcpy(new_env_var, val, new_env_var_size);
-			envp_update[envp_size] = new_env_var;
-			envp_size++;
-			envp_update[envp_size] = NULL;
-			printf("Exported: %s\n", new_env_var);
-		}
-		tokens = tokens->next;
-	}
-	envp_size--;
-	i = -1;
-	while (++i < envp_size)
-		free(envp[i]);
-	free(envp);
-	envp = envp_update;
+	new_env_var = (t_env *)ft_calloc(1, sizeof(t_env));
+	if (new_env_var == NULL)
+		return (NULL);
+	//TODO ADD MALLOC ERROR
+	new_env_var->key = ft_strdup(key);
+	new_env_var->value = ft_strdup(value);
+	new_env_var->next = NULL;
+	last->next = new_env_var;
 }
 
-// init envp in main as linekd list
-// then we dont need to free odl envp
-// make new_envp from the linekd list + new envp_vars
+void	ms_export(char t_token *token, t_env *env)
+{
+	char	*token_content;
+	char	*equals_ptr;
+	char	*key;
+	char	*value;
+
+	if (token != NULL && token->content != NULL)
+	{
+		token_content = token->content;
+		equals_ptr = ft_strchr(token_content, "=");
+		if (equals_ptr != NULL)
+		{
+			*equals_ptr = '\0';
+			key = token_content;
+			value = equals_ptr + 1;
+			update_env_vars(env, key, value);
+			*equals_ptr = '=';
+		}
+	}
+}
