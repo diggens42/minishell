@@ -14,13 +14,17 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
 NAME = minishell
 
-SRCS = ./src/minishell.c \
-       ./src/parser.c \
-	   ./src/exec_builtins.c \
-	   ./src/exec_commands.c \
-	   ./src/cd.c \
-	   ./src/echo.c \
-	   ./src/pwd.c
+SRCS =	./src/minishell.c \
+		./src/parser.c \
+		./src/exec_builtins.c \
+		./src/exec_commands.c \
+		./src/env.c \
+		./src/cd.c \
+		./src/export.c \
+		./src/echo.c \
+		./src/unset.c \
+		./src/utils.c \
+		./src/pwd.c
 
 OBJS = $(SRCS:.c=.o)
 

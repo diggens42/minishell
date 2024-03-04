@@ -12,13 +12,13 @@
 
 #include "../include/minishell.h"
 
-void	update_env_vars(t_env **env, char key, char *value)
+void	update_env_vars(t_env **env, char *key, char *value)
 {
 	t_env	*current;
 	t_env	*last;
 	t_env	*new_env_var;
 
-	current = env;
+	current = *env;
 	last = NULL;
 	while (current != NULL)
 	{
@@ -33,7 +33,7 @@ void	update_env_vars(t_env **env, char key, char *value)
 	}
 	new_env_var = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (new_env_var == NULL)
-		return (NULL);
+		return ;
 	//TODO ADD MALLOC ERROR
 	new_env_var->key = ft_strdup(key);
 	new_env_var->value = ft_strdup(value);
@@ -41,24 +41,30 @@ void	update_env_vars(t_env **env, char key, char *value)
 	last->next = new_env_var;
 }
 
-void	ms_export(char t_token *token, t_env *env)
+void	ms_export(t_token *tokens, t_env *env)
 {
+	t_token	*token;
 	char	*token_content;
 	char	*equals_ptr;
 	char	*key;
 	char	*value;
 
-	if (token != NULL && token->content != NULL)
+	token = tokens->next;
+	while (token != NULL)
 	{
-		token_content = token->content;
-		equals_ptr = ft_strchr(token_content, "=");
-		if (equals_ptr != NULL)
+		if (token->content != NULL)
 		{
-			*equals_ptr = '\0';
-			key = token_content;
-			value = equals_ptr + 1;
-			update_env_vars(env, key, value);
-			*equals_ptr = '=';
+			token_content = token->content;
+			equals_ptr = ft_strchr(token_content, '=');
+			if (equals_ptr != NULL)
+			{
+				*equals_ptr = '\0';
+				key = token_content;
+				value = equals_ptr + 1;
+				update_env_vars(&env, key, value);
+				*equals_ptr = '=';
+			}
 		}
+		token = token->next;
 	}
 }

@@ -95,7 +95,7 @@ void	ms_execute_builtins(t_token *tokens, t_env *env);
 void	ms_cd(t_token *tokens);
 void	ms_echo(t_token *tokens);
 void	ms_pwd(void);
-void	ms_export(char t_token *token, t_env *env);
+void	ms_export(t_token *token, t_env *env);
 void	ms_unset(t_env **env, char *key);
 
 // exec_commands.c
@@ -104,7 +104,7 @@ void	ms_execute_commands(t_token *tokens);
 //env
 void	ms_env(t_env *env);
 t_env	*init_env(char **envp);
-void	update_env_vars(t_env **env, char key, char *value);
+void	update_env_vars(t_env **env, char *key, char *value);
 void	free_env_node(t_env *node);
 
 //utils

@@ -15,12 +15,15 @@
 char	*ft_strtok(char	*str, const char *delimiter)
 {
 	static char	*token = NULL;
+	//TODO static char pointer memory leaks???
 	char		*end;
-	
+	char		*start;
+
 	if (str != NULL)
 		token = str;
 	else if (token == NULL)
 		return (NULL);
+	start = token;
 	token += ft_strspn(token, delimiter);
 	if (*token == '\0')
 	{
@@ -35,7 +38,7 @@ char	*ft_strtok(char	*str, const char *delimiter)
 	}
 	else
 		token = NULL;
-	return (token);
+	return (start);
 }
 
 size_t	ft_strspn(const char *str, const char *charset)

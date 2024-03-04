@@ -17,7 +17,7 @@ void	ms_unset(t_env **env, char *key)
 	t_env	*current;
 	t_env	*prev;
 
-	current	= env;
+	current	= *env;
 	prev = NULL;
 	while (current != NULL)
 	{
@@ -31,6 +31,6 @@ void	ms_unset(t_env **env, char *key)
 			return ;
 		}
 		prev = current;
-		current = curren->next;
+		current = current->next;
 	}
 }

@@ -42,7 +42,7 @@ static t_env	*new_env_node(char *key, char *value)
 	if (key != NULL)
 	{
 		node->key = ft_strdup(key);
-		if (node->key == NULL;)
+		if (node->key == NULL)
 		{
 			free(node);
 			return (NULL);
@@ -88,7 +88,7 @@ t_env	*init_env(char **envp)
 	while(envp[i] != NULL)
 	{
 		key = ft_strtok(envp[i], "=");
-		value = ft_strtok(NULL, "");
+		value = ft_strtok(NULL, "=");
 		if (key && value)
 			append_env_node(&env, new_env_node(key, value));
 		i++;
