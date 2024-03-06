@@ -44,27 +44,26 @@ void	update_env_vars(t_env **env, char *key, char *value)
 void	ms_export(t_token *tokens, t_env *env)
 {
 	t_token	*token;
-	char	*token_content;
 	char	*equals_ptr;
-	char	*key;
-	char	*value;
+	bool	assignment;
 
+	assignment = false;
 	token = tokens->next;
 	while (token != NULL)
 	{
 		if (token->content != NULL)
 		{
-			token_content = token->content;
-			equals_ptr = ft_strchr(token_content, '=');
+			equals_ptr = ft_strchr(token->content, '=');
 			if (equals_ptr != NULL)
 			{
 				*equals_ptr = '\0';
-				key = token_content;
-				value = equals_ptr + 1;
-				update_env_vars(&env, key, value);
+				update_env_vars(&env, token->content, equals_ptr + 1);
 				*equals_ptr = '=';
+				assignment = true;
 			}
 		}
 		token = token->next;
 	}
+	if (assignment == false)
+		ms_env(env);
 }

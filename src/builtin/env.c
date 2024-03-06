@@ -95,3 +95,14 @@ t_env	*init_env(char **envp)
 	}
 	return (env);
 }
+
+char	*ft_getenv(const char *name, t_env *env)
+{
+	while (env != NULL)
+	{
+		if (ft_strcmp(env->key, name) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}

@@ -17,7 +17,7 @@ void	ms_execute(t_token *tokens, t_env *env)
 	if (ft_strcmp("echo", tokens->content) == 0)
 		ms_echo(tokens);
 	else if (ft_strcmp("cd", tokens->content) == 0)
-		ms_cd(tokens);
+		ms_cd(tokens->next, env);
 	else if (ft_strcmp("pwd", tokens->content) == 0)
 		ms_pwd();
 	else if (ft_strcmp("export", tokens->content) == 0)

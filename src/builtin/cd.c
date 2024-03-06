@@ -12,44 +12,35 @@
 
 #include "../include/minishell.h"
 
-// static char	*ms_cd_rel_path(t_token *tokens)
-// {
-// 	char	*cwd;
-// 	char	*temp_path;
-// 	char	*rel_path;
-// 	size_t	rel_path_len;
+//TODO If ft_getenv does not find "HOME" in the environment, it will return NULL. 
+// Ensure your code handles this case before using home_path in string functions.
 
-// 	cwd = getcwd(NULL, 0);
-// 	if (cwd == NULL)
-// 		return ; //TODO errorhandling
-// 	temp_path = malloc(sizeof(char) * (ft_strlen(cwd) + 1));
-// 	temp_path = ft_strjoin(cwd, "/");
-// 	rel_path_len = ft_strlen(temp_path) + ft_strlen(tokens->token) + 1; // +1 for nullterm, +1 for added /
-// 	rel_path = malloc(sizeof(char) * rel_path_len);
-// 	rel_path = ft_strjoin(temp_path, tokens->token);
-// 	free(temp_path);
-// 	free(cwd);
-// 	return (rel_path);
-// }
-
-// TODO
-// '~' ???
-void	ms_cd(t_token *tokens)
+void	ms_cd(t_token *token, t_env *env)
 {
 	char	*path;
+	char	*home_path;
+	size_t	new_path_len;
 
-	// if (tokens == NULL)
-	// 	return ; //TODO errorhandling
-	if (tokens->next == NULL)
-		path = getenv("HOME");
+	new_path_len = 0;
+	home_path = ft_getenv("HOME", env);
+	if (token == NULL || ft_strcmp(token->content, "~") == 0)
+		path = home_path;
+	else if (token->content[0] == '~')
+	{
+		new_path_len = ft_strlen(home_path) + ft_strlen(token->content);
+		path = malloc(sizeof(char) * (new_path_len));
+		if (path == NULL)
+		{
+			perror("malloc");
+			return;
+		}
+		strlcpy(path, home_path, new_path_len);
+		strlcat(path, token->content + 1, new_path_len);
+	}
 	else
-		path = tokens->next->content;
+		path = token->content;
 	if (chdir(path) == -1)
-	// {
 		perror("chdir");
-		// return ; //TODO errorhandling
-	// }
+	if (token != NULL && token->content[0] == '~' && path != home_path)
+		free(path);
 }
-
-	// if (tokens->token[0] != '/')
-	// 	path = ms_cd_rel_path(tokens);

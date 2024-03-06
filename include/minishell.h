@@ -112,7 +112,7 @@ size_t	ft_strspn(const char *str, const char *charset);
 size_t	ft_strcspn(const char *str, const char *charset);
 
 // builtin/cd.c
-void	ms_cd(t_token *tokens);
+void	ms_cd(t_token *token, t_env *env);
 
 // builtin/echo.c
 void	ms_echo(t_token *tokens);
@@ -123,6 +123,7 @@ void	free_env_node(t_env *node);
 t_env	*new_env_node(char *key, char *value);
 void	append_env_node(t_env **head, t_env *new_node);
 t_env	*init_env(char **envp);
+char	*ft_getenv(const char *name, t_env *env);
 
 // builtin/export.c
 void	update_env_vars(t_env **env, char *key, char *value);
