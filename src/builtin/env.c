@@ -31,7 +31,7 @@ void	free_env_node(t_env *node)
 	}
 }
 
-static t_env	*new_env_node(char *key, char *value)
+t_env	*new_env_node(char *key, char *value)
 {
 	t_env	*node;
 
@@ -61,7 +61,7 @@ static t_env	*new_env_node(char *key, char *value)
 	return (node);
 }
 
-static void	append_env_node(t_env **head, t_env *new_node)
+void	append_env_node(t_env **head, t_env *new_node)
 {
 	t_env	*current;
 
@@ -85,7 +85,7 @@ t_env	*init_env(char **envp)
 
 	env = NULL;
 	i = 0;
-	while(envp[i] != NULL)
+	while (envp[i] != NULL)
 	{
 		key = ft_strtok(envp[i], "=");
 		value = ft_strtok(NULL, "=");

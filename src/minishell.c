@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/04 18:16:23 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/06 13:15:17 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	env = init_env(envp);
 	ms_interactive_mode(env);
-	system("leaks minishell");
+	// system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 
@@ -56,10 +56,7 @@ void	ms_interactive_mode(t_env *env)
 		tokens = ms_parser(tokens, user_input);
 		if (tokens == NULL)
 			ms_exit();
-
-		ms_execute_builtins(tokens, env);
-		ms_execute_commands(tokens, env);
-
+		ms_execute(tokens, env);
 		free(user_input);
 		ms_free_token_list(tokens);
 	}
@@ -73,7 +70,7 @@ void	ms_exit(void)
 
 void	ms_free_token_list(t_token *tokens)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	while (tokens != NULL)
 	{

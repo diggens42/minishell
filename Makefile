@@ -18,13 +18,15 @@ SRCS =	./src/minishell.c \
 		./src/parser.c \
 		./src/exec_builtins.c \
 		./src/exec_commands.c \
-		./src/env.c \
-		./src/cd.c \
-		./src/export.c \
-		./src/echo.c \
-		./src/unset.c \
+		./src/envp.c \
+		./src/tokens.c \
 		./src/utils.c \
-		./src/pwd.c
+		./src/builtin/cd.c \
+		./src/builtin/echo.c \
+		./src/builtin/env.c \
+		./src/builtin/export.c \
+		./src/builtin/pwd.c \
+		./src/builtin/unset.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/04 18:25:47 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/06 13:24:19 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ms_execute_commands(t_token *tokens, t_env *env)
 	char	**path;
 	char	*pathname;
 	char	**argv;
-	// char	**envp;
+	char	**envp;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -26,16 +26,15 @@ void	ms_execute_commands(t_token *tokens, t_env *env)
 	if (child_pid == 0)
 	{
 		if (ft_strchr(tokens->content, '/') != NULL)
-		{
 			pathname = tokens->content;
-		}
 		else
 		{
 			path = ms_create_pathname(tokens, env);
 			pathname = ms_find_pathname(path);
 		}
-		argv = ms_list_to_char_array(tokens);
-		if (execve(pathname, argv, NULL) == -1)
+		argv = ms_tokens_to_char_array(tokens);
+		envp = ms_env_to_char_array(env);
+		if (execve(pathname, argv, envp) == -1)
 		{
 			perror("execve");
 			ms_exit();
@@ -85,7 +84,7 @@ char	*ms_find_pathname(char **path)
 	return (NULL);
 }
 
-char	**ms_list_to_char_array(t_token *tokens)
+char	**ms_tokens_to_char_array(t_token *tokens)
 {
 	char	**argv;
 	int		n_tokens;
@@ -104,17 +103,4 @@ char	**ms_list_to_char_array(t_token *tokens)
 	}
 	argv[i] = NULL;
 	return (argv);
-}
-
-int	ms_tokens_size(t_token *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens != NULL)
-	{
-		tokens = tokens->next;
-		i++;
-	}
-	return (i);
 }

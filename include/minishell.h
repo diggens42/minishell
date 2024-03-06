@@ -85,37 +85,51 @@ void	ms_free_token_list(t_token *tokens);
 t_token	*ms_parser(t_token *tokens, char *user_input);
 int		ms_count_words(char *str);
 int		ms_count_characters(char *str);
-t_token	*ms_new_token(char *content);
-t_token	*ms_last_token(t_token *token);
-void	ms_token_add_back(t_token **token, t_token *new_token);
-void 	ms_print_token(t_token *tokens);
 
 // exec_builtins.c
-void	ms_execute_builtins(t_token *tokens, t_env *env);
+void	ms_execute(t_token *tokens, t_env *env);
 
 // exec_commands.c
 void	ms_execute_commands(t_token *tokens, t_env *env);
 char	**ms_create_pathname(t_token *tokens, t_env *env);
 char	*ms_find_pathname(char **path);
-char	**ms_list_to_char_array(t_token *tokens);
+char	**ms_tokens_to_char_array(t_token *tokens);
+
+// tokens.c
+t_token	*ms_new_token(char *content);
+t_token	*ms_last_token(t_token *token);
+void	ms_add_back_token(t_token **token, t_token *new_token);
 int		ms_tokens_size(t_token *tokens);
+void 	ms_print_token(t_token *tokens);
 
-
-void	ms_cd(t_token *tokens);
-void	ms_echo(t_token *tokens);
-void	ms_pwd(void);
-void	ms_export(t_token *token, t_env *env);
-void	ms_unset(t_env **env, char *key);
-
-
-
-//env
-void	ms_env(t_env *env);
-t_env	*init_env(char **envp);
-void	update_env_vars(t_env **env, char *key, char *value);
-void	free_env_node(t_env *node);
+// envp.c
+char	**ms_env_to_char_array(t_env *env);
+int		ms_envp_size(t_env *env);
 
 //utils
 char	*ft_strtok(char	*str, const char *delimiter);
 size_t	ft_strspn(const char *str, const char *charset);
 size_t	ft_strcspn(const char *str, const char *charset);
+
+// builtin/cd.c
+void	ms_cd(t_token *tokens);
+
+// builtin/echo.c
+void	ms_echo(t_token *tokens);
+
+// builtin/env.c
+void	ms_env(t_env *env);
+void	free_env_node(t_env *node);
+t_env	*new_env_node(char *key, char *value);
+void	append_env_node(t_env **head, t_env *new_node);
+t_env	*init_env(char **envp);
+
+// builtin/export.c
+void	update_env_vars(t_env **env, char *key, char *value);
+void	ms_export(t_token *tokens, t_env *env);
+
+// builtin/pwd.c
+void	ms_pwd(void);
+
+// builitin/unset.c
+void	ms_unset(t_env **env, char *key);

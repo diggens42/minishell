@@ -14,7 +14,7 @@
 
 void	ms_echo(t_token *tokens)
 {
-	bool new_line;
+	bool	new_line;
 
 	new_line = true;
 	tokens = tokens->next;
