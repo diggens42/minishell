@@ -14,7 +14,7 @@
 
 //TODO If ft_getenv does not find "HOME" in the environment, it will return NULL. 
 // Ensure your code handles this case before using home_path in string functions.
-
+//TODO cd - functionality
 void	ms_cd(t_token *token, t_env *env)
 {
 	char	*path;
