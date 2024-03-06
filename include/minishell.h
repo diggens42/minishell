@@ -64,9 +64,20 @@
 
 typedef enum	e_token_type
 {
-	COMMAND,
-	ARGUMENT,
-	PIPE
+	WORD,
+	SINGLE_QUOTE,		// ''
+	DOUBLE_QUOTE,		// ""
+	REDIRECT_IN,		// <
+	REDIRECT_HERE_DOC,	// <<
+	REDIRECT_OUT,		// >
+	REDIRECT_APPEND,	// >>
+	PIPE,				// |
+	DOLLAR,				// $
+	DOLLAR_QUOTE,		// $""
+	AND,				// &&
+	OR,					// ||
+	PARENTHESIS,		// ()
+	WILDCARD			// *
 }	t_token_type;
 
 typedef struct	s_token
@@ -75,6 +86,12 @@ typedef struct	s_token
 	char			*content;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct	s_command
+{
+	t_token				*token;
+	struct s_command	*next;
+}	t_command;
 
 typedef struct	s_env
 {

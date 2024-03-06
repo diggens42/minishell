@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/06 13:24:19 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/06 17:44:17 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,45 +43,28 @@ void	ms_execute_commands(t_token *tokens, t_env *env)
 	waitpid(child_pid, NULL, 0);
 }
 
-char	**ms_create_pathname(t_token *tokens, t_env *env)
+void	ft_setup_next_command(char **argv, char **envp, int i)
 {
-	char	**path;
-	char	*temp;
-	int		i;
+	int		fd_pipe[2];
+	pid_t	pid;
 
-	while (env != NULL)
+	if (pipe(fd_pipe) == -1)
+		ft_error("pipe", ERR_SYSTEM);
+	pid = fork();
+	if (pid == -1)
+		ft_error("fork", ERR_SYSTEM);
+	else if (pid == 0)
 	{
-		if (ft_strcmp(env->key, "PATH") == 0)
-			temp = env->value;
-		env = env->next;
+		close(fd_pipe[0]);
+		if (dup2(fd_pipe[1], STDOUT_FILENO) == -1)
+			ft_error("dup2", ERR_SYSTEM);
+		close(fd_pipe[1]);
+		ft_execute_program(argv[i], envp);
 	}
-	path = ft_split(temp, ':');
-	i = 0;
-	while (path[i] != NULL)
-	{
-		temp = path[i];
-		path[i] = ft_strjoin(temp, "/");
-		free(temp);
-		temp = path[i];
-		path[i] = ft_strjoin(temp, tokens->content);
-		free(temp);
-		i++;
-	}
-	return (path);
-}
-
-char	*ms_find_pathname(char **path)
-{
-	int	i;
-
-	i = 0;
-	while (path[i] != NULL)
-	{
-		if (access(path[i], X_OK) == 0)
-			return (path[i]);
-		i++;
-	}
-	return (NULL);
+	close(fd_pipe[1]);
+	if (dup2(fd_pipe[0], STDIN_FILENO) == -1)
+		ft_error("dup2", ERR_SYSTEM);
+	close(fd_pipe[0]);
 }
 
 char	**ms_tokens_to_char_array(t_token *tokens)
