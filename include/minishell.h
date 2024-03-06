@@ -64,10 +64,22 @@
 
 typedef enum	e_token_type
 {
-	COMMAND,
-	ARGUMENT,
-	PIPE
+	WORD,
+	SINGLE_QUOTE,		// ''
+	DOUBLE_QUOTE,		// ""
+	REDIRECT_IN,		// <
+	REDIRECT_HERE_DOC,	// <<
+	REDIRECT_OUT,		// >
+	REDIRECT_APPEND,	// >>
+	PIPE,				// |
+	DOLLAR,				// $
+	DOLLAR_QUOTE,		// $""
+	AND,				// &&
+	OR,					// ||
+	PARENTHESIS,		// ()
+	WILDCARD			// *
 }	t_token_type;
+
 
 typedef struct	s_token
 {
@@ -120,8 +132,8 @@ size_t	ft_strspn(const char *str, const char *charset);
 size_t	ft_strcspn(const char *str, const char *charset);
 
 // builtin/cd.c
-void	ms_cd(t_token *token, t_env *env);
 
+void	ms_cd(t_token *token, t_env *env);
 // builtin/echo.c
 void	ms_echo(t_token *tokens);
 

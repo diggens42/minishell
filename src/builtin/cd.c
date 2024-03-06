@@ -34,8 +34,8 @@ void	ms_cd(t_token *token, t_env *env)
 			perror("malloc");
 			return;
 		}
-		strlcpy(path, home_path, new_path_len);
-		strlcat(path, token->content + 1, new_path_len);
+		ft_strlcpy(path, home_path, new_path_len);
+		ft_strlcat(path, token->content + 1, new_path_len);
 	}
 	else
 		path = token->content;
