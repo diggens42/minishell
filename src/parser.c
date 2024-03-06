@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/06 14:20:44 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/06 16:22:24 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_token	*ms_parser(t_token *tokens, char *user_input)
 		while (ft_isspace(*user_input) == true)
 			user_input++;
 		n_characters = ms_count_characters(user_input);
+
+		
 		content = ft_substr(user_input, 0, n_characters);
 		if (content == NULL)
 			ms_exit();

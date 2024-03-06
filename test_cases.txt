@@ -1,22 +1,189 @@
-echo
-	echo -n
-	echo test
-	echo $USER
-	echo '$USER'
-	echo "$USER"
-	echo test | cat -e
 
-cd
-	cd
-	cd ..
-	cd /bin
-	cd ~
-	cd ~/test
-	cd -
 
-mkdir
 
-ls
-	ls
-	/bin/ls
-	../../../../../bin/ls
+    echo with and without option -n:
+        Test Case 1: echo "Hello, World!"
+        Test Case 2: echo -n "No newline at the end"
+
+    cd with only a relative or absolute path:
+        Test Case 1: cd /path/to/absolute/directory
+        Test Case 2: cd relative/directory
+
+    pwd with no options:
+        Test Case: pwd
+
+    export with no options:
+        Test Case: export VARIABLE_NAME=value
+
+    unset with no options:
+        Test Case: unset VARIABLE_NAME
+
+    env with no options or arguments:
+        Test Case: env
+
+    exit with no options:
+        Test Case: exit
+
+
+
+    echo with and without option -n:
+        Test Case 3: echo "" (empty string)
+        Test Case 4: echo -n "This is a test"
+
+    cd with only a relative or absolute path:
+        Test Case 3: cd ~ (home directory)
+        Test Case 4: cd - (previous working directory)
+
+    pwd with no options:
+        Test Case 2: pwd (while in a symbolic link)
+
+    export with no options:
+        Test Case 2: export (list all environment variables)
+
+    unset with no options:
+        Test Case 2: unset (list all environment variables and prompt for confirmation)
+
+    env with no options or arguments:
+        Test Case 2: env | grep "SOME_VARIABLE" (filter environment variables)
+
+    exit with no options:
+        Test Case 2: exit 0 (exit with a specific status code)
+
+
+
+    ls with options:
+        Test Case 1: ls -l
+        Test Case 2: ls -a
+
+    mkdir with options:
+        Test Case 1: mkdir new_directory
+        Test Case 2: mkdir -p nested/directory
+
+    rm with options:
+        Test Case 1: rm file.txt
+        Test Case 2: rm -r directory
+
+    cp with options:
+        Test Case 1: cp file.txt backup/file_backup.txt
+        Test Case 2: cp -r source_directory destination_directory
+
+    mv with options:
+        Test Case 1: mv old_file.txt new_location/
+        Test Case 2: mv -i source_file destination_file
+
+    cat with options:
+        Test Case 1: cat file.txt
+        Test Case 2: cat -n numbered_file.txt
+
+    grep with options:
+        Test Case 1: grep "pattern" file.txt
+        Test Case 2: grep -r "pattern" directory/
+
+    chmod with options:
+        Test Case 1: chmod +x script.sh
+        Test Case 2: chmod 644 file.txt
+
+
+
+    Command with Pipe:
+        Test Case 1: ls -l | grep "file"
+        Test Case 2: cat text_file.txt | grep "pattern"
+
+    Multiple Pipes:
+        Test Case 1: ps aux | grep "process" | sort
+        Test Case 2: ls -l | awk '{print $5}' | sort -n
+
+    Command Substitution with Pipes:
+        Test Case 1: echo $(ls -l | grep "file")
+        Test Case 2: echo $(cat text_file.txt | grep "pattern")
+
+    Combination of Commands:
+        Test Case 1: ls -l | grep "file" | cut -d " " -f 9
+        Test Case 2: cat text_file.txt | grep "pattern" | sed 's/pattern/replacement/g'
+
+    Piping to Another Shell Command:
+        Test Case 1: echo "Hello, World!" | wc -c
+        Test Case 2: ls -l | tee output.txt | grep "file"
+
+
+
+    Environment Variables:
+        Test Case 1: echo $HOME
+        Test Case 2: echo $USER
+        Test Case 3: echo $PATH
+
+    Environment Variable in Command:
+        Test Case 1: ls $HOME
+        Test Case 2: cat $USER/some_file.txt
+        Test Case 3: echo $PATH | grep "/bin"
+
+    Combination with Other Commands:
+        Test Case 1: echo "My home directory is: $HOME"
+        Test Case 2: ls -l $USER/Documents
+
+    $? - Exit Status:
+        Test Case 1: ls non_existent_directory (should result in an error)
+        Test Case 2: echo $? (should display the exit status of the previous command)
+
+    $? in Conditional Statements:
+        Test Case 1: ls existing_directory && echo "Command executed successfully" || echo "Command failed"
+        Test Case 2: rm non_existent_file || echo "Command failed with exit status: $?"
+
+
+
+    < Redirecting Input:
+        Test Case 1: cat < input_file.txt
+        Test Case 2: grep "pattern" < source_file.txt
+
+    > Redirecting Output:
+        Test Case 1: echo "Hello, World!" > output_file.txt
+        Test Case 2: ls -l > directory_listing.txt
+
+    << Input Until Delimiter:
+        Test Case 1: cat << EOF This is a multi-line input. It continues until the delimiter EOF is encountered. EOF
+        Test Case 2: sed 's/pattern/replacement/' << END Input line 1 Input line 2 END
+
+    >> Redirect Output in Append Mode:
+        Test Case 1: echo "New content" >> existing_file.txt
+        Test Case 2: command_that_generates_output >> log_file.txt
+
+
+
+    Single Quotes:
+        Test Case 1: echo 'This is a simple string'
+        Test Case 2: ls -l '/path/with spaces/file with spaces.txt'
+
+    Single Quotes with Meta-characters:
+        Test Case 1: echo 'This string contains $HOME'
+        Test Case 2: grep 'pattern*.*' file.txt
+
+    Double Quotes:
+        Test Case 1: echo "This is a simple string"
+        Test Case 2: ls -l "/path/with spaces/file with spaces.txt"
+
+    Double Quotes with Variable Expansion:
+        Test Case 1: echo "My home directory is: $HOME"
+        Test Case 2: echo "The current directory is: $(pwd)"
+
+    Combination of Quotes:
+        Test Case 1: echo 'Single quoted string with '"'"' embedded single quotes'"'
+        Test Case 2: echo "Double quoted string with escaped double quote: \""
+
+
+
+    Logical Operators with Parenthesis:
+        Test Case 1: ls -l && echo "Success" || echo "Failure"
+        Test Case 2: mkdir test_directory && (cd test_directory && touch new_file.txt) || echo "Directory creation failed"
+
+    Wildcards (*) for Current Working Directory:
+        Test Case 1: ls *
+        Test Case 2: echo *.txt
+        Test Case 3: cat file*
+
+    Combination of Logical Operators and Wildcards:
+        Test Case 1: ls -l && echo "Files in current directory: " && ls *
+        Test Case 2: cp *.txt backup/ && echo "Files copied successfully" || echo "Copy operation failed"
+
+    Logical Operators with Parenthesis and Commands with Wildcards:
+        Test Case 1: (ls -l && echo "Listed files") || (echo "Error listing files" && exit 1)
+        Test Case 2: (ls *.txt && echo "Found text files") && cp *.txt backup/ || echo "No text files found"
