@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:15:17 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/01 19:18:13 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/06 19:47:31 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ms_pwd(void)
+void	builtin_pwd(void)
 {
 	char	*cwd;
 

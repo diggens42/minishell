@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/06 13:15:17 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/07 16:16:03 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,18 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	env = init_env(envp);
-	ms_interactive_mode(env);
+	interactive_mode(env);
 	// system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 
-void	ms_interactive_mode(t_env *env)
+void	interactive_mode(t_env *env)
 {
-	char	*user_input;
-	char	*user_input2;
-	char	*temp;
-	t_token	*tokens;
+	char		*user_input;
+	char		*user_input2;
+	char		*temp;
+	t_token		*tokens;
+	t_command	*commands;
 
 	while (true)
 	{
@@ -52,31 +53,18 @@ void	ms_interactive_mode(t_env *env)
 		}
 		// if (user_input == '<<')
 		// 	continue ;
-		tokens = NULL;
-		tokens = ms_parser(tokens, user_input);
-		if (tokens == NULL)
-			ms_exit();
-		ms_execute(tokens, env);
+
+		// commands = parser(commands, user_input);
+		// if (commands == NULL)
+		// 	ft_exit();
+
+		tokens = tokenizer(user_input);
+		// token_print(tokens);
+		commands = command_parser(tokens);
+
+		execute(commands, env);
+		// execute(commands->tokens, env);
 		free(user_input);
-		ms_free_token_list(tokens);
-	}
-}
-
-void	ms_exit(void)
-{
-	// system("leaks minishell");
-	exit(EXIT_SUCCESS);
-}
-
-void	ms_free_token_list(t_token *tokens)
-{
-	t_token	*temp;
-
-	while (tokens != NULL)
-	{
-		temp = tokens->next;
-		free(tokens->content);
-		free(tokens);
-		tokens = temp;
+		// free commands + tokens
 	}
 }
