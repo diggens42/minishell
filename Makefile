@@ -15,18 +15,25 @@ CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
 NAME = minishell
 
 SRCS =	./src/minishell.c \
-		./src/parser.c \
-		./src/exec_builtins.c \
-		./src/exec_commands.c \
-		./src/envp.c \
-		./src/tokens.c \
-		./src/utils.c \
+		\
+		./src/parser/init_env.c \
+		./src/parser/tokenizer.c \
+		./src/parser/tokenizer_utils.c \
+		./src/parser/parser.c \
+		./src/parser/parser_utils.c \
+		\
 		./src/builtin/cd.c \
 		./src/builtin/echo.c \
 		./src/builtin/env.c \
 		./src/builtin/export.c \
 		./src/builtin/pwd.c \
-		./src/builtin/unset.c
+		./src/builtin/unset.c \
+		\
+		./src/executor/execute.c \
+		./src/executor/execute_utils.c \
+		\
+		./src/utils/free.c \
+		./src/utils/utils.c
 
 OBJS = $(SRCS:.c=.o)
 

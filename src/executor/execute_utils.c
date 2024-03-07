@@ -1,49 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_commands.c                                    :+:      :+:    :+:   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/06 13:24:19 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/07 15:58:36 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ms_execute_commands(t_token *tokens, t_env *env)
-{
-	pid_t	child_pid;
-	char	**path;
-	char	*pathname;
-	char	**argv;
-	char	**envp;
-
-	child_pid = fork();
-	if (child_pid == -1)
-		ms_exit();
-	if (child_pid == 0)
-	{
-		if (ft_strchr(tokens->content, '/') != NULL)
-			pathname = tokens->content;
-		else
-		{
-			path = ms_create_pathname(tokens, env);
-			pathname = ms_find_pathname(path);
-		}
-		argv = ms_tokens_to_char_array(tokens);
-		envp = ms_env_to_char_array(env);
-		if (execve(pathname, argv, envp) == -1)
-		{
-			perror("execve");
-			ms_exit();
-		}
-	}
-	waitpid(child_pid, NULL, 0);
-}
-
-char	**ms_create_pathname(t_token *tokens, t_env *env)
+char	**create_pathname(t_token *tokens, t_env *env)
 {
 	char	**path;
 	char	*temp;
@@ -70,7 +39,7 @@ char	**ms_create_pathname(t_token *tokens, t_env *env)
 	return (path);
 }
 
-char	*ms_find_pathname(char **path)
+char	*find_pathname(char **path)
 {
 	int	i;
 
@@ -84,16 +53,17 @@ char	*ms_find_pathname(char **path)
 	return (NULL);
 }
 
-char	**ms_tokens_to_char_array(t_token *tokens)
+char	**tokens_to_char_array(t_token *tokens)
 {
 	char	**argv;
 	int		n_tokens;
 	int		i;
 
-	n_tokens = ms_tokens_size(tokens);
+	n_tokens = tokens_size(tokens);
+	// ft_printf("n_tokens: %d\n", n_tokens);
 	argv = malloc(sizeof(char *) * (n_tokens + 1));
 	if (argv == NULL)
-		ms_exit();
+		ft_exit();
 	i = 0;
 	while (i < n_tokens)
 	{
@@ -103,4 +73,45 @@ char	**ms_tokens_to_char_array(t_token *tokens)
 	}
 	argv[i] = NULL;
 	return (argv);
+}
+
+char	**env_to_char_array(t_env *env)
+{
+	char	**envp;
+	char	*temp;
+	int		n_envp;
+	int		i;
+
+	n_envp = envp_size(env);
+	envp = malloc(sizeof(char *) * (n_envp + 1));
+	if (envp == NULL)
+		ft_exit();
+	i = 0;
+	while (i < n_envp)
+	{
+		envp[i] = ft_strdup(env->key);
+		temp = envp[i];
+		envp[i] = ft_strjoin(temp, "=");
+		free(temp);
+		temp = envp[i];
+		envp[i] = ft_strjoin(temp, env->value);
+		free(temp);
+		env = env->next;
+		i++;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+int	envp_size(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (env != NULL)
+	{
+		env = env->next;
+		i++;
+	}
+	return (i);
 }

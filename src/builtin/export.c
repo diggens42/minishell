@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/03 19:43:35 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/07 16:09:00 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	update_env_vars(t_env **env, char *key, char *value)
+static void	update_env(t_env **env, char *key, char *value)
 {
 	t_env	*current;
 	t_env	*last;
@@ -41,7 +41,7 @@ void	update_env_vars(t_env **env, char *key, char *value)
 	last->next = new_env_var;
 }
 
-void	ms_export(t_token *tokens, t_env *env)
+void	builtin_export(t_token *tokens, t_env *env)
 {
 	t_token	*token;
 	char	*equals_ptr;
@@ -57,7 +57,7 @@ void	ms_export(t_token *tokens, t_env *env)
 			if (equals_ptr != NULL)
 			{
 				*equals_ptr = '\0';
-				update_env_vars(&env, token->content, equals_ptr + 1);
+				update_env(&env, token->content, equals_ptr + 1);
 				*equals_ptr = '=';
 				assignment = true;
 			}
@@ -65,5 +65,5 @@ void	ms_export(t_token *tokens, t_env *env)
 		token = token->next;
 	}
 	if (assignment == false)
-		ms_env(env);
+		builtin_env(env);
 }

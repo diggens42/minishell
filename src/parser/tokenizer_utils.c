@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens.c                                           :+:      :+:    :+:   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/06 13:21:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/07 15:44:32 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token	*ms_new_token(char *content)
+t_token	*token_new(char *content)
 {
 	t_token	*new_token;
 
@@ -24,7 +24,7 @@ t_token	*ms_new_token(char *content)
 	return (new_token);
 }
 
-t_token	*ms_last_token(t_token *token)
+t_token	*token_last(t_token *token)
 {
 	if (token == NULL)
 		return (NULL);
@@ -33,7 +33,7 @@ t_token	*ms_last_token(t_token *token)
 	return (token);
 }
 
-void	ms_add_back_token(t_token **token, t_token *new_token)
+void	token_add_back(t_token **token, t_token *new_token)
 {
 	t_token	*last_token;
 
@@ -41,12 +41,13 @@ void	ms_add_back_token(t_token **token, t_token *new_token)
 		*token = new_token;
 	else
 	{
-		last_token = ms_last_token(*token);
+		last_token = token_last(*token);
 		last_token->next = new_token;
 	}
 }
 
-int	ms_tokens_size(t_token *tokens)
+// TODO int->size_t?
+int	tokens_size(t_token *tokens)
 {
 	int	i;
 
@@ -59,7 +60,8 @@ int	ms_tokens_size(t_token *tokens)
 	return (i);
 }
 
-void	ms_print_token(t_token *tokens)
+// TODO delete
+void	token_print(t_token *tokens)
 {
 	while (tokens != NULL)
 	{
@@ -67,4 +69,3 @@ void	ms_print_token(t_token *tokens)
 		tokens = tokens->next;
 	}
 }
-
