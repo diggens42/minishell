@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:53:21 by mott              #+#    #+#             */
-/*   Updated: 2024/03/07 16:18:22 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/08 13:05:47 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	command_add_back(t_command **command, t_command *new_command)
 }
 
 // TODO int->size_t?
-int	command_size(t_token *command)
+int	command_size(t_command *command)
 {
 	int	i;
 

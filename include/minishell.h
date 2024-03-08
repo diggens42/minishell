@@ -122,7 +122,7 @@ void		token_print(t_token *tokens);
 t_command	*command_new(t_token *token);
 t_command	*command_last(t_command *command);
 void		command_add_back(t_command **command, t_command *new_command);
-int			command_size(t_token *command);
+int			command_size(t_command *command);
 
 // BUILTIN
 void		builtin_cd(t_token *token, t_env *env);
@@ -134,6 +134,9 @@ void		builtin_unset(t_env **env, char *key);
 
 // EXECUTOR
 void		execute(t_command *command, t_env *env);
+void		setup_next_command(t_command *command, t_env *env);
+void		setup_last_command(t_command *command, t_env *env);
+void		execute_builtin(t_command *command, t_env *env);
 void		execute_commands(t_command *command, t_env *env);
 // exector_utils
 char		**create_pathname(t_token *tokens, t_env *env);

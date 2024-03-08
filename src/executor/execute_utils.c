@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/07 15:58:36 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/08 12:39:40 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ char	**tokens_to_char_array(t_token *tokens)
 	int		i;
 
 	n_tokens = tokens_size(tokens);
-	// ft_printf("n_tokens: %d\n", n_tokens);
 	argv = malloc(sizeof(char *) * (n_tokens + 1));
 	if (argv == NULL)
 		ft_exit();

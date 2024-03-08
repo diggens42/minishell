@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/07 16:16:03 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/08 13:24:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,9 @@ void	interactive_mode(t_env *env)
 		// if (user_input == '<<')
 		// 	continue ;
 
-		// commands = parser(commands, user_input);
-		// if (commands == NULL)
-		// 	ft_exit();
-
 		tokens = tokenizer(user_input);
-		// token_print(tokens);
 		commands = command_parser(tokens);
-
 		execute(commands, env);
-		// execute(commands->tokens, env);
 		free(user_input);
 		// free commands + tokens
 	}
