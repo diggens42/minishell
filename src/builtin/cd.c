@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/08 22:26:30 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/08 22:28:35 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void	builtin_cd(t_token *token, t_env *env)
 	}
 	if (chdir(path) == -1)
 		perror("chdir");
-	if (token != NULL && token->content[0] == '~' && path != home_path)
-		free(path);
+	if (expanded_path != NULL)
+		free(expanded_path);
 }
