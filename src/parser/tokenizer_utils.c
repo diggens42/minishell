@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/07 15:44:32 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/08 16:01:16 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token	*token_new(char *content)
+t_token	*token_new(void)
 {
 	t_token	*new_token;
 
 	new_token = malloc(sizeof(t_token));
 	if (new_token == NULL)
 		return (NULL);
-	new_token->content = content;
+	new_token->content = NULL;
+	new_token->type = UNKNOWN;
+	new_token->length = 0;
 	new_token->next = NULL;
 	return (new_token);
 }
