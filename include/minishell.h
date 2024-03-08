@@ -118,6 +118,8 @@ t_token		*token_last(t_token *token);
 void		token_add_back(t_token **token, t_token *new_token);
 int			tokens_size(t_token *tokens);
 void		token_print(t_token *tokens);
+int			is_special_char(char c);
+int			is_multi_special_char(char *user_input);
 // parser_utils
 t_command	*command_new(t_token *token);
 t_command	*command_last(t_command *command);
