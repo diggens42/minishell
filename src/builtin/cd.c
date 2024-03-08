@@ -6,11 +6,11 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/07 16:46:12 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/08 21:29:02 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 //TODO If ft_getenv does not find "HOME" in the environment, it will return NULL.
 // Ensure your code handles this case before using home_path in string functions.

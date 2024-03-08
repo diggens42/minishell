@@ -6,11 +6,11 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/08 18:43:28 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/08 21:30:19 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 static int	count_chars_and_symbols(char *user_input)
 {

@@ -6,11 +6,11 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/08 16:01:16 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/08 21:30:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 t_token	*token_new(void)
 {

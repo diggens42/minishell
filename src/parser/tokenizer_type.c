@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/08 18:53:36 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/08 19:00:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_token_type token_type_one_symbol(char *content)
 		return (REDIRECT_IN);
 	if (*content == '>')
 		return (REDIRECT_OUT);
-	if (*content == '$')
+	if (*content == '$') //TODO
 		return (DOLLAR);
 	return (WORD);
 }
@@ -35,7 +35,7 @@ static t_token_type token_type_two_symbols(char *content)
 		return (REDIRECT_HERE_DOC);
 	if (ft_strncmp(content, ">>", 2) == 0)
 		return (REDIRECT_APPEND);
-	if (ft_strncmp(content, "$\"", 2) == 0)
+	if (ft_strncmp(content, "$\"", 2) == 0) //TODO
 		return (DOLLAR_QUOTE);
 	return (WORD);
 }
