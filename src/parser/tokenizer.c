@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/09 15:11:38 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/09 20:01:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,30 @@ static int	count_chars_and_symbols(char *user_input)
 	return (n_chars);
 }
 
-
 t_token	*tokenizer(char *user_input)
 {
-	t_token	*token;
-	t_token	*new_token;
+	t_token	*token_head;
+	t_token	*token_next;
 	int		n_chars;
-	int		i;
-	
-	token = NULL;
-	new_token = NULL;
+
+	token_head = NULL;
 	while (*user_input != '\0')
 	{
 		while (ft_isspace(*user_input) == true)
 			user_input++;
+		n_chars = count_chars_and_symbols(user_input);
 		if (*user_input == '\0')
 			break ;
-		n_chars = count_chars_and_symbols(user_input);
-		new_token = token_new();
-		if (!new_token)
+		token_next = token_new();
+		if (!token_next)
 			ft_exit();
-		i = 0;
-		new_token->content = user_input;
-		new_token->length = n_chars;
-		new_token->type = set_token_type(new_token->content, new_token->length);
-		token_add_back(&token, new_token);
+		token_next->content = ft_substr(user_input, 0, n_chars);
+		token_next->length = n_chars;
+		token_next->type = set_token_type(token_next->content, token_next->length);
+		token_add_back(&token_head, token_next);
 		user_input += n_chars;
 	}
-	return (token);
+	return (token_head);
 }
 
 // static int	count_words(char *user_input)

@@ -68,6 +68,7 @@
 
 typedef enum	e_token_type
 {
+	UNKNOWN,
 	WORD,
 	SINGLE_QUOTE,		// ''
 	DOUBLE_QUOTE,		// ""
@@ -77,27 +78,28 @@ typedef enum	e_token_type
 	REDIRECT_APPEND,	// >>
 	PIPE,				// |
 	DOLLAR,				// $
-	DOLLAR_QUOTE,		// $""
 	AND,				// &&
 	OR,					// ||
-	PARENTHESIS,		// ()
-	WILDCARD,			// *
-	UNKNOWN
+	PARENTHESIS_L,		// (
+	PARENTHESIS_R,		// )
+	WILDCARD			// *
 }	t_token_type;
 
 typedef struct	s_token
 {
+	t_token_type	type;
 	char			*content;
 	int				length;
-	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_command
+typedef struct	s_ast_node
 {
-	t_token				*tokens;
-	struct s_command	*next;
-}	t_command;
+	t_token				*token;
+	struct s_ast_node	*top;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
+}	t_ast_node;
 
 typedef struct s_env
 {
@@ -108,12 +110,12 @@ typedef struct s_env
 
 // minishell.c
 int			main(int argc, char **argv, char **envp);
-void		interactive_mode(t_env *env);
+void		read_eval_print_loop(t_env *env);
 
 // PARSER
 t_env		*init_env(char **envp);
 t_token		*tokenizer(char *user_input);
-t_command	*command_parser(t_token *tokens);
+
 // tokenizer_utils
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);
@@ -124,11 +126,6 @@ int			is_special_char(char c);
 int			is_multi_special_char(char *user_input);
 // tokenizer_type
 t_token_type	set_token_type(char	*content, int token_length);
-// parser_utils
-t_command	*command_new(t_token *token);
-t_command	*command_last(t_command *command);
-void		command_add_back(t_command **command, t_command *new_command);
-int			command_size(t_command *command);
 
 // BUILTIN
 void		builtin_cd(t_token *token, t_env **env);
@@ -141,11 +138,8 @@ void		builtin_unset(t_env **env, char *key);
 void		update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
-void		execute(t_command *command, t_env *env);
-void		setup_next_command(t_command *command, t_env *env);
-void		setup_last_command(t_command *command, t_env *env);
-void		execute_builtin(t_command *command, t_env *env);
-void		execute_commands(t_command *command, t_env *env);
+void		execute(t_token *token_head, t_env *env);
+void		execute_commands(t_token *token_head, t_env *env);
 // exector_utils
 char		**create_pathname(t_token *tokens, t_env *env);
 char		*find_pathname(char **path);
