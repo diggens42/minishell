@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:17:33 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/07 16:36:29 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/08 21:30:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 //TODO static char pointer memory leaks???
 char	*ft_strtok(char	*str, const char *delimiter)

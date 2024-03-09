@@ -6,11 +6,11 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:53:21 by mott              #+#    #+#             */
-/*   Updated: 2024/03/08 13:05:47 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/09 15:20:02 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 t_command	*command_new(t_token *token)
 {

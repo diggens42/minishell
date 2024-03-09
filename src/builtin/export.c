@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/07 16:09:00 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/09 10:48:40 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-static void	update_env(t_env **env, char *key, char *value)
+void	update_env(t_env **env, char *key, char *value)
 {
 	t_env	*current;
 	t_env	*last;

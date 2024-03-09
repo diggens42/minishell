@@ -81,13 +81,15 @@ typedef enum	e_token_type
 	AND,				// &&
 	OR,					// ||
 	PARENTHESIS,		// ()
-	WILDCARD			// *
+	WILDCARD,			// *
+	UNKNOWN
 }	t_token_type;
 
 typedef struct	s_token
 {
-	t_token_type	type;
 	char			*content;
+	int				length;
+	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
 
@@ -113,13 +115,15 @@ t_env		*init_env(char **envp);
 t_token		*tokenizer(char *user_input);
 t_command	*command_parser(t_token *tokens);
 // tokenizer_utils
-t_token		*token_new(char *content);
+t_token		*token_new(void);
 t_token		*token_last(t_token *token);
 void		token_add_back(t_token **token, t_token *new_token);
 int			tokens_size(t_token *tokens);
 void		token_print(t_token *tokens);
 int			is_special_char(char c);
 int			is_multi_special_char(char *user_input);
+// tokenizer_type
+t_token_type	set_token_type(char	*content, int token_length);
 // parser_utils
 t_command	*command_new(t_token *token);
 t_command	*command_last(t_command *command);
@@ -127,12 +131,14 @@ void		command_add_back(t_command **command, t_command *new_command);
 int			command_size(t_command *command);
 
 // BUILTIN
-void		builtin_cd(t_token *token, t_env *env);
+void		builtin_cd(t_token *token, t_env **env);
 void		builtin_echo(t_token *tokens);
 void		builtin_env(t_env *env);
 void		builtin_export(t_token *tokens, t_env *env);
 void		builtin_pwd(void);
 void		builtin_unset(t_env **env, char *key);
+// builtin_utils
+void		update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
 void		execute(t_command *command, t_env *env);

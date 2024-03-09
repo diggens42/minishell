@@ -6,11 +6,11 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/08 13:26:42 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/09 15:18:00 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	execute(t_command *command, t_env *env)
 {
@@ -78,7 +78,7 @@ void	execute_builtin(t_command *command, t_env *env)
 	if (ft_strcmp("echo", command->tokens->content) == 0)
 		builtin_echo(command->tokens);
 	else if (ft_strcmp("cd", command->tokens->content) == 0)
-		builtin_cd(command->tokens->next, env);
+		builtin_cd(command->tokens->next, &env);
 	else if (ft_strcmp("pwd", command->tokens->content) == 0)
 		builtin_pwd();
 	else if (ft_strcmp("export", command->tokens->content) == 0)
