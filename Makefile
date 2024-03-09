@@ -18,6 +18,7 @@ SRCS =	./src/minishell.c \
 		\
 		./src/parser/init_env.c \
 		./src/parser/tokenizer.c \
+		./src/parser/tokenizer_type.c \
 		./src/parser/tokenizer_utils.c \
 		./src/parser/tokenizer_utils2.c \
 		./src/parser/parser.c \
