@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/08 21:29:41 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/09 13:31:56 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 //TODO while loop for pipe
 void	execute(t_command *command, t_env *env)
 {
+	ft_printf("%s\n", command->tokens->content);
+	ft_printf("%s\n", command->tokens->next->content);
 	if (ft_strcmp("echo", command->tokens->content) == 0)
 		builtin_echo(command->tokens);
 	else if (ft_strcmp("cd", command->tokens->content) == 0)
-		builtin_cd(command->tokens->next, env);
+		builtin_cd(command->tokens->next, &env);
 	else if (ft_strcmp("pwd", command->tokens->content) == 0)
 		builtin_pwd();
 	else if (ft_strcmp("export", command->tokens->content) == 0)

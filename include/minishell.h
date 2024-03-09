@@ -131,12 +131,14 @@ void		command_add_back(t_command **command, t_command *new_command);
 int			command_size(t_token *command);
 
 // BUILTIN
-void		builtin_cd(t_token *token, t_env *env);
+void		builtin_cd(t_token *token, t_env **env);
 void		builtin_echo(t_token *tokens);
 void		builtin_env(t_env *env);
 void		builtin_export(t_token *tokens, t_env *env);
 void		builtin_pwd(void);
 void		builtin_unset(t_env **env, char *key);
+// builtin_utils
+void		update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
 void		execute(t_command *command, t_env *env);
