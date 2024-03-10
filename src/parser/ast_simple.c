@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ast_simple.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/10 17:12:16 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/10 17:49:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-
 int	count_word_group(t_token *tokens)
 {
 	t_token	*current;
 	int		count;
-	
+
 	current = tokens;
 	count = 0;
 	while (current != NULL)
@@ -43,8 +42,8 @@ char	**tokens_to_char_array2(t_token *tokens)
 	argv = (char **)malloc(sizeof(char *) * (n_tokens + 1));
 	if (argv == NULL)
 		ft_exit(); //TODO handle malloc failure
-	i = -1;
-	while (current != NULL && ++i < n_tokens)
+	i = 0;
+	while (current != NULL && i < n_tokens)
 	{
 		argv[i] = ft_strdup(current->content);
 		if (argv[i] == NULL)
@@ -55,8 +54,10 @@ char	**tokens_to_char_array2(t_token *tokens)
 			ft_exit();//TODO handle ft_strdup failure
 		}
 		current = current->next;
+		i++;
 	}
 	argv[i] = NULL;
+	// print_char_array(argv);
 	return (argv);
 }
 
@@ -67,7 +68,7 @@ t_ast_node	*build_ast_simple(t_token *tokens)
 	t_ast_node	*cmd_node;
 	t_ast_node	*pipe_node;
 	t_ast_node	*last_node;
-	
+
 	root = NULL;
 	last_root = NULL;
 	last_node = NULL;

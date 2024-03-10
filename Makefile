@@ -36,7 +36,9 @@ SRCS =	./src/minishell.c \
 		./src/utils/debug_tokenizer.c \
 		./src/utils/init_env.c \
 		./src/utils/free.c \
-		./src/utils/utils.c
+		./src/utils/utils.c \
+		\
+		./src/utils/debug.c
 
 OBJS = $(SRCS:.c=.o)
 

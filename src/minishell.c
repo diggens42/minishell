@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/09 19:46:39 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/10 18:05:48 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	env = init_env(envp);
 	read_eval_print_loop(env);
-	// system("leaks minishell");
 	return (EXIT_SUCCESS);
 }
 
-// TODO free token linked-list
 void	read_eval_print_loop(t_env *env)
 {
 	char		*user_input;
 	char		*user_input2;
 	char		*temp;
 	t_token		*token_head;
+	t_ast_node	*ast_head;
 
 	while (true)
 	{
@@ -52,6 +51,12 @@ void	read_eval_print_loop(t_env *env)
 		}
 		token_head = tokenizer(user_input);
 		free(user_input);
-		execute(token_head, env);
+
+		ast_head = build_ast_simple(token_head);
+		free_token_list(token_head);
+
+		init_executor(ast_head, env);
+		free_char_array(ast_head->argv);
+		free(ast_head);
 	}
 }
