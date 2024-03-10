@@ -95,7 +95,8 @@ typedef struct	s_token
 
 typedef struct	s_ast_node
 {
-	t_token				*token;
+	t_token_type		type;
+	char				**argv;
 	struct s_ast_node	*top;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
@@ -138,10 +139,16 @@ void		builtin_unset(t_env **env, char *key);
 void		update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
-void		execute(t_token *token_head, t_env *env);
-void		execute_commands(t_token *token_head, t_env *env);
+void		init_executor(t_ast_node *ast_head, t_env *env);
+void		execute_with_pipe(t_ast_node *ast_head, t_env *env);
+void 		execute_without_pipe(char **argv, t_env *env);
+void		init_command(char **argv, t_env *env);
+// void		execute(t_token *token_head, t_env *env);
+// void		init_command(t_token *token_head, t_env *env);
+// void		execute_in_child(char *pathname, char **argv, char **envp);
 // exector_utils
-char		**create_pathname(t_token *tokens, t_env *env);
+char		**create_pathname(char *command, t_env *env);
+// char		**create_pathname(t_token *tokens, t_env *env);
 char		*find_pathname(char **path);
 char		**tokens_to_char_array(t_token *tokens);
 char		**env_to_char_array(t_env *env);
@@ -154,7 +161,9 @@ size_t		ft_strcspn(const char *str, const char *charset);
 char		*ft_getenv(const char *name, t_env *env);
 void		ft_exit(void);
 // free
-// void	free_token_list(t_token *tokens);
+void		free_token_list(t_token *token_head);
+void		free_env_list(t_env *env);
 void		free_env_node(t_env *node);
+void		free_char_array(char **str);
 
 #endif

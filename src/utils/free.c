@@ -3,34 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/03/08 21:30:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/10 13:34:05 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// void	free_token_list(t_token *tokens)
-// {
-// 	t_token	*temp;
+void	free_token_list(t_token *token_head)
+{
+	t_token	*temp;
 
-// 	while (tokens != NULL)
-// 	{
-// 		temp = tokens->next;
-// 		free(tokens->content);
-// 		free(tokens);
-// 		tokens = temp;
-// 	}
-// }
+	while (token_head != NULL)
+	{
+		temp = token_head->next;
+		free(token_head->content);
+		free(token_head);
+		token_head = temp;
+	}
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env	*temp;
+
+	while (env != NULL)
+	{
+		temp = env->next;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = temp;
+	}
+}
 
 void	free_env_node(t_env *node)
 {
-	if (node)
+	if (node != NULL)
 	{
 		free(node->key);
 		free(node->value);
 		free(node);
 	}
+}
+
+void	free_char_array(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != NULL)
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }

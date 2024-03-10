@@ -6,13 +6,40 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/09 15:19:20 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/10 14:50:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**create_pathname(t_token *tokens, t_env *env)
+// char	**create_pathname(t_token *tokens, t_env *env)
+// {
+// 	char	**path;
+// 	char	*temp;
+// 	int		i;
+
+// 	while (env != NULL)
+// 	{
+// 		if (ft_strcmp(env->key, "PATH") == 0)
+// 			temp = env->value;
+// 		env = env->next;
+// 	}
+// 	path = ft_split(temp, ':');
+// 	i = 0;
+// 	while (path[i] != NULL)
+// 	{
+// 		temp = path[i];
+// 		path[i] = ft_strjoin(temp, "/");
+// 		free(temp);
+// 		temp = path[i];
+// 		path[i] = ft_strjoin(temp, tokens->content);
+// 		free(temp);
+// 		i++;
+// 	}
+// 	return (path);
+// }
+
+char	**create_pathname(char *command, t_env *env)
 {
 	char	**path;
 	char	*temp;
@@ -32,7 +59,7 @@ char	**create_pathname(t_token *tokens, t_env *env)
 		path[i] = ft_strjoin(temp, "/");
 		free(temp);
 		temp = path[i];
-		path[i] = ft_strjoin(temp, tokens->content);
+		path[i] = ft_strjoin(temp, command);
 		free(temp);
 		i++;
 	}
@@ -47,7 +74,7 @@ char	*find_pathname(char **path)
 	while (path[i] != NULL)
 	{
 		if (access(path[i], X_OK) == 0)
-			return (path[i]);
+			return (ft_strdup(path[i]));
 		i++;
 	}
 	return (NULL);

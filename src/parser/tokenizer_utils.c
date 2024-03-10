@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/08 21:30:08 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/10 13:27:22 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// TODO ft_memset((void *)new_token, 0, sizeof(t_token));
+// new_token = calloc(sizeof(t_token));
 t_token	*token_new(void)
 {
 	t_token	*new_token;
