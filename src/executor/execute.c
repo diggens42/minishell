@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/10 16:37:32 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/10 18:27:13 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void execute_without_pipe(char **argv, t_env *env)
 {
 	pid_t	pid;
 
+	if (ft_strcmp("exit", argv[0]) == 0)
+		ft_exit();
 	pid = fork();
 	if (pid == 0)
 	{
@@ -138,10 +140,12 @@ void	init_command(char **argv, t_env *env)
 		free_char_array(path);
 	}
 	envp = env_to_char_array(env);
+	// print_char_array(argv);
 	if (execve(pathname, argv, envp) == -1)
 	{
 		perror("execve");
 		ft_exit();
+		// exit(errno);
 	}
 	free(pathname);
 	free_char_array(argv);

@@ -16,11 +16,12 @@ NAME = minishell
 
 SRCS =	./src/minishell.c \
 		\
-		./src/parser/init_env.c \
-		./src/parser/tokenizer.c \
-		./src/parser/tokenizer_type.c \
-		./src/parser/tokenizer_utils.c \
-		./src/parser/tokenizer_utils2.c \
+		./src/lexer/tokenizer.c \
+		./src/lexer/tokenizer_type.c \
+		./src/lexer/tokenizer_utils.c \
+		./src/lexer/tokenizer_utils2.c \
+		\
+		./src/parser/ast_simple.c\
 		\
 		./src/builtin/cd.c \
 		./src/builtin/echo.c \
@@ -32,8 +33,11 @@ SRCS =	./src/minishell.c \
 		./src/executor/execute.c \
 		./src/executor/execute_utils.c \
 		\
+		./src/utils/init_env.c \
 		./src/utils/free.c \
-		./src/utils/utils.c
+		./src/utils/utils.c \
+		\
+		./src/utils/debug.c
 
 OBJS = $(SRCS:.c=.o)
 
