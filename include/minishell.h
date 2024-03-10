@@ -90,12 +90,14 @@ typedef struct	s_token
 	t_token_type	type;
 	char			*content;
 	int				length;
+	bool			used;
 	struct s_token	*next;
 }	t_token;
 
 typedef struct	s_ast_node
 {
-	t_token				*token;
+	char				**argv;
+	t_token_type		type;
 	struct s_ast_node	*top;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
@@ -112,10 +114,8 @@ typedef struct s_env
 int			main(int argc, char **argv, char **envp);
 void		read_eval_print_loop(t_env *env);
 
-// PARSER
-t_env		*init_env(char **envp);
+// LEXER
 t_token		*tokenizer(char *user_input);
-
 // tokenizer_utils
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);
@@ -126,6 +126,13 @@ int			is_special_char(char c);
 int			is_multi_special_char(char *user_input);
 // tokenizer_type
 t_token_type	set_token_type(char	*content, int token_length);
+
+// PARSER
+t_ast_node	*build_ast_simple(t_token *tokens);
+t_ast_node	*create_ast_node(t_token *token);
+char		**tokens_to_char_array2(t_token *tokens);
+int			count_word_group(t_token *tokens);
+
 
 // BUILTIN
 void		builtin_cd(t_token *token, t_env **env);
@@ -148,6 +155,7 @@ char		**env_to_char_array(t_env *env);
 int			envp_size(t_env *env);
 
 // UTILS
+t_env		*init_env(char **envp);
 char		*ft_strtok(char	*str, const char *delimiter);
 size_t		ft_strspn(const char *str, const char *charset);
 size_t		ft_strcspn(const char *str, const char *charset);
