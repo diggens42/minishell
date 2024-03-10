@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/09 20:30:30 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/10 18:20:40 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+//TODO PARENTHESIS
 
 static t_token_type token_type_one_symbol(char *content)
 {
@@ -29,7 +31,7 @@ static t_token_type token_type_two_symbols(char *content)
 {
 	if (ft_strncmp(content, "&&", 2) == 0)
 		return (AND);
-	if (ft_strncmp(content, "||", 2) == 0)
+	if (ft_strncmp(content, "||", 2) == 0) 
 		return (OR);
 	if (ft_strncmp(content, "<<", 2) == 0)
 		return (REDIRECT_HERE_DOC);
@@ -49,7 +51,7 @@ t_token_type	set_token_type(char	*content, int token_length)
 		type = token_type_two_symbols(content);
 	else if (token_length > 1)
 		{
-			if (content[0] == '*' && content[token_length - 1] != '\\')
+			if (content[0] == '*' && content[token_length - 1] != '\\') //TODO
 				type = WILDCARD;
 			else if (content[0] == '\'' && content[token_length - 1] == '\'')
 				type = SINGLE_QUOTE;

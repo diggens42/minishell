@@ -165,4 +165,7 @@ void		ft_exit(void);
 // void	free_token_list(t_token *tokens);
 void		free_env_node(t_env *node);
 
+//debug
+void		check_tokens(t_token *tokens);
+
 #endif
