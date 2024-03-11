@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 17:03:16 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/11 19:27:00 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_variable_char(char c)
 
 int	is_special_char(char c)
 {
-	return (ft_strchr("|<>&*", c) != NULL);
+	return (ft_strchr("|<>*()", c) != NULL);
 }
 
 int	is_multi_special_char(char *user_input)

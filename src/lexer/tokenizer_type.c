@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 16:43:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/11 19:25:44 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ static t_token_type token_type_one_symbol(char *content)
 		return (REDIRECT_OUT);
 	if (*content == '*')
 		return (WILDCARD);
+	if (*content == '(');
+		return (PARENTHESIS_L);
+	if (*content == ')');
+		return (PARENTHESIS_R);
 	return (WORD);
 }
 

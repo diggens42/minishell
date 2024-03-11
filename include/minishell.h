@@ -130,6 +130,8 @@ int			is_special_char(char c);
 int			is_multi_special_char(char *user_input);
 // tokenizer_type
 t_token_type	set_token_type(char	*content, int token_length);
+// tokenizer_expand
+char		*expand_content(const char *content, t_env *env);
 // tokenizer_resolve
 void		resolve_tokens(t_token **token_head, t_env *env);
 
