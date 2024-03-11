@@ -63,9 +63,8 @@
 #include <stdbool.h>
 #include <errno.h>
 
-# define PROMPT_STD "% "
+# define PROMPT_STD "$ "
 # define PROMPT_MULTI_LINE "> "
-# define PROMPT_HEREDOC "heredoc> "
 
 typedef enum	e_token_type
 {
@@ -114,6 +113,7 @@ typedef struct s_env
 // minishell.c
 int			main(int argc, char **argv, char **envp);
 void		read_eval_print_loop(t_env *env);
+char		*find_limiter(char *user_input);
 
 // LEXER
 t_token		*tokenizer(char *user_input);
@@ -122,7 +122,6 @@ t_token		*token_new(void);
 t_token		*token_last(t_token *token);
 void		token_add_back(t_token **token, t_token *new_token);
 int			tokens_size(t_token *tokens);
-void		token_print(t_token *tokens);
 int			is_special_char(char c);
 int			is_multi_special_char(char *user_input);
 // tokenizer_type
@@ -133,7 +132,6 @@ t_ast_node	*build_ast_simple(t_token *tokens);
 t_ast_node	*create_ast_node(t_token *token);
 char		**tokens_to_char_array2(t_token *tokens);
 int			count_word_group(t_token *tokens);
-
 
 // BUILTIN
 void		builtin_cd(t_token *token, t_env **env);
@@ -148,6 +146,8 @@ void		update_env(t_env **env, char *key, char *value);
 // EXECUTOR
 void		init_executor(t_ast_node *ast_head, t_env *env);
 void		execute_with_pipe(t_ast_node *ast_head, t_env *env);
+pid_t		setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env);
+pid_t		setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env);
 void 		execute_without_pipe(char **argv, t_env *env);
 void		init_command(char **argv, t_env *env);
 // void		execute(t_token *token_head, t_env *env);
@@ -174,6 +174,7 @@ void		free_env_list(t_env *env);
 void		free_env_node(t_env *node);
 void		free_char_array(char **str);
 //debug
+void		token_print(t_token *tokens);
 void		print_char_array(char **str);
 
 #endif

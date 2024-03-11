@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/09 20:01:23 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/10 18:44:15 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	count_chars_and_symbols(char *user_input)
 	if (is_special_char(user_input[0]))
 		return (1);
 	while (user_input[n_chars] != '\0' && ft_isspace(user_input[n_chars]) == false
-			&& is_special_char(user_input[n_chars]) == false)
+		&& is_special_char(user_input[n_chars]) == false)
 		n_chars++;
 	return (n_chars);
 }

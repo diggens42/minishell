@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/10 18:27:13 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/11 19:25:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,20 @@ void	execute_with_pipe(t_ast_node *ast_head, t_env *env)
 	pid_t	right_child_pid;
 
 	if (pipe(pipe_fd) == -1)
- 		ft_exit();
+		ft_exit();
+
+	left_child_pid = setup_left_child(pipe_fd, ast_head, env);
+	close(pipe_fd[1]);
+	right_child_pid = setup_right_child(pipe_fd, ast_head, env);
+	close(pipe_fd[0]);
+	waitpid(left_child_pid, NULL, 0);
+	waitpid(right_child_pid, NULL, 0);
+}
+
+pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
+{
+	pid_t	left_child_pid;
+
 	left_child_pid = fork();
 	if (left_child_pid == -1)
 	{
@@ -46,7 +59,13 @@ void	execute_with_pipe(t_ast_node *ast_head, t_env *env)
 		close(pipe_fd[1]);
 		init_command(ast_head->left->argv, env);
 	}
-	close(pipe_fd[1]);
+	return (left_child_pid);
+}
+
+pid_t	setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
+{
+	pid_t	right_child_pid;
+
 	right_child_pid = fork();
 	if (right_child_pid == -1)
 	{
@@ -63,12 +82,10 @@ void	execute_with_pipe(t_ast_node *ast_head, t_env *env)
 		close(pipe_fd[0]);
 		init_command(ast_head->right->argv, env);
 	}
-	close(pipe_fd[0]);
-	waitpid(left_child_pid, NULL, 0);
-	waitpid(right_child_pid, NULL, 0);
+	return (right_child_pid);
 }
 
-void execute_without_pipe(char **argv, t_env *env)
+void	execute_without_pipe(char **argv, t_env *env)
 {
 	pid_t	pid;
 

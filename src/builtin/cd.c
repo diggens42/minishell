@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/09 13:16:46 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/11 19:41:20 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	cd_update_env(t_env **env, char *old_path, char *new_path)
 	if (new_path)
 		update_env(env, "PWD", new_path);
 }
-
 
 void	builtin_cd(t_token *token, t_env **env)
 {

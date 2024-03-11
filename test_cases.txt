@@ -114,11 +114,11 @@
 
     Environment Variable in Command:
         Test Case 1: ls $HOME
-        Test Case 2: cat $USER/some_file.txt
+        Test Case 2: cat $USER/some_file.txt -> (1) cat (2) mott/some_file.txt
         Test Case 3: echo $PATH | grep "/bin"
 
     Combination with Other Commands:
-        Test Case 1: echo "My home directory is: $HOME"
+        Test Case 1: echo "My home directory is: $HOME" -> (1) echo (2) My home directory is: /User/mott
         Test Case 2: ls -l $USER/Documents
 
     $? - Exit Status:

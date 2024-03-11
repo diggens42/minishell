@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/10 17:18:49 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/10 19:09:26 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,4 @@ int	tokens_size(t_token *tokens)
 		i++;
 	}
 	return (i);
-}
-
-// TODO delete
-void	token_print(t_token *tokens)
-{
-	while (tokens != NULL)
-	{
-		ft_printf("%s\n", tokens->content);
-		tokens = tokens->next;
-	}
 }
