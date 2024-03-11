@@ -18,6 +18,7 @@ SRCS =	./src/minishell.c \
 		\
 		./src/lexer/tokenizer.c \
 		./src/lexer/tokenizer_type.c \
+		./src/lexer/tokenizer_resolve.c \
 		./src/lexer/tokenizer_utils.c \
 		./src/lexer/tokenizer_utils2.c \
 		\
@@ -33,6 +34,7 @@ SRCS =	./src/minishell.c \
 		./src/executor/execute.c \
 		./src/executor/execute_utils.c \
 		\
+		./src/utils/debug_tokenizer.c \
 		./src/utils/init_env.c \
 		./src/utils/free.c \
 		./src/utils/utils.c \
