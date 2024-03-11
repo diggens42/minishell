@@ -79,6 +79,8 @@ typedef enum	e_token_type
 	REDIRECT_APPEND,	// >>
 	PIPE,				// |
 	DOLLAR,				// $
+	DOLLAR_QMARK,		// $?
+	DOLLAR_DOLLAR,		// $$
 	AND,				// &&
 	OR,					// ||
 	PARENTHESIS_L,		// (
@@ -116,17 +118,20 @@ int			main(int argc, char **argv, char **envp);
 void		read_eval_print_loop(t_env *env);
 
 // LEXER
-t_token		*tokenizer(char *user_input);
+t_token		*tokenizer(char *user_input, t_env *env);
 // tokenizer_utils
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);
 void		token_add_back(t_token **token, t_token *new_token);
 int			tokens_size(t_token *tokens);
 void		token_print(t_token *tokens);
+int			is_variable_char(char c);
 int			is_special_char(char c);
 int			is_multi_special_char(char *user_input);
 // tokenizer_type
 t_token_type	set_token_type(char	*content, int token_length);
+// tokenizer_resolve
+void		resolve_tokens(t_token **token_head, t_env *env);
 
 // PARSER
 t_ast_node	*build_ast_simple(t_token *tokens);
