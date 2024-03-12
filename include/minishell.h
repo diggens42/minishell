@@ -121,8 +121,10 @@ char		*find_limiter(char *user_input);
 t_token		*tokenizer(char *user_input, t_env *env);
 int			set_token_length(char *user_input);
 t_token_type	set_token_type(char	*content, int token_length);
-void		interpret_token_content(t_token **token_head, t_env *env);
-char		*expand_token_content(const char *content, t_env *env);
+void		process_token_content(t_token **token_head, t_env *env);
+char		*expand_dollar_sign(const char *content, t_env *env);
+char 		*expand_double_quote(const char *input, t_env *env);
+char		*remove_double_quotes(const char *input);
 // token_ops
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);

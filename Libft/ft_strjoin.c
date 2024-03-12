@@ -15,15 +15,23 @@
 char	*ft_strjoin(const char *str1, const char *str2)
 {
 	char	*newstr;
-	size_t	n;
+	size_t	len1;
+	size_t	len2;
 
-	if (str1 == NULL || str2 == NULL)
-		return (NULL);
-	n = ft_strlen(str1) + ft_strlen(str2) + 1;
-	newstr = (char *)malloc(n);
+	len1 = 0;
+	len2 = 0;
+	if (str1 != NULL)
+		len1 = ft_strlen(str1);
+	if (str2 != NULL)
+		len2 = ft_strlen(str2);
+	newstr = (char *)malloc(len1 + len2 + 1);
 	if (newstr == NULL)
 		return (NULL);
-	ft_strlcpy(newstr, str1, n);
-	ft_strlcat(newstr, str2, n);
+	if (str1 != NULL)
+		ft_strlcpy(newstr, str1, len1 + 1);
+	else
+		newstr[0] = '\0';
+	if (str2 != NULL)
+		ft_strlcat(newstr + len1, str2, len2 + 1);
 	return (newstr);
 }
