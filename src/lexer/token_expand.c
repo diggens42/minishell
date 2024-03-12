@@ -58,7 +58,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	return (new_content);
 }
 
-char	*expand_content(const char *content, t_env *env)
+char	*expand_token_content(const char *content, t_env *env)
 {
 	char	*var_name;
 	char	*var_value;

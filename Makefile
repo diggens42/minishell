@@ -17,11 +17,11 @@ NAME = minishell
 SRCS =	./src/minishell.c \
 		\
 		./src/lexer/tokenizer.c \
-		./src/lexer/tokenizer_type.c \
-		./src/lexer/tokenizer_expand.c \
-		./src/lexer/tokenizer_resolve.c \
-		./src/lexer/tokenizer_utils.c \
-		./src/lexer/tokenizer_utils2.c \
+		./src/lexer/token_type.c \
+		./src/lexer/token_expand.c \
+		./src/lexer/token_interpret.c \
+		./src/lexer/token_ops.c \
+		./src/lexer/token_length.c \
 		\
 		./src/parser/ast_simple.c\
 		\

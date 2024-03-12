@@ -119,20 +119,15 @@ char		*find_limiter(char *user_input);
 
 // LEXER
 t_token		*tokenizer(char *user_input, t_env *env);
-// tokenizer_utils
+int			set_token_length(char *user_input);
+t_token_type	set_token_type(char	*content, int token_length);
+void		interpret_token_content(t_token **token_head, t_env *env);
+char		*expand_token_content(const char *content, t_env *env);
+// token_ops
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);
 void		token_add_back(t_token **token, t_token *new_token);
 int			tokens_size(t_token *tokens);
-int			is_variable_char(char c);
-int			is_special_char(char c);
-int			is_multi_special_char(char *user_input);
-// tokenizer_type
-t_token_type	set_token_type(char	*content, int token_length);
-// tokenizer_expand
-char		*expand_content(const char *content, t_env *env);
-// tokenizer_resolve
-void		resolve_tokens(t_token **token_head, t_env *env);
 
 // PARSER
 t_ast_node	*build_ast_simple(t_token *tokens);

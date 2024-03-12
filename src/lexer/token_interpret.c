@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	resolve_tokens(t_token **token_head, t_env *env)
+void	interpret_token_content(t_token **token_head, t_env *env)
 {
 	t_token	*current;
 	char	*expanded_content;
@@ -24,7 +24,7 @@ void	resolve_tokens(t_token **token_head, t_env *env)
 	{
 		if (current->type == DOLLAR)
 		{
-			expanded_content = expand_content(current->content, env);
+			expanded_content = expand_token_content(current->content, env);
 			free(current->content);
 			current->content = expanded_content;
 			current->length = ft_strlen(expanded_content);
