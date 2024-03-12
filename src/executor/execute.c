@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 19:25:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/12 18:58:39 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,19 @@
 
 void	init_executor(t_ast_node *ast_head, t_env *env)
 {
-	if (ast_head->type == PIPE)
+	if (ast_head->type == AND)
+	{
+		init_executor(ast_head->left, env);
+		// TODO only execute if ast->left is true
+		init_executor(ast_head->right, env);
+	}
+	else if (ast_head->type == OR)
+	{
+		init_executor(ast_head->left, env);
+		// TODO only execute if ast->left is false
+		init_executor(ast_head->right, env);
+	}
+	else if (ast_head->type == PIPE)
 		execute_with_pipe(ast_head, env);
 	else
 		execute_without_pipe(ast_head->argv, env);
@@ -58,6 +70,7 @@ pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 		}
 		close(pipe_fd[1]);
 		init_command(ast_head->left->argv, env);
+		// execute without pipe()
 	}
 	return (left_child_pid);
 }
@@ -81,6 +94,7 @@ pid_t	setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 		}
 		close(pipe_fd[0]);
 		init_command(ast_head->right->argv, env);
+		// execute without pipe()
 	}
 	return (right_child_pid);
 }
@@ -89,8 +103,10 @@ void	execute_without_pipe(char **argv, t_env *env)
 {
 	pid_t	pid;
 
+	// if builtin
 	if (ft_strcmp("exit", argv[0]) == 0)
 		ft_exit();
+	// else
 	pid = fork();
 	if (pid == 0)
 	{
@@ -99,25 +115,26 @@ void	execute_without_pipe(char **argv, t_env *env)
 	waitpid(pid, NULL, 0);
 }
 
-// void	execute(t_token *token_head, t_env *env)
-// {
-// 	if (ft_strcmp("echo", token_head->content) == 0)
-// 		builtin_echo(token_head);
-// 	else if (ft_strcmp("cd", token_head->content) == 0)
-// 		builtin_cd(token_head->next, &env);
-// 	else if (ft_strcmp("pwd", token_head->content) == 0)
-// 		builtin_pwd();
-// 	else if (ft_strcmp("export", token_head->content) == 0)
-// 		builtin_export(token_head, env);
-// 	else if (ft_strcmp("unset", token_head->content) == 0)
-// 		builtin_unset(&env, token_head->next->content);
-// 	else if (ft_strcmp("env", token_head->content) == 0)
-// 		builtin_env(env);
-// 	else if (ft_strcmp("exit", token_head->content) == 0)
-// 		ft_exit();
-// 	else
-// 		init_command(token_head, env);
-// }
+void	execute(t_token *token_head, t_env *env)
+{
+	// check argv[0]
+	if (ft_strcmp("echo", token_head->content) == 0)
+		builtin_echo(token_head);
+	else if (ft_strcmp("cd", token_head->content) == 0)
+		builtin_cd(token_head->next, &env);
+	else if (ft_strcmp("pwd", token_head->content) == 0)
+		builtin_pwd();
+	else if (ft_strcmp("export", token_head->content) == 0)
+		builtin_export(token_head, env);
+	else if (ft_strcmp("unset", token_head->content) == 0)
+		builtin_unset(&env, token_head->next->content);
+	else if (ft_strcmp("env", token_head->content) == 0)
+		builtin_env(env);
+	else if (ft_strcmp("exit", token_head->content) == 0)
+		ft_exit();
+	// else
+	// 	init_command(token_head, env);
+}
 
 // void	init_command(t_token *token_head, t_env *env)
 // {

@@ -187,3 +187,9 @@
     Logical Operators with Parenthesis and Commands with Wildcards:
         Test Case 1: (ls -l && echo "Listed files") || (echo "Error listing files" && exit 1)
         Test Case 2: (ls *.txt && echo "Found text files") && cp *.txt backup/ || echo "No text files found"
+
+
+cd .. && pwd
+pwd && cd ..
+(cd .. && pwd) || pwd
+(cd .. && pwd) && pwd
