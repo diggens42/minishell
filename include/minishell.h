@@ -125,6 +125,7 @@ void		process_token_content(t_token **token_head, t_env *env);
 char		*expand_dollar_sign(const char *content, t_env *env);
 char 		*expand_double_quote(const char *input, t_env *env);
 char		*remove_double_quotes(const char *input);
+char		*remove_single_quotes(char *str);
 // token_ops
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);

@@ -6,13 +6,26 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/12 17:12:41 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/12 20:43:15 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	process_double_quote(t_token *token, t_env *env)
+static void process_single_quotes(t_token *token)
+{
+	char	*removed_squotes;
+	
+	if (token == NULL || token->content == NULL)
+		return ;
+	removed_squotes = remove_single_quotes(token->content);
+	free(token->content);
+	token->content = removed_squotes;
+	token->length = ft_strlen(removed_squotes);
+	token->type = WORD;
+}
+
+static void	process_double_quotes(t_token *token, t_env *env)
 {
 	char	*content;
 	char	*expanded_content;
@@ -27,7 +40,7 @@ static void	process_double_quote(t_token *token, t_env *env)
 	token->type = WORD;
 }
 
-static void	process_dollar_token(t_token *token, t_env *env)
+static void	process_dollar_sign(t_token *token, t_env *env)
 {
 	char	*expanded_content;
 
@@ -50,9 +63,11 @@ void	process_token_content(t_token **token_head, t_env *env)
 	while (current != NULL)
 	{
 		if (current->type == DOLLAR)
-			process_dollar_token(current, env);
-		if (current->type == DOUBLE_QUOTE)
-			process_double_quote(current, env);
+			process_dollar_sign(current, env);
+		else if (current->type == DOUBLE_QUOTE)
+			process_double_quotes(current, env);
+		else if (current->type == SINGLE_QUOTE)
+			process_single_quotes(current);
 		current = current->next;
 	}
 }
