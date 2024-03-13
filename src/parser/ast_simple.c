@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_simple.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/10 17:49:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 14:37:49 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ char	**tokens_to_char_array2(t_token *tokens)
 	return (argv);
 }
 
-t_ast_node	*build_ast_simple(t_token *tokens)
+t_ast	*build_ast_simple(t_token *tokens)
 {
-	t_ast_node	*root;
-	t_ast_node	*last_root;
-	t_ast_node	*cmd_node;
-	t_ast_node	*pipe_node;
-	t_ast_node	*last_node;
+	t_ast	*root;
+	t_ast	*last_root;
+	t_ast	*cmd_node;
+	t_ast	*pipe_node;
+	t_ast	*last_node;
 
 	root = NULL;
 	last_root = NULL;
@@ -76,7 +76,7 @@ t_ast_node	*build_ast_simple(t_token *tokens)
 	{
 		if (tokens->type == WORD)
 		{
-			cmd_node = create_ast_node(tokens);
+			cmd_node = new_ast_node(tokens);
 			while (tokens != NULL && tokens->type == WORD)
 				tokens = tokens->next;
 			if (!root)
@@ -91,7 +91,7 @@ t_ast_node	*build_ast_simple(t_token *tokens)
 		}
 		else if (tokens->type == PIPE)
 		{
-			pipe_node = create_ast_node(tokens);
+			pipe_node = new_ast_node(tokens);
 			if (!root)
 				ft_exit(); //TODO handle error PIPE with no preceding command
 			last_root = root;
@@ -108,11 +108,11 @@ t_ast_node	*build_ast_simple(t_token *tokens)
 	return (root);
 }
 
-t_ast_node	*create_ast_node(t_token *token)
+t_ast	*new_ast_node(t_token *token)
 {
-	t_ast_node	*node;
+	t_ast	*node;
 
-	node = (t_ast_node *)malloc(sizeof(t_ast_node));
+	node = (t_ast *)malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);//TODO handle malloc error
 	node->type = token->type;

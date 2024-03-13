@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 19:25:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 14:23:11 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	init_executor(t_ast_node *ast_head, t_env *env)
+void	init_executor(t_ast *ast_head, t_env *env)
 {
 	if (ast_head->type == PIPE)
 		execute_with_pipe(ast_head, env);
@@ -20,7 +20,7 @@ void	init_executor(t_ast_node *ast_head, t_env *env)
 		execute_without_pipe(ast_head->argv, env);
 }
 
-void	execute_with_pipe(t_ast_node *ast_head, t_env *env)
+void	execute_with_pipe(t_ast *ast_head, t_env *env)
 {
 	int		pipe_fd[2];
 	pid_t	left_child_pid;
@@ -37,7 +37,7 @@ void	execute_with_pipe(t_ast_node *ast_head, t_env *env)
 	waitpid(right_child_pid, NULL, 0);
 }
 
-pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
+pid_t	setup_left_child(int pipe_fd[2], t_ast *ast_head, t_env *env)
 {
 	pid_t	left_child_pid;
 
@@ -62,7 +62,7 @@ pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 	return (left_child_pid);
 }
 
-pid_t	setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
+pid_t	setup_right_child(int pipe_fd[2], t_ast *ast_head, t_env *env)
 {
 	pid_t	right_child_pid;
 

@@ -72,10 +72,10 @@ typedef enum	e_token_type
 	WORD,
 	SINGLE_QUOTE,		// ''
 	DOUBLE_QUOTE,		// ""
-	REDIRECT_IN,		// <
-	REDIRECT_HERE_DOC,	// <<
-	REDIRECT_OUT,		// >
-	REDIRECT_APPEND,	// >>
+	REDIR_IN,		// <
+	REDIR_HEREDOC,	// <<
+	REDIR_OUT,		// >
+	REDIR_APPEND,	// >>
 	PIPE,				// |
 	DOLLAR,				// $
 	DOLLAR_QMARK,		// $?
@@ -94,23 +94,23 @@ typedef struct	s_token
 	int				length;
 	bool			used;
 	struct s_token	*next;
-}	t_token;
+}				t_token;
 
-typedef struct	s_ast_node
+typedef struct	s_ast
 {
-	t_token_type		type;
-	char				**argv;
-	struct s_ast_node	*top;
-	struct s_ast_node	*left;
-	struct s_ast_node	*right;
-}	t_ast_node;
+	t_token_type	type;
+	char			**argv;
+	struct s_ast	*top;
+	struct s_ast	*left;
+	struct s_ast	*right;
+}				t_ast;
 
-typedef struct s_env
+typedef struct	s_env
 {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
-}	t_env;
+}				t_env;
 
 // minishell.c
 int			main(int argc, char **argv, char **envp);
@@ -133,8 +133,14 @@ void		token_add_back(t_token **token, t_token *new_token);
 int			tokens_size(t_token *tokens);
 
 // PARSER
-t_ast_node	*build_ast_simple(t_token *tokens);
-t_ast_node	*create_ast_node(t_token *token);
+t_ast		*ast_parser(t_token **token);
+t_ast		*ast_cmd(t_token **token);
+t_ast		*ast_redirect(t_token **token, t_ast *cmd_node);
+t_ast		*ast_pipe(t_token **token);
+t_ast		*ast_logical(t_token **token);
+t_ast		*ast_expr(t_token **token);
+t_ast		*build_ast_simple(t_token *tokens);
+t_ast		*new_ast_node(t_token *token);
 char		**tokens_to_char_array2(t_token *tokens);
 int			count_word_group(t_token *tokens);
 
@@ -149,10 +155,10 @@ void		builtin_unset(t_env **env, char *key);
 void		update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
-void		init_executor(t_ast_node *ast_head, t_env *env);
-void		execute_with_pipe(t_ast_node *ast_head, t_env *env);
-pid_t		setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env);
-pid_t		setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env);
+void		init_executor(t_ast *ast_head, t_env *env);
+void		execute_with_pipe(t_ast *ast_head, t_env *env);
+pid_t		setup_left_child(int pipe_fd[2], t_ast *ast_head, t_env *env);
+pid_t		setup_right_child(int pipe_fd[2], t_ast *ast_head, t_env *env);
 void 		execute_without_pipe(char **argv, t_env *env);
 void		init_command(char **argv, t_env *env);
 // void		execute(t_token *token_head, t_env *env);

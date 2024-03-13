@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/12 17:17:15 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:23:11 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	read_eval_print_loop(t_env *env)
 	char		*temp;
 	char		*limiter;
 	t_token		*token_head;
-	t_ast_node	*ast_head;
+	t_ast	*ast_head;
 
 	while (true)
 	{

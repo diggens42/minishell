@@ -32,21 +32,21 @@ ls -l | grep "file" | sort -r | wc -l
 
 ls > file.txt
 
- REDIRECT_OUT
+ REDIR_OUT
   /     \
  ls    file.txt
 
 
 ls >> file.txt
 
- REDIRECT_APPEND
+ REDIR_APPEND
   /     \
  ls    file.txt
 
 
 sort -r < file.txt
 
- REDIRECT_IN
+ REDIR_IN
   /        \
  sort -r  file.txt
 
@@ -55,7 +55,7 @@ cat < file.txt | sort -r > file2.txt
 
             PIPE
           /      \
- REDIRECT_IN     REDIRECT_OUT
+ REDIR_IN     REDIR_OUT
   /        \       /        \
  cat  file.txt   sort -r  file.txt
 

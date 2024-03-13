@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:59:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/10 18:00:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 16:15:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ static const char *token_type_to_string(t_token_type type)
 			return "SINGLE_QUOTE";
 		case DOUBLE_QUOTE:
 			return "DOUBLE_QUOTE";
-		case REDIRECT_IN:
-			return "REDIRECT_IN";
-		case REDIRECT_HERE_DOC:
-			return "REDIRECT_HERE_DOC";
-		case REDIRECT_OUT:
-			return "REDIRECT_OUT";
-		case REDIRECT_APPEND:
-			return "REDIRECT_APPEND";
+		case REDIR_IN:
+			return "REDIR_IN";
+		case REDIR_HEREDOC:
+			return "REDIR_HEREDOC";
+		case REDIR_OUT:
+			return "REDIR_OUT";
+		case REDIR_APPEND:
+			return "REDIR_APPEND";
 		case PIPE:
 			return "PIPE";
 		case DOLLAR:

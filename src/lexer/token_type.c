@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_type.c                                   :+:      :+:    :+:   */
+/*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 19:55:25 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 16:15:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static t_token_type	token_type_one_symbol(char *content)
 	if (*content == '|')
 		return (PIPE);
 	if (*content == '<')
-		return (REDIRECT_IN);
+		return (REDIR_IN);
 	if (*content == '>')
-		return (REDIRECT_OUT);
+		return (REDIR_OUT);
 	if (*content == '*')
 		return (WILDCARD);
 	if (*content == '(')
@@ -37,9 +37,9 @@ static t_token_type	token_type_two_symbols(char *content)
 	if (ft_strncmp(content, "||", 2) == 0)
 		return (OR);
 	if (ft_strncmp(content, "<<", 2) == 0)
-		return (REDIRECT_HERE_DOC);
+		return (REDIR_HEREDOC);
 	if (ft_strncmp(content, ">>", 2) == 0)
-		return (REDIRECT_APPEND);
+		return (REDIR_APPEND);
 	if (ft_strncmp(content, "$?", 2) == 0)
 		return (DOLLAR_QMARK);
 	if (ft_strncmp(content, "$$", 2) == 0)
