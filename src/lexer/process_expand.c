@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_expand.c                                 :+:      :+:    :+:   */
+/*   token_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 19:22:47 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/12 17:00:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*extract_var_name(const char *content)
 	char	*slash_pos;
 	char	*var_name;
 	size_t	var_name_len;
-	
+
 	slash_pos = ft_strchr(content, '/');
 	if (slash_pos != NULL)
 		var_name_len = slash_pos - content - 1;
@@ -58,7 +58,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	return (new_content);
 }
 
-char	*expand_content(const char *content, t_env *env)
+char	*expand_dollar_sign(const char *content, t_env *env)
 {
 	char	*var_name;
 	char	*var_value;
@@ -70,5 +70,5 @@ char	*expand_content(const char *content, t_env *env)
 		var_value = "";
 	new_content = construct_new_content(var_value, content);
 	free(var_name);
-	return(new_content);
+	return (new_content);
 }
