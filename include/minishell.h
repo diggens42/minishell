@@ -135,10 +135,10 @@ int			tokens_size(t_token *tokens);
 // PARSER
 t_ast		*ast_parser(t_token **token);
 t_ast		*ast_cmd(t_token **token);
-t_ast		*ast_redirect(t_token **token, t_ast *cmd_node);
-t_ast		*ast_pipe(t_token **token);
-t_ast		*ast_logical(t_token **token);
-t_ast		*ast_expr(t_token **token);
+t_ast		*ast_redirect(t_token **token, t_ast *last_node);
+t_ast		*ast_pipe(t_token **token, t_ast *last_node);
+t_ast		*ast_logical(t_token **token, t_ast *last_node);
+t_ast		*ast_expr(t_token **token, t_ast *last_node);
 t_ast		*build_ast_simple(t_token *tokens);
 t_ast		*new_ast_node(t_token *token);
 char		**tokens_to_char_array2(t_token *tokens);
