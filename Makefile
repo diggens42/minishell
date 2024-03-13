@@ -16,14 +16,14 @@ NAME = minishell
 
 SRCS =	./src/minishell.c \
 		\
-		./src/lexer/tokenizer.c \
-		./src/lexer/token_type.c \
-		./src/lexer/token_ops.c \
-		./src/lexer/token_length.c \
-		./src/lexer/process_token.c \
-		./src/lexer/process_expand.c \
 		./src/lexer/process_dquotes.c \
+		./src/lexer/process_expand.c \
 		./src/lexer/process_squotes.c \
+		./src/lexer/process_token.c \
+		./src/lexer/token_length.c \
+		./src/lexer/token_ops.c \
+		./src/lexer/token_type.c \
+		./src/lexer/tokenizer.c \
 		\
 		./src/parser/ast_simple.c\
 		\
@@ -34,15 +34,17 @@ SRCS =	./src/minishell.c \
 		./src/builtin/pwd.c \
 		./src/builtin/unset.c \
 		\
-		./src/executor/execute.c \
-		./src/executor/execute_utils.c \
+		./src/executor/exec_main.c \
+		./src/executor/exec_path.c \
+		./src/executor/exec_utils.c \
+		./src/executor/exec_utils2.c \
 		\
 		./src/utils/debug_tokenizer.c \
-		./src/utils/init_env.c \
+		./src/utils/debug.c \
+		./src/utils/exit.c \
 		./src/utils/free.c \
-		./src/utils/utils.c \
-		\
-		./src/utils/debug.c
+		./src/utils/init_env.c \
+		./src/utils/utils.c
 
 OBJS = $(SRCS:.c=.o)
 

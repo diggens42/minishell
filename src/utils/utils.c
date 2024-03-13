@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:17:33 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 17:47:17 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 13:29:38 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,4 @@ char	*ft_getenv(const char *name, t_env *env)
 		env = env->next;
 	}
 	return (NULL);
-}
-
-void	ft_exit(void)
-{
-	system("leaks minishell");
-	exit(EXIT_SUCCESS);
 }

@@ -1,52 +1,62 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/12 18:58:39 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 15:54:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	init_executor(t_ast_node *ast_head, t_env *env)
+bool	exec_main(t_ast_node *ast_node, t_env *env)
 {
-	if (ast_head->type == AND)
+	bool	exit_status;
+
+	if (ast_node == NULL)
+		return (true);
+	else if (ast_node->type == AND)
 	{
-		init_executor(ast_head->left, env);
-		// TODO only execute if ast->left is true
-		init_executor(ast_head->right, env);
+		exit_status = exec_main(ast_node->left, env);
+		if (exit_status == true)
+			exit_status = exec_main(ast_node->right, env);
 	}
-	else if (ast_head->type == OR)
+	else if (ast_node->type == OR)
 	{
-		init_executor(ast_head->left, env);
-		// TODO only execute if ast->left is false
-		init_executor(ast_head->right, env);
+		exit_status = exec_main(ast_node->left, env);
+		if (exit_status == false)
+			exit_status = exec_main(ast_node->right, env);
 	}
-	else if (ast_head->type == PIPE)
-		execute_with_pipe(ast_head, env);
+	else if (ast_node->type == PIPE)
+		exit_status = exec_pipe(ast_node, env);
 	else
-		execute_without_pipe(ast_head->argv, env);
+		exit_status = exec_command(ast_node->argv, env);
+	return (exit_status);
 }
 
-void	execute_with_pipe(t_ast_node *ast_head, t_env *env)
+bool	exec_pipe(t_ast_node *ast_head, t_env *env)
 {
 	int		pipe_fd[2];
 	pid_t	left_child_pid;
 	pid_t	right_child_pid;
+	int		left_wstatus;
+	int		right_wstatus;
 
-	if (pipe(pipe_fd) == -1)
-		ft_exit();
-
+	ft_pipe(pipe_fd);
 	left_child_pid = setup_left_child(pipe_fd, ast_head, env);
 	close(pipe_fd[1]);
 	right_child_pid = setup_right_child(pipe_fd, ast_head, env);
 	close(pipe_fd[0]);
-	waitpid(left_child_pid, NULL, 0);
-	waitpid(right_child_pid, NULL, 0);
+	waitpid(left_child_pid, &left_wstatus, 0);
+	waitpid(right_child_pid, &right_wstatus, 0);
+	if (WIFEXITED(left_wstatus) && WEXITSTATUS(left_wstatus) == EXIT_SUCCESS
+		&& WIFEXITED(right_wstatus) && WEXITSTATUS(right_wstatus) == EXIT_SUCCESS)
+		return (true);
+	else
+		return (false);
 }
 
 pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
@@ -58,7 +68,7 @@ pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		ft_exit();
+		ft_exit("fork");
 	}
 	else if (left_child_pid == 0)
 	{
@@ -66,7 +76,7 @@ pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 		{
 			close(pipe_fd[1]);
-			ft_exit();
+			ft_exit("dup2");
 		}
 		close(pipe_fd[1]);
 		init_command(ast_head->left->argv, env);
@@ -83,14 +93,14 @@ pid_t	setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 	if (right_child_pid == -1)
 	{
 		close(pipe_fd[0]);
-		ft_exit();
+		ft_exit("fork");
 	}
 	else if (right_child_pid == 0)
 	{
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
 		{
 			close(pipe_fd[0]);
-			ft_exit();
+			ft_exit("dup2");
 		}
 		close(pipe_fd[0]);
 		init_command(ast_head->right->argv, env);
@@ -99,20 +109,25 @@ pid_t	setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 	return (right_child_pid);
 }
 
-void	execute_without_pipe(char **argv, t_env *env)
+bool	exec_command(char **argv, t_env *env)
 {
 	pid_t	pid;
+	int		wstatus;
 
 	// if builtin
 	if (ft_strcmp("exit", argv[0]) == 0)
-		ft_exit();
+		ft_exit(NULL);
 	// else
 	pid = fork();
 	if (pid == 0)
 	{
 		init_command(argv, env);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &wstatus, 0);
+	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
+		return (true);
+	else
+		return (false);
 }
 
 void	execute(t_token *token_head, t_env *env)
@@ -131,33 +146,10 @@ void	execute(t_token *token_head, t_env *env)
 	else if (ft_strcmp("env", token_head->content) == 0)
 		builtin_env(env);
 	else if (ft_strcmp("exit", token_head->content) == 0)
-		ft_exit();
+		ft_exit(NULL);
 	// else
 	// 	init_command(token_head, env);
 }
-
-// void	init_command(t_token *token_head, t_env *env)
-// {
-// 	char	**path;
-// 	char	*pathname;
-// 	char	**argv;
-// 	char	**envp;
-
-// 	if (ft_strchr(token_head->content, '/') != NULL)
-// 		pathname = token_head->content;
-// 	else
-// 	{
-// 		path = create_pathname(token_head, env);
-// 		pathname = find_pathname(path);
-// 		free_char_array(path);
-// 	}
-// 	argv = tokens_to_char_array(token_head);
-// 	envp = env_to_char_array(env);
-// 	execute_in_child(pathname, argv, envp);
-// 	free(pathname);
-// 	free(argv);
-// 	free_char_array(envp);
-// }
 
 void	init_command(char **argv, t_env *env)
 {
@@ -177,27 +169,10 @@ void	init_command(char **argv, t_env *env)
 	// print_char_array(argv);
 	if (execve(pathname, argv, envp) == -1)
 	{
-		perror("execve");
-		ft_exit();
+		ft_exit("execve");
 		// exit(errno);
 	}
 	free(pathname);
 	free_char_array(argv);
 	free_char_array(envp);
 }
-
-// void execute_in_child(char *pathname, char **argv, char **envp)
-// {
-// 	pid_t	pid;
-
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		if (execve(pathname, argv, envp) == -1)
-// 		{
-// 			perror("execve");
-// 			ft_exit();
-// 		}
-// 	}
-// 	waitpid(pid, NULL, 0);
-// }

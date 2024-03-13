@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/10 17:49:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 14:22:31 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	**tokens_to_char_array2(t_token *tokens)
 	n_tokens = count_word_group(tokens);
 	argv = (char **)malloc(sizeof(char *) * (n_tokens + 1));
 	if (argv == NULL)
-		ft_exit(); //TODO handle malloc failure
+		ft_exit("malloc");
 	i = 0;
 	while (current != NULL && i < n_tokens)
 	{
@@ -51,7 +51,7 @@ char	**tokens_to_char_array2(t_token *tokens)
 			while (i-- > 0)
 				free(argv[i]);
 			free(argv);
-			ft_exit();//TODO handle ft_strdup failure
+			ft_exit("malloc");
 		}
 		current = current->next;
 		i++;
@@ -93,7 +93,7 @@ t_ast_node	*build_ast_simple(t_token *tokens)
 		{
 			pipe_node = create_ast_node(tokens);
 			if (!root)
-				ft_exit(); //TODO handle error PIPE with no preceding command
+				ft_exit(NULL); //TODO handle error PIPE with no preceding command
 			last_root = root;
 			pipe_node->left = last_root;
 			if (last_root)
@@ -114,7 +114,7 @@ t_ast_node	*create_ast_node(t_token *token)
 
 	node = (t_ast_node *)malloc(sizeof(t_ast_node));
 	if (!node)
-		return (NULL);//TODO handle malloc error
+		ft_exit("malloc");
 	node->type = token->type;
 	node->left = NULL;
 	node->right = NULL;

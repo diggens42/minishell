@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_expand.c                                     :+:      :+:    :+:   */
+/*   process_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/12 17:00:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:14:09 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*extract_var_name(const char *content)
 		var_name_len = ft_strlen(content) - 1;
 	var_name = (char *)malloc(var_name_len + 1);
 	if (!var_name)
-		ft_exit();//TODO malloc error
+		ft_exit("malloc");
 	if (var_name)
 		ft_strlcpy(var_name, content + 1, var_name_len + 1);
 	return (var_name);
@@ -47,7 +47,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	new_content_len = var_value_len + after_slash_len;
 	new_content = (char *)malloc(new_content_len + 1);
 	if (!new_content)
-		ft_exit(); //TODO malloc error
+		ft_exit("malloc");
 	if (new_content)
 	{
 		ft_memcpy(new_content, var_value, var_value_len);

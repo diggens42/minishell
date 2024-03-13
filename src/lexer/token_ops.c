@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
+/*   token_ops.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/10 19:09:26 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 14:16:19 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*token_new(void)
 
 	new_token = malloc(sizeof(t_token));
 	if (new_token == NULL)
-		return (NULL);
+		ft_exit("malloc");
 	new_token->content = NULL;
 	new_token->type = UNKNOWN;
 	new_token->length = 0;

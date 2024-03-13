@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/12 17:08:39 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:16:05 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ t_token	*tokenizer(char *user_input, t_env *env)
 		if (*user_input == '\0')
 			break ;
 		token = token_new();
-		if (!token)
-			ft_exit();
 		token->length = set_token_length(user_input);
 		token->content = ft_substr(user_input, 0, token->length);
 		token->type = set_token_type(token->content, token->length);

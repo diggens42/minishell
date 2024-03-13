@@ -149,22 +149,24 @@ void		builtin_unset(t_env **env, char *key);
 void		update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
-void		init_executor(t_ast_node *ast_head, t_env *env);
-void		execute_with_pipe(t_ast_node *ast_head, t_env *env);
+// exec_main
+bool		exec_main(t_ast_node *ast_head, t_env *env);
+bool		exec_pipe(t_ast_node *ast_head, t_env *env);
 pid_t		setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env);
 pid_t		setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env);
-void 		execute_without_pipe(char **argv, t_env *env);
+bool 		exec_command(char **argv, t_env *env);
+void		execute(t_token *token_head, t_env *env);
 void		init_command(char **argv, t_env *env);
-// void		execute(t_token *token_head, t_env *env);
-// void		init_command(t_token *token_head, t_env *env);
-// void		execute_in_child(char *pathname, char **argv, char **envp);
-// exector_utils
+// exec_path
 char		**create_pathname(char *command, t_env *env);
-// char		**create_pathname(t_token *tokens, t_env *env);
 char		*find_pathname(char **path);
+// exec_utils
 char		**tokens_to_char_array(t_token *tokens);
 char		**env_to_char_array(t_env *env);
 int			envp_size(t_env *env);
+// exec_utils2
+void		ft_pipe(int *fd);
+pid_t		ft_fork(void);
 
 // UTILS
 t_env		*init_env(char **envp);
@@ -172,17 +174,17 @@ char		*ft_strtok(char	*str, const char *delimiter);
 size_t		ft_strspn(const char *str, const char *charset);
 size_t		ft_strcspn(const char *str, const char *charset);
 char		*ft_getenv(const char *name, t_env *env);
-void		ft_exit(void);
 // free
 void		free_token_list(t_token *token_head);
 void		free_env_list(t_env *env);
 void		free_env_node(t_env *node);
 void		free_char_array(char **str);
-//debug
+// debug
 void		token_print(t_token *tokens);
 void		print_char_array(char **str);
-
-//debug
+// debug
 void		check_tokens(t_token *tokens);
+// exit
+void		ft_exit(char *command);
 
 #endif

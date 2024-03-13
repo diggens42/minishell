@@ -1,84 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_utils.c                                    :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/10 14:50:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 14:24:49 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// char	**create_pathname(t_token *tokens, t_env *env)
-// {
-// 	char	**path;
-// 	char	*temp;
-// 	int		i;
-
-// 	while (env != NULL)
-// 	{
-// 		if (ft_strcmp(env->key, "PATH") == 0)
-// 			temp = env->value;
-// 		env = env->next;
-// 	}
-// 	path = ft_split(temp, ':');
-// 	i = 0;
-// 	while (path[i] != NULL)
-// 	{
-// 		temp = path[i];
-// 		path[i] = ft_strjoin(temp, "/");
-// 		free(temp);
-// 		temp = path[i];
-// 		path[i] = ft_strjoin(temp, tokens->content);
-// 		free(temp);
-// 		i++;
-// 	}
-// 	return (path);
-// }
-
-char	**create_pathname(char *command, t_env *env)
-{
-	char	**path;
-	char	*temp;
-	int		i;
-
-	while (env != NULL)
-	{
-		if (ft_strcmp(env->key, "PATH") == 0)
-			temp = env->value;
-		env = env->next;
-	}
-	path = ft_split(temp, ':');
-	i = 0;
-	while (path[i] != NULL)
-	{
-		temp = path[i];
-		path[i] = ft_strjoin(temp, "/");
-		free(temp);
-		temp = path[i];
-		path[i] = ft_strjoin(temp, command);
-		free(temp);
-		i++;
-	}
-	return (path);
-}
-
-char	*find_pathname(char **path)
-{
-	int	i;
-
-	i = 0;
-	while (path[i] != NULL)
-	{
-		if (access(path[i], X_OK) == 0)
-			return (ft_strdup(path[i]));
-		i++;
-	}
-	return (NULL);
-}
 
 char	**tokens_to_char_array(t_token *tokens)
 {
@@ -89,7 +21,7 @@ char	**tokens_to_char_array(t_token *tokens)
 	n_tokens = tokens_size(tokens);
 	argv = malloc(sizeof(char *) * (n_tokens + 1));
 	if (argv == NULL)
-		ft_exit();
+		ft_exit("malloc");
 	i = 0;
 	while (i < n_tokens)
 	{
@@ -111,7 +43,7 @@ char	**env_to_char_array(t_env *env)
 	n_envp = envp_size(env);
 	envp = malloc(sizeof(char *) * (n_envp + 1));
 	if (envp == NULL)
-		ft_exit();
+		ft_exit("malloc");
 	i = 0;
 	while (i < n_envp)
 	{

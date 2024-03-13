@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/12 17:17:15 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 14:54:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	read_eval_print_loop(t_env *env)
 		free(user_input);
 		ast_head = build_ast_simple(token_head);
 		free_token_list(token_head);
-		init_executor(ast_head, env);
+		exec_main(ast_head, env);
 		// free_char_array(ast_head->argv);
 		// free(ast_head);
 	}
@@ -97,6 +97,6 @@ char	*find_limiter(char *user_input)
 		return (NULL);
 	limiter = ft_substr(user_input, 0, i);
 	if (limiter == NULL)
-		ft_exit();
+		ft_exit(NULL);
 	return (limiter);
 }

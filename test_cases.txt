@@ -190,6 +190,7 @@
 
 
 cd .. && pwd
+cd .. || pwd
 pwd && cd ..
 (cd .. && pwd) || pwd
 (cd .. && pwd) && pwd
