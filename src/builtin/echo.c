@@ -3,33 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:04:09 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/08 21:28:57 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:23:19 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	builtin_echo(t_token *tokens)
+bool	builtin_echo(char **argv)
 {
 	bool	new_line;
+	int		i;
 
 	new_line = true;
-	tokens = tokens->next;
-	if (tokens != NULL && !(ft_strcmp("-n", tokens->content)))
+	i = 1;
+	if (argv[i] != NULL && ft_strcmp("-n", argv[i]) == 0)
 	{
 		new_line = false;
-		tokens = tokens->next;
+		i++;
 	}
-	while (tokens != NULL)
+	while (argv[i] != NULL)
 	{
-		printf("%s", tokens->content);
-		tokens = tokens->next;
-		if (tokens != NULL)
-			printf(" ");
+		ft_printf("%s", argv[i]);
+		i++;
+		if (argv[i] != NULL)
+			ft_printf(" ");
 	}
 	if (new_line == true)
-		printf("\n");
+		ft_printf("\n");
+	return (true);
 }

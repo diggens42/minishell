@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/09 10:48:40 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:04:07 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	update_env(t_env **env, char *key, char *value)
 	last->next = new_env_var;
 }
 
-void	builtin_export(t_token *tokens, t_env *env)
+bool	builtin_export(t_token *tokens, t_env *env)
 {
 	t_token	*token;
 	char	*equals_ptr;
@@ -66,4 +66,5 @@ void	builtin_export(t_token *tokens, t_env *env)
 	}
 	if (assignment == false)
 		builtin_env(env);
+	return (true);
 }
