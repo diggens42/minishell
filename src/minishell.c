@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/13 14:54:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 17:01:48 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	read_eval_print_loop(t_env *env)
 	char		*temp;
 	char		*limiter;
 	t_token		*token_head;
-	t_ast_node	*ast_head;
+	t_ast	*ast_head;
 
 	while (true)
 	{

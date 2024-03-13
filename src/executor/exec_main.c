@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 15:54:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/13 17:03:37 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-bool	exec_main(t_ast_node *ast_node, t_env *env)
+bool	exec_main(t_ast *ast_node, t_env *env)
 {
 	bool	exit_status;
 
@@ -37,7 +37,7 @@ bool	exec_main(t_ast_node *ast_node, t_env *env)
 	return (exit_status);
 }
 
-bool	exec_pipe(t_ast_node *ast_head, t_env *env)
+bool	exec_pipe(t_ast *ast_head, t_env *env)
 {
 	int		pipe_fd[2];
 	pid_t	left_child_pid;
@@ -59,7 +59,7 @@ bool	exec_pipe(t_ast_node *ast_head, t_env *env)
 		return (false);
 }
 
-pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
+pid_t	setup_left_child(int pipe_fd[2], t_ast *ast_head, t_env *env)
 {
 	pid_t	left_child_pid;
 
@@ -85,7 +85,7 @@ pid_t	setup_left_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
 	return (left_child_pid);
 }
 
-pid_t	setup_right_child(int pipe_fd[2], t_ast_node *ast_head, t_env *env)
+pid_t	setup_right_child(int pipe_fd[2], t_ast *ast_head, t_env *env)
 {
 	pid_t	right_child_pid;
 

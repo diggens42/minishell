@@ -26,6 +26,12 @@ SRCS =	./src/minishell.c \
 		./src/lexer/tokenizer.c \
 		\
 		./src/parser/ast_simple.c\
+		./src/parser/ast_parser.c\
+		./src/parser/ast_cmd.c\
+		./src/parser/ast_pipe.c\
+		./src/parser/ast_logic.c\
+		./src/parser/ast_expr.c\
+		./src/parser/ast_redirect.c\
 		\
 		./src/builtin/cd.c \
 		./src/builtin/echo.c \
