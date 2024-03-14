@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/14 18:07:09 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/14 18:35:56 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,10 @@ t_ast	*new_ast_node(t_token *token)
 	node->left = NULL;
 	node->right = NULL;
 	node->top = NULL;
-	if (token->type == COMMAND)
-		node->argv = tokens_to_char_array2(token);
-	else
-		node->argv = NULL;
+	// if (token->type == COMMAND)
+	node->argv = tokens_to_char_array2(token);
+	// else
+	// 	node->argv = NULL;
 	if (token->used == false)
 		token->used = true;
 	return (node);

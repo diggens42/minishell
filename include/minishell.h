@@ -147,12 +147,13 @@ bool		is_redirect(t_token_type type);
 bool		is_logical(t_token_type type);
 
 // BUILTIN
-void		builtin_cd(t_token *token, t_env **env);
-void		builtin_echo(t_token *tokens);
-void		builtin_env(t_env *env);
-void		builtin_export(t_token *tokens, t_env *env);
-void		builtin_pwd(void);
-void		builtin_unset(t_env **env, char *key);
+// bool		builtin_cd(char **argv, t_env **env);
+bool		builtin_echo(char **argv);
+bool		builtin_env(t_env *env);
+// bool		builtin_export(t_token *tokens, t_env *env);
+bool		builtin_pwd(void);
+bool		builtin_unset(char *key, t_env **env);
+void		builtin_exit(void);
 // builtin_utils
 void		update_env(t_env **env, char *key, char *value);
 
@@ -160,11 +161,10 @@ void		update_env(t_env **env, char *key, char *value);
 // exec_main
 bool		exec_main(t_ast *ast_head, t_env *env);
 bool		exec_pipe(t_ast *ast_head, t_env *env);
-pid_t		setup_left_child(int pipe_fd[2], t_ast *ast_head, t_env *env);
-pid_t		setup_right_child(int pipe_fd[2], t_ast *ast_head, t_env *env);
+void		exec_children(t_ast *ast_node, t_env *env);
 bool 		exec_command(char **argv, t_env *env);
-void		execute(t_token *token_head, t_env *env);
-void		init_command(char **argv, t_env *env);
+bool		exec_builtin(char **argv, t_env *env);
+void		exec_finish(char **argv, t_env *env);
 // exec_path
 char		**create_pathname(char *command, t_env *env);
 char		*find_pathname(char **path);

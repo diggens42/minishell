@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/08 21:29:20 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:10:37 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 // TODO multi input
-void	builtin_unset(t_env **env, char *key)
+bool	builtin_unset(char *key, t_env **env)
 {
 	t_env	*current;
 	t_env	*prev;
@@ -29,9 +29,10 @@ void	builtin_unset(t_env **env, char *key)
 			else
 				prev->next = current->next;
 			free_env_node(current);
-			return ;
+			return (true);
 		}
 		prev = current;
 		current = current->next;
 	}
+	return (true);
 }
