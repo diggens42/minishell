@@ -71,6 +71,6 @@ ls -l | grep "file" && (cp file1 file2 || rm file3)
  -l   "file" file1 file2 file3
 
 The command sequence lists files in the current directory,
-searches for lines containing the word "file" in the output,
+searches for lines containing the COMMAND "file" in the output,
 and then copies file1 to file2. If the copy is successful,
 it does nothing more; otherwise, it removes file3.

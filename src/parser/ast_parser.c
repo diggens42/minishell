@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 21:14:41 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/14 18:01:39 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,21 @@
 
 t_ast	*ast_parser(t_token **token)
 {
-	t_ast	*root;
+	t_ast	*node;
 
+	node = NULL;
 	if (token == NULL || (*token) == NULL)
 		return (NULL);
-	root = ast_expr(token, NULL);
-	return (root);
+	while (*token != NULL)
+	{
+		if ((*token)->type == PARENTHESIS_L)
+			node = ast_parenthesis(token);
+		else if ((*token)->type == COMMAND)
+			node = ast_cmd(token);
+		else if (*token != NULL && (*token)->type == PIPE)
+			node = ast_pipe(token, node);
+		else if (*token != NULL && ((*token)->type == AND || (*token)->type == OR))
+			node = ast_logical(token, node);
+	}
+	return (node);
 }

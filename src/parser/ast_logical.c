@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_expr.c                                         :+:      :+:    :+:   */
+/*   ast_logic.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 14:17:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 21:11:33 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/13 14:17:27 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/14 18:13:39 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_ast	*ast_expr(t_token **token, t_ast *last_node)
+bool	is_logical(t_token_type type)
 {
-	t_ast	*subtree;
+	return(type == AND || type == OR);
+}
 
-	subtree = NULL;
-	if (*token == NULL)
-		return (NULL);
-	if ((*token)->type == PARENTHESIS_L)
+t_ast	*ast_logical(t_token **token, t_ast *left)
+{
+	t_ast	*node;
+	t_ast	*logical;
+
+	node = left;
+	logical = NULL;
+	while (*token != NULL)
 	{
-		*token = (*token)->next;
-		subtree = ast_expr(token, last_node);
-		if ((*token)->type != PARENTHESIS_R)
-			return (NULL); //TODO handle unclosed parenthesis
-		*token = (*token)->next;
-		return (subtree);
+		if (is_logical((*token)->type))
+		{
+			logical = new_ast_node(*token);
+			logical->left = node;
+			*token = (*token)->next;
+			logical->right = ast_pipe(token, NULL);
+			node = logical;
+		}
+		else
+			break ;
 	}
-	else if ((*token)->type == WORD)
-		return (ast_cmd(token));
+	return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:59:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 16:15:21 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:38:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static const char *token_type_to_string(t_token_type type)
 	{
 		case UNKNOWN:
 			return "UNKNOWN";
-		case WORD:
-			return "WORD";
+		case COMMAND:
+			return "COMMAND";
 		case SINGLE_QUOTE:
 			return "SINGLE_QUOTE";
 		case DOUBLE_QUOTE:

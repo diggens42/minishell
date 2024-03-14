@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_process.c                                    :+:      :+:    :+:   */
+/*   process_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/12 20:43:15 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:38:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void process_single_quotes(t_token *token)
 	free(token->content);
 	token->content = removed_squotes;
 	token->length = ft_strlen(removed_squotes);
-	token->type = WORD;
+	token->type = COMMAND;
 }
 
 static void	process_double_quotes(t_token *token, t_env *env)
@@ -37,7 +37,7 @@ static void	process_double_quotes(t_token *token, t_env *env)
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);
-	token->type = WORD;
+	token->type = COMMAND;
 }
 
 static void	process_dollar_sign(t_token *token, t_env *env)
@@ -50,7 +50,7 @@ static void	process_dollar_sign(t_token *token, t_env *env)
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);
-	token->type = WORD;
+	token->type = COMMAND;
 }
 
 void	process_token_content(t_token **token_head, t_env *env)

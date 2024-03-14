@@ -6,31 +6,37 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:44:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 21:13:32 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/14 17:21:44 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_ast	*ast_redirect(t_token **token, t_ast *last_node)
+//OK
+t_ast	*ast_redirect(t_token **token, t_ast *cmd_node)
 {
-	t_ast	*redir_node;
-	t_ast	*tar_node;
-	t_ast	*prev_node;
+	t_ast	*redirect;
+	t_ast	*target;
 	
-	prev_node = last_node;
-	while (*token && ((*token)->type == REDIR_IN || (*token)->type == REDIR_OUT
-		|| (*token)->type == REDIR_APPEND || (*token)->type == REDIR_HEREDOC))
+	while (*token && is_redirect((*token)->type))
 	{
-		redir_node = new_ast_node(*token);
+		redirect = new_ast_node(*token);
 		*token = (*token)->next;
-		if (*token == NULL || (*token)->type != WORD)
+		if (*token == NULL || (*token)->type != COMMAND)
 			return (NULL); //TODO handle missing redirection target
-		tar_node = new_ast_node(*token);
-		redir_node->left = last_node;
-		redir_node->right = tar_node;
+		target = new_ast_node(*token);
+		redirect->left = cmd_node;
+		redirect->right = target;
+		cmd_node = redirect;
 		*token = (*token)->next;
-		prev_node = redir_node;
 	}
-	return (prev_node);
+	return (cmd_node);
+}
+
+bool	is_redirect(t_token_type type)
+{
+	if (type == REDIR_IN || type == REDIR_OUT
+		|| type == REDIR_APPEND || type == REDIR_HEREDOC)
+		return (1);
+	return (0);
 }

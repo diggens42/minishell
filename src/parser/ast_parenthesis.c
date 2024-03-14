@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_logic.c                                        :+:      :+:    :+:   */
+/*   ast_parenthesis.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 14:17:27 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 21:14:31 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/13 14:17:23 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/14 17:51:37 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_ast	*ast_logical(t_token **token, t_ast *last_node)
+t_ast	*ast_parenthesis(t_token **token)
 {
-	t_ast	*node;
-	t_ast	*new_node;
+	t_ast	*subtree;
 
-	node = ast_pipe(token, last_node);
-	new_node = NULL;
-	while (*token != NULL)
-	{
-		if ((*token)->type == AND || (*token)->type == OR)
-		{
-			new_node = new_ast_node(*token);
-			new_node->left = node;
-			*token = (*token)->next;
-			new_node->right = ast_pipe(token, last_node);
-			node = new_node;
-		}
-		else
-			break ;
-	}
-	return (node);
+	subtree = NULL;
+	if (*token == NULL || (*token)->type != PARENTHESIS_L)
+		return (NULL);
+	*token = (*token)->next;
+	subtree = ast_parser(token);
+	if (*token == NULL || (*token)->type != PARENTHESIS_R)
+		return (NULL); //TODO handle unclosed parenthesis
+	*token = (*token)->next;
+	return (subtree);
 }

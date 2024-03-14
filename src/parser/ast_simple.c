@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ast_simple.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 17:02:16 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/14 18:07:09 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	count_word_group(t_token *tokens)
+int	count_command_group(t_token *tokens)
 {
 	t_token	*current;
 	int		count;
@@ -21,7 +21,7 @@ int	count_word_group(t_token *tokens)
 	count = 0;
 	while (current != NULL)
 	{
-		if (current->type != WORD)
+		if (current->type != COMMAND)
 			break ;
 		count++;
 		current->used = true;
@@ -38,7 +38,7 @@ char	**tokens_to_char_array2(t_token *tokens)
 	int		i;
 
 	current = tokens;
-	n_tokens = count_word_group(tokens);
+	n_tokens = count_command_group(tokens);
 	argv = (char **)malloc(sizeof(char *) * (n_tokens + 1));
 	if (argv == NULL)
 		ft_exit("malloc");
@@ -74,10 +74,10 @@ t_ast	*build_ast_simple(t_token *tokens)
 	last_node = NULL;
 	while (tokens != NULL)
 	{
-		if (tokens->type == WORD)
+		if (tokens->type == COMMAND)
 		{
 			cmd_node = new_ast_node(tokens);
-			while (tokens != NULL && tokens->type == WORD)
+			while (tokens != NULL && tokens->type == COMMAND)
 				tokens = tokens->next;
 			if (!root)
 				root = cmd_node;
@@ -119,7 +119,7 @@ t_ast	*new_ast_node(t_token *token)
 	node->left = NULL;
 	node->right = NULL;
 	node->top = NULL;
-	if (token->type == WORD)
+	if (token->type == COMMAND)
 		node->argv = tokens_to_char_array2(token);
 	else
 		node->argv = NULL;
