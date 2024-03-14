@@ -1,0 +1,50 @@
+echo "Hello World" | wc -w  OK
+echo "test case for pipes" | tr ' ' '\n' | sort | uniq  OK
+echo $(date) | wc -c	FAIL
+echo "search" | grep -q "search" && echo "found" || echo "not found" FAIL
+printenv | grep PATH | cut -d= -f2 | tr ':' '\n'  OK
+
+
+TODO:
+
+fwahl@2-E-5 minishell % ./minishell                     
+$ echo "Hello, World" > output.txt
+Token: 1
+echo
+COMMAND
+-----------
+Token: 2
+Hello, World
+COMMAND
+-----------
+Token: 3
+>
+REDIR_OUT
+-----------
+Token: 4
+output.txt
+COMMAND
+-----------
+UNKNOWN        <------ ??????
+  COMMAND: echo
+  COMMAND: output.txt
+$ grep "search_term" < input.txt
+Token: 1
+grep
+COMMAND
+-----------
+Token: 2
+search_term
+COMMAND
+-----------
+Token: 3
+<
+REDIR_IN
+-----------
+Token: 4
+input.txt
+COMMAND
+-----------
+UNKNOWN        <------ ??????
+  COMMAND: grep
+  COMMAND: input.txt

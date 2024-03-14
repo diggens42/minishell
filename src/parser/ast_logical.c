@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_logic.c                                        :+:      :+:    :+:   */
+/*   ast_logical.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:27 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/14 18:13:39 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/14 19:54:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,14 @@ t_ast	*ast_logical(t_token **token, t_ast *left)
 
 	node = left;
 	logical = NULL;
-	while (*token != NULL)
+	while (*token != NULL && is_logical((*token)->type))
 	{
-		if (is_logical((*token)->type))
-		{
-			logical = new_ast_node(*token);
-			logical->left = node;
-			*token = (*token)->next;
-			logical->right = ast_pipe(token, NULL);
-			node = logical;
-		}
-		else
+		logical = new_ast_node(*token);
+		logical->left = node;
+		*token = (*token)->next;
+		logical->right = ast_parser(token);
+		node = logical;
+		if (*token == NULL || !is_logical((*token)->type))
 			break ;
 	}
 	return (node);

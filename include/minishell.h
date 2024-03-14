@@ -145,6 +145,7 @@ char		**tokens_to_char_array2(t_token *tokens);
 int			count_command_group(t_token *tokens);
 bool		is_redirect(t_token_type type);
 bool		is_logical(t_token_type type);
+void		print_ast(t_ast* node, int level);
 
 // BUILTIN
 // bool		builtin_cd(char **argv, t_env **env);

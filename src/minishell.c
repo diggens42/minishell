@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/13 17:01:48 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/14 21:05:31 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,16 @@ void	read_eval_print_loop(t_env *env)
 			user_input2 = readline(PROMPT_MULTI_LINE);
 			temp = user_input;
 			user_input = ft_strjoin(user_input, user_input2);
-			free (temp);
-			free (user_input2);
+			free(temp);
+			free(user_input2);
 		}
 		// ft_printf("user_input: %s\n", user_input);
 		token_head = tokenizer(user_input, env);
-		// token_print(token_head);
+		// check_tokens(token_head);
 		free(user_input);
-		ast_head = build_ast_simple(token_head);
+		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
+		// print_ast(ast_head, 0);
 		exec_main(ast_head, env);
 		// free_char_array(ast_head->argv);
 		// free(ast_head);

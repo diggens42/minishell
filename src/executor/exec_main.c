@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 23:17:57 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/14 18:41:02 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	exec_main(t_ast *ast_node, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
 	bool	exit_status;
 
 	if (ast_node == NULL)
@@ -40,7 +40,7 @@ bool	exec_main(t_ast *ast_node, t_env *env)
 
 bool	exec_pipe(t_ast *ast_node, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_pipe with %s\n\x1b[0m", ast_node->argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_pipe with %s\n\x1b[0m", ast_node->argv[0]);
 	pid_t	pid;
 	int		wstatus;
 
@@ -59,7 +59,7 @@ bool	exec_pipe(t_ast *ast_node, t_env *env)
 
 void	exec_children(t_ast *ast_node, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_children with %s\n\x1b[0m", ast_node->argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_children with %s\n\x1b[0m", ast_node->argv[0]);
 	int		fd[2];
 	pid_t	pid;
 
@@ -86,7 +86,7 @@ void	exec_children(t_ast *ast_node, t_env *env)
 
 bool	exec_command(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
 	pid_t	pid;
 	int		wstatus;
 
@@ -106,7 +106,7 @@ bool	exec_command(char **argv, t_env *env)
 
 bool	exec_builtin(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	// if (ft_strcmp("cd", argv[0]) == 0)
@@ -126,7 +126,7 @@ bool	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
 	char	**path;
 	char	*pathname;
 	char	**envp;
@@ -139,7 +139,7 @@ void	exec_finish(char **argv, t_env *env)
 		pathname = find_pathname(path);
 		free_char_array(path);
 	}
-	fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
+	// fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
 	envp = env_to_char_array(env);
 	if (execve(pathname, argv, envp) == -1)
 	{

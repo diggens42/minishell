@@ -47,6 +47,7 @@ SRCS =	./src/minishell.c \
 		./src/executor/exec_utils2.c \
 		\
 		./src/utils/debug_tokenizer.c \
+		./src/utils/debug_ast.c \
 		./src/utils/debug.c \
 		./src/utils/exit.c \
 		./src/utils/free.c \
