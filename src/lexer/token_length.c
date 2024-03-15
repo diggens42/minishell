@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/12 17:02:20 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/15 15:54:24 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	is_dollar_sign(char *user_input)
 
 static int	is_single_special_char(char c)
 {
-	return (ft_strchr("|<>*()", c) != NULL);
+	return (ft_strchr("|<>()", c) != NULL);
 }
 
 static int	is_double_special_char(char *user_input)
