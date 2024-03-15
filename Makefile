@@ -16,22 +16,22 @@ NAME = minishell
 
 SRCS =	./src/minishell.c \
 		\
-		./src/lexer/process_dquotes.c \
-		./src/lexer/process_expand.c \
-		./src/lexer/process_squotes.c \
-		./src/lexer/process_token.c \
-		./src/lexer/token_length.c \
-		./src/lexer/token_ops.c \
-		./src/lexer/token_type.c \
 		./src/lexer/tokenizer.c \
+		./src/lexer/token_ops.c \
+		./src/lexer/token_length.c \
+		./src/lexer/token_type.c \
+		./src/lexer/expand_dquotes.c \
+		./src/lexer/expand_dollar.c \
+		./src/lexer/expand_squotes.c \
+		./src/lexer/expand_token.c \
 		\
-		./src/parser/ast_simple.c\
 		./src/parser/ast_parser.c\
 		./src/parser/ast_cmd.c\
 		./src/parser/ast_pipe.c\
 		./src/parser/ast_logical.c\
 		./src/parser/ast_parenthesis.c\
 		./src/parser/ast_redirect.c\
+		./src/parser/ast_utils.c\
 		\
 		./src/builtin/cd.c \
 		./src/builtin/echo.c \

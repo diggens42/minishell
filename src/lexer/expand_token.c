@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_token.c                                    :+:      :+:    :+:   */
+/*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/14 14:38:54 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/15 15:40:46 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,14 @@ static void	process_dollar_sign(t_token *token, t_env *env)
 	token->type = COMMAND;
 }
 
-void	process_token_content(t_token **token_head, t_env *env)
+void	expand_token(t_token *token, t_env *env)
 {
-	t_token	*current;
-
-	if (token_head == NULL || *token_head == NULL)
+	if (token == NULL)
 		return ;
-	current = *token_head;
-	while (current != NULL)
-	{
-		if (current->type == DOLLAR)
-			process_dollar_sign(current, env);
-		else if (current->type == DOUBLE_QUOTE)
-			process_double_quotes(current, env);
-		else if (current->type == SINGLE_QUOTE)
-			process_single_quotes(current);
-		current = current->next;
-	}
+	if (token->type == DOLLAR)
+		process_dollar_sign(token, env);
+	else if (token->type == DOUBLE_QUOTE)
+		process_double_quotes(token, env);
+	else if (token->type == SINGLE_QUOTE)
+		process_single_quotes(token);
 }

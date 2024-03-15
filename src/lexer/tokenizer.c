@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/13 14:16:05 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/15 15:42:42 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ t_token	*tokenizer(char *user_input, t_env *env)
 		token->length = set_token_length(user_input);
 		token->content = ft_substr(user_input, 0, token->length);
 		token->type = set_token_type(token->content, token->length);
+		expand_token(token, env);
 		token_add_back(&token_head, token);
 		user_input += token->length;
 	}
 	// check_tokens(token_head);
-	process_token_content(&token_head, env);
 	// check_tokens(token_head);
 	return (token_head);
 }
