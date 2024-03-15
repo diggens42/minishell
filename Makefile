@@ -20,10 +20,11 @@ SRCS =	./src/minishell.c \
 		./src/lexer/token_ops.c \
 		./src/lexer/token_length.c \
 		./src/lexer/token_type.c \
+		./src/lexer/expand_token.c \
 		./src/lexer/expand_dquotes.c \
 		./src/lexer/expand_dollar.c \
 		./src/lexer/expand_squotes.c \
-		./src/lexer/expand_token.c \
+		./src/lexer/expand_wildcard.c \
 		\
 		./src/parser/ast_parser.c\
 		./src/parser/ast_cmd.c\

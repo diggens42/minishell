@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_squotes.c                                   :+:      :+:    :+:   */
+/*   ft_strcspn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/12 20:43:39 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 19:37:43 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/15 18:19:30 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/15 19:34:34 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "libft.h"
 
-char	*remove_single_quotes(const char *content)
+size_t	ft_strcspn(const char *str, const char *charset)
 {
-	char	*result;
-	int		len;
+	size_t	i;
 
-	len = ft_strlen(content);
-	result = (char *)ft_calloc(len - 1, sizeof(char));
-	if (result == NULL)
-		return (NULL); //TODO handle malloc error
-	ft_strlcpy(result, content + 1, len - 1);
-	return (result);
+	i = 0;
+	while (str[i] && ft_strchr(charset, str[i]) == NULL)
+		i++;
+	return (i);
 }

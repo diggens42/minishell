@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_dquotes.c                                  :+:      :+:    :+:   */
+/*   expand_dquotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 14:57:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/15 19:38:06 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char	*extract_var(const char *input, int *start)
+static char	*extract_var(const char *content, int *start)
 {
 	char	*var_path;
 	int		end;
 	int		extr = *start - 1;
 
 	end = *start;
-	if (!(ft_isalpha(input[end]) || input[end] != '_'))
+	if (!(ft_isalpha(content[end]) || content[end] != '_'))
 		return (NULL);
-	while (input[end] != '\0' && (ft_isalnum(input[end]) || input[end] == '_'
-		|| input[end] == '/' || input[end] == '.'))
+	while (content[end] != '\0' && (ft_isalnum(content[end]) || content[end] == '_'
+		|| content[end] == '/' || content[end] == '.'))
 		end++;
-	var_path = ft_substr(input, (unsigned int)extr, (size_t)(end - extr));
+	var_path = ft_substr(content, (unsigned int)extr, (size_t)(end - extr));
 	*start = end;
 	return (var_path);
 }
@@ -62,7 +62,7 @@ static char	*append_char(char *original, char c)
 	return (new_str);
 }
 
-char	*expand_double_quote(const char *input, t_env *env)
+char	*expand_double_quote(const char *content, t_env *env)
 {
 	char	*result;
 	char	*var;
@@ -70,30 +70,28 @@ char	*expand_double_quote(const char *input, t_env *env)
 
 	result = NULL;
 	i = 0;
-	while (input[i])
+	while (content[i])
 	{
-		if (input[i] == '$')
+		if (content[i] == '$')
 		{
 			i++;
-			var = extract_var(input, &i);
+			var = extract_var(content, &i);
 			result = expand_and_concatenate(result, var, env);
 			free(var);
 		}
 		else
-			result = append_char(result, input[i++]);
+			result = append_char(result, content[i++]);
 	}
 	if (!result)
 		result = (char *)ft_calloc(1, sizeof(char));
 	return (result);
 }
 
-char	*remove_double_quotes(const char *input)
+char	*remove_double_quotes(const char *content)
 {
 	char	*remove_quotes;
 
-	if (input == NULL || ft_strlen(input) < 2)
-		return (NULL);
-	remove_quotes = ft_strdup(input + 1);
+	remove_quotes = ft_strdup(content + 1);
 	remove_quotes[ft_strlen(remove_quotes) - 1] = '\0';
 	return (remove_quotes);
 }

@@ -52,6 +52,10 @@ char	*ft_strrchr(const char *str, int c);
 char	*ft_strstr(const char *haystack, const char *needle);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t n);
 char	*ft_strdup(const char *str1);
+char	*ft_strndup(const char *str1, size_t n);
+char	*ft_strtok(char	*str, const char *delimiter);
+size_t	ft_strspn(const char *str, const char *charset);
+size_t	ft_strcspn(const char *str, const char *charset);
 
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);

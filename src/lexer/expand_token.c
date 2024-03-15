@@ -6,18 +6,27 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 15:40:46 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/15 17:18:52 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static void process_wildcard(t_token *token)
+{
+	char	*expanded_content;
+
+	expanded_content = expand_wildcard(token->content);
+	free(token->content);
+	token->content = expanded_content;
+	token->length = ft_strlen(expanded_content);
+	token->type = COMMAND;
+}
+
 static void process_single_quotes(t_token *token)
 {
 	char	*removed_squotes;
 	
-	if (token == NULL || token->content == NULL)
-		return ;
 	removed_squotes = remove_single_quotes(token->content);
 	free(token->content);
 	token->content = removed_squotes;
@@ -27,13 +36,11 @@ static void process_single_quotes(t_token *token)
 
 static void	process_double_quotes(t_token *token, t_env *env)
 {
-	char	*content;
+	char	*removed_dquotes;
 	char	*expanded_content;
 
-	if (token == NULL || token->content == NULL)
-		return ;
-	content = remove_double_quotes(token->content);
-	expanded_content = expand_double_quote(content, env);
+	removed_dquotes = remove_double_quotes(token->content);
+	expanded_content = expand_double_quote(removed_dquotes, env);
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);
@@ -44,8 +51,6 @@ static void	process_dollar_sign(t_token *token, t_env *env)
 {
 	char	*expanded_content;
 
-	if (token == NULL)
-		return ;
 	expanded_content = expand_dollar_sign(token->content, env);
 	free(token->content);
 	token->content = expanded_content;
@@ -55,9 +60,11 @@ static void	process_dollar_sign(t_token *token, t_env *env)
 
 void	expand_token(t_token *token, t_env *env)
 {
-	if (token == NULL)
+	if (token == NULL || token->content == NULL)
 		return ;
-	if (token->type == DOLLAR)
+	if (token->type == WILDCARD)
+		process_wildcard(token);
+	else if (token->type == DOLLAR)
 		process_dollar_sign(token, env);
 	else if (token->type == DOUBLE_QUOTE)
 		process_double_quotes(token, env);
