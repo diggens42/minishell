@@ -141,7 +141,7 @@ t_ast		*ast_logical(t_token **token, t_ast *left);
 t_ast		*ast_parenthesis(t_token **token);
 t_ast		*build_ast_simple(t_token *tokens);
 t_ast		*new_ast_node(t_token *token);
-char		**tokens_to_char_array2(t_token *tokens);
+char		**token_to_str_array(t_token *tokens);
 int			count_command_group(t_token *tokens);
 bool		is_redirect(t_token_type type);
 bool		is_logical(t_token_type type);

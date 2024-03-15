@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_expand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 14:14:09 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/15 14:54:57 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*extract_var_name(const char *content)
 		var_name_len = slash_pos - content - 1;
 	else
 		var_name_len = ft_strlen(content) - 1;
-	var_name = (char *)malloc(var_name_len + 1);
+	var_name = (char *)ft_calloc(var_name_len + 1, sizeof(char));
 	if (!var_name)
 		ft_exit("malloc");
 	if (var_name)
@@ -45,7 +45,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	if (slash_pos != NULL)
 		after_slash_len = ft_strlen(slash_pos);
 	new_content_len = var_value_len + after_slash_len;
-	new_content = (char *)malloc(new_content_len + 1);
+	new_content = (char *)ft_calloc(new_content_len + 1, sizeof(char));
 	if (!new_content)
 		ft_exit("malloc");
 	if (new_content)

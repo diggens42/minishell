@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/11 19:49:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/15 14:58:44 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*cd_tilde(char *content, char *home_path)
 	if (content[0] == '~' && ft_strcmp(content, "~") != 0)
 	{
 		new_path_len = ft_strlen(home_path) + ft_strlen(content);
-		path = malloc(sizeof(char) * (new_path_len));
+		path = (char *)ft_calloc(new_path_len, sizeof(char));
 		if (path == NULL)
 		{
 			perror("malloc");//TODO handle malloc error

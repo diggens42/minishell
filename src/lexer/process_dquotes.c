@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_dquotes.c                                    :+:      :+:    :+:   */
+/*   process_dquotes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/12 20:13:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:57:44 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*append_char(char *original, char c)
 	if (original != NULL)
 		original_len = ft_strlen(original);
 	new_len = original_len + 2;
-	new_str = malloc(sizeof(char) * new_len);
+	new_str = (char *)ft_calloc(new_len, sizeof(char));
 	if (new_str == NULL)
 		return (original); //TODO handle malloc error
 	if (original != NULL)
@@ -83,11 +83,7 @@ char	*expand_double_quote(const char *input, t_env *env)
 			result = append_char(result, input[i++]);
 	}
 	if (!result)
-	{
-		result = malloc(1);
-		if (result)
-			result[0] = '\0';
-	}
+		result = (char *)ft_calloc(1, sizeof(char));
 	return (result);
 }
 

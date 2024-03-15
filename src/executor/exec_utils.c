@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/13 14:24:49 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/15 15:00:49 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**tokens_to_char_array(t_token *tokens)
 	int		i;
 
 	n_tokens = tokens_size(tokens);
-	argv = malloc(sizeof(char *) * (n_tokens + 1));
+	argv = (char **)ft_calloc(n_tokens + 1, sizeof(char *));
 	if (argv == NULL)
 		ft_exit("malloc");
 	i = 0;
@@ -41,7 +41,7 @@ char	**env_to_char_array(t_env *env)
 	int		i;
 
 	n_envp = envp_size(env);
-	envp = malloc(sizeof(char *) * (n_envp + 1));
+	envp = (char **)ft_calloc(n_envp + 1, sizeof(char *));
 	if (envp == NULL)
 		ft_exit("malloc");
 	i = 0;
