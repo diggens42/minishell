@@ -92,7 +92,6 @@ typedef struct	s_token
 	t_token_type	type;
 	char			*content;
 	int				length;
-	bool			used;
 	struct s_token	*next;
 }				t_token;
 
@@ -100,7 +99,6 @@ typedef struct	s_ast
 {
 	t_token_type	type;
 	char			**argv;
-	struct s_ast	*top;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }				t_ast;
