@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/18 16:20:39 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/19 12:05:51 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	count_command_group(t_token *tokens)
 		if (current->type != COMMAND)
 			break ;
 		count++;
-		current->used = true;
 		current = current->next;
 	}
 	return (count);
