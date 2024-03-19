@@ -25,6 +25,7 @@ SRCS =	./src/minishell.c \
 		./src/lexer/expand_dollar.c \
 		./src/lexer/expand_squotes.c \
 		./src/lexer/expand_wildcard.c \
+		./src/lexer/expand_wildcard2.c \
 		\
 		./src/parser/ast_parser.c\
 		./src/parser/ast_cmd.c\

@@ -119,12 +119,15 @@ char		*find_limiter(char *user_input);
 t_token		*tokenizer(char *user_input, t_env *env);
 int			set_token_length(char *user_input);
 t_token_type	set_token_type(char	*content, int token_length);
+//expansions
 void		expand_token(t_token *token, t_env *env);
 char		*expand_dollar_sign(const char *content, t_env *env);
 char		*expand_double_quote(const char *content, t_env *env);
 char		*expand_wildcard(char *content);
 char		*remove_double_quotes(const char *content);
 char		*remove_single_quotes(const char *content);
+char		**pattern_split(char *pattern);
+int			wc_match(char *pattern, char *str);
 // token_ops
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);
@@ -186,6 +189,7 @@ void		free_token_list(t_token *token_head);
 void		free_env_list(t_env *env);
 void		free_env_node(t_env *node);
 void		free_char_array(char **str);
+void		free_token(t_token *token);
 // debug
 void		token_print(t_token *tokens);
 void		print_char_array(char **str);

@@ -6,71 +6,78 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 19:43:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/20 00:06:36 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static bool	wildcard_prefix(const char *prefix, const char *str)
+static int	count_parts(char *pattern)
 {
-	size_t	prefix_len;
-	size_t	str_len;
+	int		n_parts;
 
-	if (prefix == NULL || str == NULL)
-		return (false);
-	prefix_len = ft_strlen(prefix);
-	str_len = ft_strlen(str);
-	if (str_len < prefix_len)
-		return (false);
-	return (ft_strncmp(prefix, str, prefix_len) == 0);
-}
-
-static bool	wildcard_suffix(const char *suffix, const char *str)
-{
-	size_t	suffix_len;
-	size_t	str_len;
-
-	if (suffix == NULL || str == NULL)
-		return (false);
-	suffix_len = ft_strlen(suffix);
-	str_len = ft_strlen(str);
-	if (suffix_len > str_len)
-		return (false);
-	return (ft_strncmp(str + str_len - suffix_len, suffix, suffix_len) == 0);
-}
-
-bool	analyze_pattern(const char *pattern, const char *file)
-{
-	const char	*wildcard = ft_strchr(pattern, '*');
-	const char	*suffix;
-	char		*prefix;
-	bool		result;
-
-	if (wildcard == pattern)
-		return (wildcard_suffix(pattern + 1, file));
-	else if (*(wildcard + 1) == '\0')
+	n_parts = 1;
+	while (*pattern != '\0')
 	{
-		prefix = ft_strndup(pattern, wildcard - pattern);
-		result = wildcard_prefix(prefix, file);
-		free(prefix);
-		return (result);
+		if (*pattern == '*')
+			n_parts++;
+		pattern++;
 	}
-	else
-	{
-		prefix = ft_strndup(pattern, wildcard - pattern);
-		suffix = wildcard + 1;
-		result = wildcard_prefix(prefix, file) && wildcard_suffix(suffix, file);
-		free(prefix);
-		return (result);
-	}
+	return (n_parts);
 }
 
-char	*expand_wildcard(char *content)
+static char	**alloc_and_split(char *pattern, int n_parts)
 {
-	char	*expanded_content;
+	char	**parts;
+	char	*start;
+	char	*pattern_ptr;
+	int		idx;
 
-	expanded_content = content;
-	
-	return (expanded_content);
+	parts = (char **)ft_calloc(n_parts + 1, sizeof(char *));
+	if (parts == NULL)
+		return (NULL); //TODO handle malloc error
+	start = pattern;
+	pattern_ptr = pattern;
+	idx = 0;
+	while (*pattern_ptr != '\0')
+	{
+		if (*pattern_ptr == '*')
+		{
+			parts[idx++] = ft_strndup(start, pattern_ptr - start);
+			start = pattern_ptr + 1;
+		}
+		pattern_ptr++;
+	}
+	parts[idx++] = ft_strndup(start, pattern_ptr - start);
+	parts[idx] = NULL;
+	return (parts);
+}
+
+char	**pattern_split(char *pattern)
+{
+	char	**parts;
+	int		n_parts;
+
+	n_parts = count_parts(pattern);
+	parts = alloc_and_split(pattern, n_parts);
+	return (parts);
+}
+
+int	wc_match(char *pattern, char *str)
+{
+	while (*pattern != '\0' && *str != '\0')
+	{
+		if (*pattern == '*')
+			return (wc_match(pattern + 1, str) || wc_match(pattern, str + 1));
+		else if (*pattern == *str)
+		{
+			pattern++;
+			str++;
+		}
+		else
+			return (0);
+	}
+	while (*pattern == '*')
+		pattern++;
+	return (*pattern == '\0' && *str == '\0');
 }

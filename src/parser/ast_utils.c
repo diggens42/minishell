@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/18 16:20:39 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/18 18:27:30 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	count_command_group(t_token *tokens)
 		if (current->type != COMMAND)
 			break ;
 		count++;
-		current->used = true;
 		current = current->next;
 	}
 	return (count);
