@@ -194,3 +194,5 @@ cd .. || pwd
 pwd && cd ..
 (cd .. && pwd) || pwd
 (cd .. && pwd) && pwd
+
+mkdir test && cd test && rmdir ../test && pwd

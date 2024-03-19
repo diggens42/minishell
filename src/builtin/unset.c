@@ -6,33 +6,36 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/13 22:10:37 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/19 21:29:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// TODO multi input
-bool	builtin_unset(char *key, t_env **env)
+bool	builtin_unset(char **argv, t_env **env)
 {
 	t_env	*current;
 	t_env	*prev;
+	int		i;
 
-	current = *env;
-	prev = NULL;
-	while (current != NULL)
+	i = 0;
+	while (argv[++i] != NULL)
 	{
-		if (ft_strcmp(current->key, key) == 0)
+		current = *env;
+		prev = NULL;
+		while (current != NULL)
 		{
-			if (prev == NULL)
-				*env = current->next;
-			else
-				prev->next = current->next;
-			free_env_node(current);
-			return (true);
+			if (ft_strcmp(current->key, argv[i]) == 0)
+			{
+				if (prev == NULL)
+					*env = current->next;
+				else
+					prev->next = current->next;
+				free_env_node(current);
+			}
+			prev = current;
+			current = current->next;
 		}
-		prev = current;
-		current = current->next;
 	}
 	return (true);
 }

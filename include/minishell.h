@@ -119,10 +119,10 @@ char			*find_limiter(char *user_input);
 // bool			builtin_cd(char **argv, t_env **env);
 bool			builtin_echo(char **argv);
 bool			builtin_env(t_env *env);
-void			builtin_exit(void);
+bool			builtin_exit(char **argv);
 // bool			builtin_export(t_token *tokens, t_env *env);
 bool			builtin_pwd(void);
-bool			builtin_unset(char *key, t_env **env);
+bool			builtin_unset(char **argv, t_env **env);
 // builtin_utils
 void			update_env(t_env **env, char *key, char *value);
 

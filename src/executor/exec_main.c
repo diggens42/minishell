@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/14 18:41:02 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/19 21:35:48 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ bool	exec_command(char **argv, t_env *env)
 
 bool	exec_builtin(char **argv, t_env *env)
 {
+
 	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
@@ -116,12 +117,13 @@ bool	exec_builtin(char **argv, t_env *env)
 	// if (ft_strcmp("export", argv[0]) == 0)
 	// 	return (builtin_export(argv[0], env));
 	if (ft_strcmp("unset", argv[0]) == 0)
-		return (builtin_unset(argv[1], &env));
+		return (builtin_unset(argv, &env));
 	if (ft_strcmp("env", argv[0]) == 0)
 		return (builtin_env(env));
 	if (ft_strcmp("exit", argv[0]) == 0)
-		builtin_exit();
+		return (builtin_exit(argv));
 	return (false);
+	
 }
 
 void	exec_finish(char **argv, t_env *env)
