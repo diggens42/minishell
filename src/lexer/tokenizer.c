@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/15 16:16:07 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/20 17:11:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ t_token	*tokenizer(char *user_input, t_env *env)
 		user_input += token->length;
 		expand_token(token, env);
 	}
-	// check_tokens(token_head);
+	check_tokens(token_head);
 	return (token_head);
 }

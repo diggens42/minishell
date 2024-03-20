@@ -5,79 +5,106 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 00:06:36 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/20 19:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	count_parts(char *pattern)
+static char	*conc_paths(char *dir_path, char *filename)
 {
-	int		n_parts;
+	size_t	dir_len;
+	size_t	file_len;
+	size_t	full_path_len;
+	char	*full_path;
 
-	n_parts = 1;
-	while (*pattern != '\0')
-	{
-		if (*pattern == '*')
-			n_parts++;
-		pattern++;
-	}
-	return (n_parts);
-}
-
-static char	**alloc_and_split(char *pattern, int n_parts)
-{
-	char	**parts;
-	char	*start;
-	char	*pattern_ptr;
-	int		idx;
-
-	parts = (char **)ft_calloc(n_parts + 1, sizeof(char *));
-	if (parts == NULL)
+	dir_len = ft_strlen(dir_path);
+	file_len = ft_strlen(filename);
+	full_path_len = dir_len + file_len + 2;
+	full_path = (char *)ft_calloc(1, full_path_len);
+	if (full_path == NULL)
 		return (NULL); //TODO handle malloc error
-	start = pattern;
-	pattern_ptr = pattern;
-	idx = 0;
-	while (*pattern_ptr != '\0')
-	{
-		if (*pattern_ptr == '*')
-		{
-			parts[idx++] = ft_strndup(start, pattern_ptr - start);
-			start = pattern_ptr + 1;
-		}
-		pattern_ptr++;
-	}
-	parts[idx++] = ft_strndup(start, pattern_ptr - start);
-	parts[idx] = NULL;
-	return (parts);
+	ft_strlcpy(full_path, dir_path, dir_len + 1);
+	full_path[dir_len] = '/';
+	ft_strlcpy(full_path + dir_len + 1, filename, file_len + 1);
+	return (full_path);
 }
 
-char	**pattern_split(char *pattern)
+static char	*append_res(char *res, char *str)
 {
-	char	**parts;
-	int		n_parts;
+	size_t	res_len;
+	size_t	str_len;
+	char	*new_res;
 
-	n_parts = count_parts(pattern);
-	parts = alloc_and_split(pattern, n_parts);
-	return (parts);
+	res_len = 0;
+	if (res != NULL)
+		res_len = ft_strlen(res);
+	str_len = ft_strlen(str);
+	new_res = (char *)ft_calloc(1, res_len + str_len + 2);
+	if (new_res == NULL)
+	{
+		free(res);
+		return (NULL);
+	}
+	if (res_len > 0)
+	{
+		ft_strlcpy(new_res, res, res_len + 1);
+		new_res[res_len] = ' ';
+		res_len++;
+	}
+	ft_strlcpy(new_res + res_len, str, str_len + 1);
+	if (res)
+		free(res);
+	return (new_res);
 }
 
-int	wc_match(char *pattern, char *str)
+static char	*loop_dir(char *cwd, struct dirent *ent, char *pattern, char *res)
 {
-	while (*pattern != '\0' && *str != '\0')
+	char	*filename;
+	char	*path;
+	bool	match;
+
+	filename = ent->d_name;
+	match = match_wildcard(pattern, filename);
+	if (match == true)
 	{
-		if (*pattern == '*')
-			return (wc_match(pattern + 1, str) || wc_match(pattern, str + 1));
-		else if (*pattern == *str)
-		{
-			pattern++;
-			str++;
-		}
-		else
-			return (0);
+		path = conc_paths(cwd, filename);
+		res = append_res(res, path);
+		free(path);
 	}
-	while (*pattern == '*')
-		pattern++;
-	return (*pattern == '\0' && *str == '\0');
+	return (res);
+}
+
+static char	*match_dir_entries(DIR *dir, char *pattern, char *cwd)
+{
+	char			*res;
+	struct dirent	*ent;
+
+	res = NULL;
+	while ((ent = readdir(dir)) != NULL)
+		res = loop_dir(cwd, ent, pattern, res);
+	return (res);
+}
+
+char	*expand_wildcard(char *content)
+{
+	char	*res;
+	char	*cwd;
+	DIR		*dir;
+
+	res = NULL;
+	cwd = getcwd(NULL, 0);
+	if(cwd == NULL)
+		return (NULL); // TODO handle error unable to get cwd
+	dir = opendir(cwd);
+	if (dir == NULL)
+	{
+		free(cwd);
+		return (NULL); //TODO handle error unable to open cwd
+	}
+	res = match_dir_entries(dir, content, cwd);
+	closedir(dir);
+	free(cwd);
+	return (res);
 }

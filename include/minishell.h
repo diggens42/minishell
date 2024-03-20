@@ -124,10 +124,10 @@ void		expand_token(t_token *token, t_env *env);
 char		*expand_dollar_sign(const char *content, t_env *env);
 char		*expand_double_quote(const char *content, t_env *env);
 char		*expand_wildcard(char *content);
+int			match_wildcard(char *pattern, char *str);
+void		wildcard_path_to_token(char *path, t_token **current);
 char		*remove_double_quotes(const char *content);
 char		*remove_single_quotes(const char *content);
-char		**pattern_split(char *pattern);
-int			wc_match(char *pattern, char *str);
 // token_ops
 t_token		*token_new(void);
 t_token		*token_last(t_token *token);
