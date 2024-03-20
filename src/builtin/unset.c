@@ -6,11 +6,21 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/19 21:29:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/20 18:22:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	free_env_node(t_env *node)
+{
+	if (node != NULL)
+	{
+		free(node->key);
+		free(node->value);
+		free(node);
+	}
+}
 
 bool	builtin_unset(char **argv, t_env **env)
 {
@@ -32,6 +42,7 @@ bool	builtin_unset(char **argv, t_env **env)
 				else
 					prev->next = current->next;
 				free_env_node(current);
+				break ;
 			}
 			prev = current;
 			current = current->next;

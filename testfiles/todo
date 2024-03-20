@@ -1,2 +1,4 @@
 
 - replace printf and ft_printf with ft_putstr_fd (STDERR)!
+- export() nach alphabeth sortieren?
+

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/03/19 12:04:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/20 18:20:28 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,7 @@ void	free_env_list(t_env *env)
 	}
 }
 
-void	free_env_node(t_env *node)
-{
-	if (node != NULL)
-	{
-		free(node->key);
-		free(node->value);
-		free(node);
-	}
-}
+
 
 void	free_char_array(char **str)
 {

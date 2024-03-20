@@ -116,11 +116,11 @@ void			read_eval_print_loop(t_env *env);
 char			*find_limiter(char *user_input);
 
 // BUILTIN
-// bool			builtin_cd(char **argv, t_env **env);
+bool			builtin_cd(char **argv, t_env **env);
 bool			builtin_echo(char **argv);
 bool			builtin_env(t_env *env);
 bool			builtin_exit(char **argv);
-// bool			builtin_export(t_token *tokens, t_env *env);
+bool			builtin_export(char **argv, t_env **env);
 bool			builtin_pwd(void);
 bool			builtin_unset(char **argv, t_env **env);
 // builtin_utils
@@ -134,6 +134,8 @@ void			exec_children(t_ast *ast_node, t_env *env);
 bool 			exec_command(char **argv, t_env *env);
 bool			exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
+void			exec_redirection(t_ast *ast_node);
+
 // exec_path
 char			**create_pathname(char *command, t_env *env);
 char			*find_pathname(char **path);
@@ -177,11 +179,10 @@ void			print_ast(t_ast* node, int level);
 
 // UTILS
 t_env			*init_env(char **envp);
-char			*ft_getenv(const char *name, t_env *env);
+char			*ft_getenv(char *key, t_env *env);
 // free
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
-void			free_env_node(t_env *node);
 void			free_char_array(char **str);
 void			free_token(t_token *token);
 // exit
