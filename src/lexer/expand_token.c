@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 17:18:52 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/20 19:36:03 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,26 @@
 static void process_wildcard(t_token *token)
 {
 	char	*expanded_content;
+	char	*path;
 
 	expanded_content = expand_wildcard(token->content);
-	free(token->content);
-	token->content = expanded_content;
-	token->length = ft_strlen(expanded_content);
-	token->type = COMMAND;
+	path = ft_strtok(expanded_content, " ");
+	if (path != NULL)
+	{
+		free(token->content);
+		token->content = ft_strdup(path);
+		token->length = ft_strlen(path);
+		token->type = COMMAND;
+		path = ft_strtok(NULL, " ");
+		wildcard_path_to_token(path, &token);
+	}
+	free(expanded_content);
 }
 
 static void process_single_quotes(t_token *token)
 {
 	char	*removed_squotes;
-	
+
 	removed_squotes = remove_single_quotes(token->content);
 	free(token->content);
 	token->content = removed_squotes;
