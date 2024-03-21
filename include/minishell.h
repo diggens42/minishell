@@ -110,6 +110,16 @@ typedef struct	s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct	s_exec
+{
+	int	fd_stdin;
+	int	fd_stdout;
+	// bool	fd_change;
+	// int	fd_in;
+	// int	fd_out;
+	int	exit_status;
+}	t_exec;
+
 // minishell.c
 int				main(int argc, char **argv, char **envp);
 void			read_eval_print_loop(t_env *env);
@@ -128,13 +138,16 @@ void			update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
 // exec_main
-bool			exec_main(t_ast *ast_head, t_env *env);
-bool			exec_pipe(t_ast *ast_head, t_env *env);
-void			exec_children(t_ast *ast_node, t_env *env);
+bool			exec_main(t_ast *ast_head, t_env *env, t_exec *exec);
+bool			exec_pipe(t_ast *ast_head, t_env *env, t_exec *exec);
+void			exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
 bool 			exec_command(char **argv, t_env *env);
 bool			exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
-void			exec_redirection(t_ast *ast_node);
+void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type);
+void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type);
+t_exec			*init_fd(void);
+void			reset_fd(t_exec *exec);
 
 // exec_path
 char			**create_pathname(char *command, t_env *env);

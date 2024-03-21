@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/19 12:14:14 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/21 18:25:58 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ void	read_eval_print_loop(t_env *env)
 	// char		*limiter;
 	t_token		*token_head;
 	t_ast		*ast_head;
+	t_exec		*exec;
 
 	while (true)
 	{
+		exec = init_fd();
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
 		if (user_input[0] == '\0')
@@ -72,7 +74,9 @@ void	read_eval_print_loop(t_env *env)
 		free(user_input);
 		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
-		exec_main(ast_head, env);
+		print_ast(ast_head, 0);
+		exec_main(ast_head, env, exec);
+		reset_fd(exec);
 	}
 }
 

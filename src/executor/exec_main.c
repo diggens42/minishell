@@ -6,65 +6,141 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 20:11:33 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/21 19:43:50 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-bool	exec_main(t_ast *ast_node, t_env *env)
+t_exec	*init_fd(void)
+{
+	t_exec	*exec;
+
+	exec = (t_exec *)ft_calloc(1, sizeof(t_exec));
+	if (exec == NULL)
+		ft_exit("malloc");
+
+	exec->fd_stdin = dup(STDIN_FILENO);
+	if (exec->fd_stdin == -1)
+		ft_exit("dup");
+
+	exec->fd_stdout = dup(STDOUT_FILENO);
+	if (exec->fd_stdout == -1)
+		ft_exit("dup");
+
+	// exec->fd_in = -1;
+	// exec->fd_out = -1;
+	exec->exit_status = 0;
+	// exec->fd_change = false;
+
+	return (exec);
+}
+
+void	reset_fd(t_exec *exec)
+{
+	dup2(exec->fd_stdin, STDIN_FILENO);
+	// close (exec->fd_stdin);
+	dup2(exec->fd_stdout, STDOUT_FILENO);
+	// close (exec->fd_stdout);
+	// free(exec);
+}
+
+bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 {
 	// fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
 	bool	exit_status;
-	int		fd_stdout;
-
-	fd_stdout = dup(STDOUT_FILENO); // TODO error
 
 	if (ast_node == NULL)
 		return (true);
 	if (ast_node->type == AND)
 	{
-		exit_status = exec_main(ast_node->left, env);
+		exit_status = exec_main(ast_node->left, env, exec);
 		if (exit_status == true)
-			exit_status = exec_main(ast_node->right, env);
+			exit_status = exec_main(ast_node->right, env, exec);
 	}
 	else if (ast_node->type == OR)
 	{
-		exit_status = exec_main(ast_node->left, env);
+		exit_status = exec_main(ast_node->left, env, exec);
 		if (exit_status == false)
-			exit_status = exec_main(ast_node->right, env);
+			exit_status = exec_main(ast_node->right, env, exec);
 	}
 	else if (ast_node->type == PIPE)
-		exit_status = exec_pipe(ast_node, env);
-	else if (ast_node->type == REDIR_IN || ast_node->type == REDIR_OUT || ast_node->type == REDIR_APPEND)
+		exit_status = exec_pipe(ast_node, env, exec);
+	else if (ast_node->type == REDIR_IN || ast_node->type == REDIR_HEREDOC)
 	{
-		exec_redirection(ast_node->right);
-		exit_status = exec_main(ast_node->left, env);
-		dup2(fd_stdout, STDOUT_FILENO);
-		close (fd_stdout);
+		exec_redir_in(ast_node->right, exec, ast_node->type);
+		exit_status = exec_main(ast_node->left, env, exec);
+	}
+	else if (ast_node->type == REDIR_OUT || ast_node->type == REDIR_APPEND)
+	{
+		exec_redir_out(ast_node->right, exec, ast_node->type);
+		exit_status = exec_main(ast_node->left, env, exec);
 	}
 	else
 	{
 		exit_status = exec_command(ast_node->argv, env);
-		ft_putstr_fd("here", STDERR_FILENO);
 	}
 	return (exit_status);
 }
 
-void	exec_redirection(t_ast *ast_node)
+void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_redirection with %s\n\x1b[0m", ast_node->argv[0]);
-	int fd;
+	// fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
+	int fd_out;
+	struct stat stat_fd_out;
+	struct stat stat_fd_stdout;
 
-	fd = open(ast_node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
+	if (type == REDIR_OUT)
+		fd_out = open(ast_node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+	{
+		ft_putstr_fd("here\n", STDERR_FILENO);
+		fd_out = open(ast_node->argv[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	if (fd_out == -1)
 		ft_exit("open");
-	if (dup2(fd, STDOUT_FILENO) == -1)
-		ft_exit("dup2");
-	close(fd);
+
+	fstat(STDOUT_FILENO, &stat_fd_out);
+	fstat(exec->fd_stdout, &stat_fd_stdout);
+
+	// if (exec->fd_change == false)
+	if (stat_fd_out.st_ino == stat_fd_stdout.st_ino)
+	{
+		if (dup2(fd_out, STDOUT_FILENO) == -1)
+			ft_exit("dup2");
+		// exec->fd_change = true;
+		close(fd_out);
+	}
 }
 
-bool	exec_pipe(t_ast *ast_node, t_env *env)
+void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type)
+{
+	// fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
+	int fd_in;
+	struct stat stat_fd_in;
+	struct stat stat_fd_stdin;
+
+	if (type == REDIR_IN)
+		fd_in = open(ast_node->argv[0], O_RDONLY);
+	else
+		fd_in = -1;
+	if (fd_in == -1)
+		ft_exit("open");
+
+	fstat(STDIN_FILENO, &stat_fd_in);
+	fstat(exec->fd_stdin, &stat_fd_stdin);
+
+	// if (exec->fd_change == false)
+	if (stat_fd_in.st_ino == stat_fd_stdin.st_ino)
+	{
+		if (dup2(fd_in, STDIN_FILENO) == -1)
+			ft_exit("dup2");
+		// exec->fd_change = true;
+		close(fd_in);
+	}
+}
+
+bool	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
 {
 	// fprintf(stderr, "\x1b[33mEnter exec_pipe with %s\n\x1b[0m", ast_node->argv[0]);
 	pid_t	pid;
@@ -73,7 +149,7 @@ bool	exec_pipe(t_ast *ast_node, t_env *env)
 	pid = ft_fork();
 	if (pid == 0)
 	{
-		exec_children(ast_node, env);
+		exec_children(ast_node, env, exec);
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &wstatus, 0);
@@ -83,7 +159,7 @@ bool	exec_pipe(t_ast *ast_node, t_env *env)
 		return (false);
 }
 
-void	exec_children(t_ast *ast_node, t_env *env)
+void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
 {
 	// fprintf(stderr, "\x1b[33mEnter exec_children with %s\n\x1b[0m", ast_node->argv[0]);
 	int		fd[2];
@@ -97,7 +173,7 @@ void	exec_children(t_ast *ast_node, t_env *env)
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			ft_exit("dup2");
 		close(fd[1]);
-		exec_main(ast_node->left, env);
+		exec_main(ast_node->left, env, exec);
 	}
 	else
 	{
@@ -105,34 +181,38 @@ void	exec_children(t_ast *ast_node, t_env *env)
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 			ft_exit("dup2");
 		close(fd[0]);
-		exec_main(ast_node->right, env);
+		exec_main(ast_node->right, env, exec);
 		waitpid(pid, NULL, 0);
 	}
 }
 
 bool	exec_command(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
 	pid_t	pid;
 	int		wstatus;
 
 	if (exec_builtin(argv, env) == true)
 		return (true);
-	pid = fork();
+	pid = ft_fork(); // TODO
 	if (pid == 0)
 	{
 		exec_finish(argv, env);
 	}
 	waitpid(pid, &wstatus, 0);
 	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
+	{
 		return (true);
+	}
 	else
+	{
 		return (false);
+	}
 }
 
 bool	exec_builtin(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -152,7 +232,7 @@ bool	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
 	char	**path;
 	char	*pathname;
 	char	**envp;
