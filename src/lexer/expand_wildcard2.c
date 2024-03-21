@@ -6,12 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 19:32:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/21 19:27:45 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+//checks if a given string matches a wildcard pattern
 int	match_wildcard(char *pattern, char *str)
 {
 	while (*pattern != '\0' && *str != '\0')
@@ -31,6 +32,7 @@ int	match_wildcard(char *pattern, char *str)
 	return (*pattern == '\0' && *str == '\0');
 }
 
+//converts paths of wildcard matches into tokens
 void	wildcard_path_to_token(char *path, t_token **current)
 {
 	t_token	*new_token;

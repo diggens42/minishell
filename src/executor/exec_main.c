@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 20:11:33 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/21 15:31:38 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,19 @@
 bool	exec_main(t_ast *ast_node, t_env *env)
 {
 	// fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
-	bool	exit_status;
-	int		fd_stdout;
+	bool				exit_status;
+	int					fd_stdout;
+	struct sigaction	act_int;
+	struct sigaction	act_quit;
 
+	sigemptyset(&act_int.sa_mask);
+	act_int.sa_flags = 0;
+	sigaction(SIGINT, &act_int, NULL);
+	act_quit.sa_handler = ctrl_backslash_handler;
+	sigemptyset(&act_quit.sa_mask);
+	act_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &act_quit, NULL);
 	fd_stdout = dup(STDOUT_FILENO); // TODO error
-
 	if (ast_node == NULL)
 		return (true);
 	if (ast_node->type == AND)
@@ -46,14 +54,14 @@ bool	exec_main(t_ast *ast_node, t_env *env)
 	else
 	{
 		exit_status = exec_command(ast_node->argv, env);
-		ft_putstr_fd("here", STDERR_FILENO);
 	}
+	signal(SIGQUIT, ctrl_backslash_handler);
 	return (exit_status);
 }
 
 void	exec_redirection(t_ast *ast_node)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_redirection with %s\n\x1b[0m", ast_node->argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_redirection with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd;
 
 	fd = open(ast_node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -112,18 +120,26 @@ void	exec_children(t_ast *ast_node, t_env *env)
 
 bool	exec_command(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
 	pid_t	pid;
 	int		wstatus;
+	struct sigaction	act_int_og;
+	struct sigaction	act_quit_og;
 
+	sigaction(SIGINT, NULL, &act_int_og);
+	sigaction(SIGQUIT, NULL, &act_quit_og);
 	if (exec_builtin(argv, env) == true)
 		return (true);
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 		exec_finish(argv, env);
 	}
 	waitpid(pid, &wstatus, 0);
+	sigaction(SIGINT, &act_int_og, NULL);
+	sigaction(SIGQUIT, &act_quit_og, NULL);
 	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
 		return (true);
 	else
@@ -132,7 +148,7 @@ bool	exec_command(char **argv, t_env *env)
 
 bool	exec_builtin(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -152,7 +168,7 @@ bool	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
 	char	**path;
 	char	*pathname;
 	char	**envp;

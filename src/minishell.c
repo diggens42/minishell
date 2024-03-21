@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/19 12:14:14 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/21 14:34:14 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, ctrl_c_handler);
+	signal(SIGQUIT, ctrl_backslash_handler);
+	disable_signal_echo();
 	env = init_env(envp);
 	read_eval_print_loop(env);
 	return (EXIT_SUCCESS);
@@ -36,6 +39,11 @@ void	read_eval_print_loop(t_env *env)
 	{
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
+		if (user_input == NULL)
+		{
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			break ;
+		}
 		if (user_input[0] == '\0')
 		{
 			free(user_input);

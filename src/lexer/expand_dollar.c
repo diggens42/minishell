@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_expand.c                                   :+:      :+:    :+:   */
+/*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 14:54:57 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/21 19:29:52 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+//extracs variable names starting after a '$' sign
+//and ending before first slash ('/') or null terminator ('\0')
 static char	*extract_var_name(const char *content)
 {
 	char	*slash_pos;
@@ -31,6 +33,7 @@ static char	*extract_var_name(const char *content)
 	return (var_name);
 }
 
+//constructs new string by replacing '$' prefixed variable with its env value
 static char	*construct_new_content(const char *var_value, const char *content)
 {
 	char	*slash_pos;
@@ -58,6 +61,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	return (new_content);
 }
 
+//replaces variables prefixed with $ (e.g. $HOME) with their corresponding environment values
 char	*expand_dollar_sign(const char *content, t_env *env)
 {
 	char	*var_name;

@@ -6,12 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 19:36:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/21 19:27:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+//concatenates directory path and filename into single path
 static char	*conc_paths(char *dir_path, char *filename)
 {
 	size_t	dir_len;
@@ -31,6 +32,7 @@ static char	*conc_paths(char *dir_path, char *filename)
 	return (full_path);
 }
 
+//appends all wildcard matches paths into one string separated by a space
 static char	*append_res(char *res, char *str)
 {
 	size_t	res_len;
@@ -59,6 +61,7 @@ static char	*append_res(char *res, char *str)
 	return (new_res);
 }
 
+//checks if directory entry matches a pattern and adds path to result string
 static char	*loop_dir(char *cwd, struct dirent *ent, char *pattern, char *res)
 {
 	char	*filename;
@@ -76,6 +79,7 @@ static char	*loop_dir(char *cwd, struct dirent *ent, char *pattern, char *res)
 	return (res);
 }
 
+//iterates over all directory entries and appends matches to result string
 static char	*match_dir_entries(DIR *dir, char *pattern, char *cwd)
 {
 	char			*res;
@@ -87,6 +91,7 @@ static char	*match_dir_entries(DIR *dir, char *pattern, char *cwd)
 	return (res);
 }
 
+//expands wildcard patterns by matching against files in cwd
 char	*expand_wildcard(char *content)
 {
 	char	*res;

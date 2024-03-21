@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_squotes.c                                   :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/12 20:43:39 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/21 19:12:29 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/21 14:10:15 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/21 14:32:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//removes leading and trailing single quotes from a string
-char	*remove_single_quotes(const char *content)
+void	ctrl_c_handler(int signal)
 {
-	char	*result;
-	int		len;
+	(void)signal;
+	ft_putstr_fd("\n", STDERR_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-	len = ft_strlen(content);
-	result = (char *)ft_calloc(len - 1, sizeof(char));
-	if (result == NULL)
-		return (NULL); //TODO handle malloc error
-	ft_strlcpy(result, content + 1, len - 1);
-	return (result);
+void	ctrl_backslash_handler(int signal)
+{
+	(void)signal;
+}
+
+void	disable_signal_echo(void)
+{
+	rl_catch_signals = 0;
+	rl_catch_sigwinch = 0;
 }

@@ -209,7 +209,10 @@ int				count_command_group(t_token *tokens);
 bool			is_redirect(t_token_type type);
 bool			is_logical(t_token_type type);
 void			print_ast(t_ast* node, int level);
-
+//signals
+void			ctrl_c_handler(int signal);
+void			ctrl_backslash_handler(int signal);
+void			disable_signal_echo(void);
 // UTILS
 t_env			*init_env(char **envp);
 char			*ft_getenv(char *key, t_env *env);
