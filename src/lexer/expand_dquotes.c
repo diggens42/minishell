@@ -6,18 +6,20 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 19:38:06 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/21 19:31:05 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+//extracts a variable name or path starting at a specified index
 static char	*extract_var(const char *content, int *start)
 {
 	char	*var_path;
 	int		end;
-	int		extr = *start - 1;
+	int		extr;
 
+	extr = *start - 1;
 	end = *start;
 	if (!(ft_isalpha(content[end]) || content[end] != '_'))
 		return (NULL);
@@ -29,6 +31,7 @@ static char	*extract_var(const char *content, int *start)
 	return (var_path);
 }
 
+//expands a variable into its value and concatenates it
 static char	*expand_and_concatenate(char *result, const char *var, t_env *env)
 {
 	char	*expanded;
@@ -41,6 +44,7 @@ static char	*expand_and_concatenate(char *result, const char *var, t_env *env)
 	return (new_result);
 }
 
+//appends a single char to the end of the string
 static char	*append_char(char *original, char c)
 {
 	char	*new_str;
@@ -62,6 +66,7 @@ static char	*append_char(char *original, char c)
 	return (new_str);
 }
 
+//processes a string enclosed in double quotes, expanding variables and concatenating literals
 char	*expand_double_quote(const char *content, t_env *env)
 {
 	char	*result;
@@ -87,6 +92,7 @@ char	*expand_double_quote(const char *content, t_env *env)
 	return (result);
 }
 
+//removes leading and trailing double quotes from a string
 char	*remove_double_quotes(const char *content)
 {
 	char	*remove_quotes;

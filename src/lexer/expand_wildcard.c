@@ -5,72 +5,111 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 19:43:44 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/21 19:27:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static bool	wildcard_prefix(const char *prefix, const char *str)
+//concatenates directory path and filename into single path
+static char	*conc_paths(char *dir_path, char *filename)
 {
-	size_t	prefix_len;
+	size_t	dir_len;
+	size_t	file_len;
+	size_t	full_path_len;
+	char	*full_path;
+
+	dir_len = ft_strlen(dir_path);
+	file_len = ft_strlen(filename);
+	full_path_len = dir_len + file_len + 2;
+	full_path = (char *)ft_calloc(1, full_path_len);
+	if (full_path == NULL)
+		return (NULL); //TODO handle malloc error
+	ft_strlcpy(full_path, dir_path, dir_len + 1);
+	full_path[dir_len] = '/';
+	ft_strlcpy(full_path + dir_len + 1, filename, file_len + 1);
+	return (full_path);
+}
+
+//appends all wildcard matches paths into one string separated by a space
+static char	*append_res(char *res, char *str)
+{
+	size_t	res_len;
 	size_t	str_len;
+	char	*new_res;
 
-	if (prefix == NULL || str == NULL)
-		return (false);
-	prefix_len = ft_strlen(prefix);
+	res_len = 0;
+	if (res != NULL)
+		res_len = ft_strlen(res);
 	str_len = ft_strlen(str);
-	if (str_len < prefix_len)
-		return (false);
-	return (ft_strncmp(prefix, str, prefix_len) == 0);
-}
-
-static bool	wildcard_suffix(const char *suffix, const char *str)
-{
-	size_t	suffix_len;
-	size_t	str_len;
-
-	if (suffix == NULL || str == NULL)
-		return (false);
-	suffix_len = ft_strlen(suffix);
-	str_len = ft_strlen(str);
-	if (suffix_len > str_len)
-		return (false);
-	return (ft_strncmp(str + str_len - suffix_len, suffix, suffix_len) == 0);
-}
-
-bool	analyze_pattern(const char *pattern, const char *file)
-{
-	const char	*wildcard = ft_strchr(pattern, '*');
-	const char	*suffix;
-	char		*prefix;
-	bool		result;
-
-	if (wildcard == pattern)
-		return (wildcard_suffix(pattern + 1, file));
-	else if (*(wildcard + 1) == '\0')
+	new_res = (char *)ft_calloc(1, res_len + str_len + 2);
+	if (new_res == NULL)
 	{
-		prefix = ft_strndup(pattern, wildcard - pattern);
-		result = wildcard_prefix(prefix, file);
-		free(prefix);
-		return (result);
+		free(res);
+		return (NULL);
 	}
-	else
+	if (res_len > 0)
 	{
-		prefix = ft_strndup(pattern, wildcard - pattern);
-		suffix = wildcard + 1;
-		result = wildcard_prefix(prefix, file) && wildcard_suffix(suffix, file);
-		free(prefix);
-		return (result);
+		ft_strlcpy(new_res, res, res_len + 1);
+		new_res[res_len] = ' ';
+		res_len++;
 	}
+	ft_strlcpy(new_res + res_len, str, str_len + 1);
+	if (res)
+		free(res);
+	return (new_res);
 }
 
+//checks if directory entry matches a pattern and adds path to result string
+static char	*loop_dir(char *cwd, struct dirent *ent, char *pattern, char *res)
+{
+	char	*filename;
+	char	*path;
+	bool	match;
+
+	filename = ent->d_name;
+	match = match_wildcard(pattern, filename);
+	if (match == true)
+	{
+		path = conc_paths(cwd, filename);
+		res = append_res(res, path);
+		free(path);
+	}
+	return (res);
+}
+
+//iterates over all directory entries and appends matches to result string
+static char	*match_dir_entries(DIR *dir, char *pattern, char *cwd)
+{
+	char			*res;
+	struct dirent	*ent;
+
+	res = NULL;
+	while ((ent = readdir(dir)) != NULL)
+		res = loop_dir(cwd, ent, pattern, res);
+	return (res);
+}
+
+//expands wildcard patterns by matching against files in cwd
 char	*expand_wildcard(char *content)
 {
-	char	*expanded_content;
+	char	*res;
+	char	*cwd;
+	DIR		*dir;
 
-	expanded_content = content;
-	
-	return (expanded_content);
+	res = NULL;
+	cwd = getcwd(NULL, 0);
+	if(cwd == NULL)
+		return (NULL); // TODO handle error unable to get cwd
+	dir = opendir(cwd);
+	if (dir == NULL)
+	{
+		free(cwd);
+		return (NULL); //TODO handle error unable to open cwd
+	}
+	res = match_dir_entries(dir, content, cwd);
+	closedir(dir);
+	free(cwd);
+	return (res);
 }

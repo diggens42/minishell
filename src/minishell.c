@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/22 14:54:19 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:19:08 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, ctrl_c_handler);
+	signal(SIGQUIT, ctrl_backslash_handler);
+	disable_signal_echo();
 	env = init_env(envp);
 	read_eval_print_loop(env);
 	return (EXIT_SUCCESS);
@@ -38,6 +41,11 @@ void	read_eval_print_loop(t_env *env)
 		exec = init_fd();
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
+		if (user_input == NULL)
+		{
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			break ;
+		}
 		if (user_input[0] == '\0')
 		{
 			free(user_input);

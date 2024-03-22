@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 15:11:21 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:20:22 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
 
 bool	exec_command(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
 	pid_t	pid;
 	int		wstatus;
 
@@ -242,7 +242,7 @@ bool	exec_command(char **argv, t_env *env)
 
 bool	exec_builtin(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -262,7 +262,7 @@ bool	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
 	char	**path;
 	char	*pathname;
 	char	**envp;
