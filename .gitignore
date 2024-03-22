@@ -54,3 +54,4 @@ dkms.conf
 # my own
 .DS_Store
 minishell
+minishell_tester

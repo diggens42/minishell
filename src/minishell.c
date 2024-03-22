@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/21 18:25:58 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 14:54:19 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	read_eval_print_loop(t_env *env)
 		}
 		token_head = tokenizer(user_input, env);
 		free(user_input);
+		check_tokens(token_head);
 		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
 		print_ast(ast_head, 0);

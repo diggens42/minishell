@@ -114,9 +114,6 @@ typedef struct	s_exec
 {
 	int	fd_stdin;
 	int	fd_stdout;
-	// bool	fd_change;
-	// int	fd_in;
-	// int	fd_out;
 	int	exit_status;
 }	t_exec;
 
@@ -148,6 +145,7 @@ void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type);
 void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type);
 t_exec			*init_fd(void);
 void			reset_fd(t_exec *exec);
+int				ft_handle_here_doc(char *limiter);
 
 // exec_path
 char			**create_pathname(char *command, t_env *env);
@@ -206,4 +204,5 @@ void			token_print(t_token *tokens);
 void			print_char_array(char **str);
 void			check_tokens(t_token *tokens);
 void			print_ast(t_ast* node, int level);
+char			*token_type_to_string(t_token_type type);
 #endif

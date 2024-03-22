@@ -6,13 +6,14 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 18:54:18 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/19 12:09:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 12:59:58 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-const char* token_type_to_string(t_token_type type) {
+char	*token_type_to_string(t_token_type type)
+{
     switch (type) {
         case COMMAND: return "COMMAND";
         case PIPE: return "PIPE";

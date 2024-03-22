@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/21 19:43:50 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 15:11:21 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,7 @@ t_exec	*init_fd(void)
 	if (exec->fd_stdout == -1)
 		ft_exit("dup");
 
-	// exec->fd_in = -1;
-	// exec->fd_out = -1;
 	exec->exit_status = 0;
-	// exec->fd_change = false;
-
 	return (exec);
 }
 
@@ -47,7 +43,10 @@ void	reset_fd(t_exec *exec)
 
 bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
+	if (ast_node->argv != NULL)
+		fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
+	else
+		fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
 	bool	exit_status;
 
 	if (ast_node == NULL)
@@ -68,6 +67,8 @@ bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 		exit_status = exec_pipe(ast_node, env, exec);
 	else if (ast_node->type == REDIR_IN || ast_node->type == REDIR_HEREDOC)
 	{
+		if (ast_node->left->type == REDIR_HEREDOC)
+			exec_main(ast_node->left, env, exec);
 		exec_redir_in(ast_node->right, exec, ast_node->type);
 		exit_status = exec_main(ast_node->left, env, exec);
 	}
@@ -85,7 +86,7 @@ bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 
 void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd_out;
 	struct stat stat_fd_out;
 	struct stat stat_fd_stdout;
@@ -103,19 +104,43 @@ void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type)
 	fstat(STDOUT_FILENO, &stat_fd_out);
 	fstat(exec->fd_stdout, &stat_fd_stdout);
 
-	// if (exec->fd_change == false)
 	if (stat_fd_out.st_ino == stat_fd_stdout.st_ino)
 	{
 		if (dup2(fd_out, STDOUT_FILENO) == -1)
 			ft_exit("dup2");
-		// exec->fd_change = true;
-		close(fd_out);
 	}
+	close(fd_out);
+
+}
+
+// reads the input with gnl until LIMITER and sends it to the first pipe
+int	ft_handle_here_doc(char *limiter)
+{
+	fprintf(stderr, "\x1b[33mEnter ft_handle_here_doc with %s\n\x1b[0m", limiter);
+	int		fd_pipe[2];
+	char	*line;
+
+	ft_pipe(fd_pipe);
+	while (42)
+	{
+		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
+		line = get_next_line(STDIN_FILENO);
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		{
+			free(line);
+			// free(limiter);
+			break ;
+		}
+		ft_putstr_fd(line, fd_pipe[1]);
+		free(line);
+	}
+	close(fd_pipe[1]);
+	return (fd_pipe[0]);
 }
 
 void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd_in;
 	struct stat stat_fd_in;
 	struct stat stat_fd_stdin;
@@ -123,26 +148,27 @@ void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type)
 	if (type == REDIR_IN)
 		fd_in = open(ast_node->argv[0], O_RDONLY);
 	else
-		fd_in = -1;
+		fd_in = ft_handle_here_doc(ast_node->argv[0]);
 	if (fd_in == -1)
 		ft_exit("open");
 
 	fstat(STDIN_FILENO, &stat_fd_in);
 	fstat(exec->fd_stdin, &stat_fd_stdin);
 
-	// if (exec->fd_change == false)
 	if (stat_fd_in.st_ino == stat_fd_stdin.st_ino)
 	{
 		if (dup2(fd_in, STDIN_FILENO) == -1)
 			ft_exit("dup2");
-		// exec->fd_change = true;
-		close(fd_in);
 	}
+	close(fd_in);
 }
 
 bool	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_pipe with %s\n\x1b[0m", ast_node->argv[0]);
+	if (ast_node->argv != NULL)
+		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", ast_node->argv[0]);
+	else
+		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
 	pid_t	pid;
 	int		wstatus;
 
@@ -161,7 +187,11 @@ bool	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
 
 void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_children with %s\n\x1b[0m", ast_node->argv[0]);
+	if (ast_node->argv != NULL)
+		fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", ast_node->argv[0]);
+	else
+		fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+
 	int		fd[2];
 	pid_t	pid;
 
@@ -188,7 +218,7 @@ void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
 
 bool	exec_command(char **argv, t_env *env)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
 	pid_t	pid;
 	int		wstatus;
 
@@ -212,7 +242,7 @@ bool	exec_command(char **argv, t_env *env)
 
 bool	exec_builtin(char **argv, t_env *env)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -232,7 +262,7 @@ bool	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
 	char	**path;
 	char	*pathname;
 	char	**envp;
@@ -245,7 +275,7 @@ void	exec_finish(char **argv, t_env *env)
 		pathname = find_pathname(path);
 		free_char_array(path);
 	}
-	// fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
+	fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
 	envp = env_to_char_array(env);
 	if (execve(pathname, argv, envp) == -1)
 	{

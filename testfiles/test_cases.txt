@@ -196,3 +196,10 @@ pwd && cd ..
 (cd .. && pwd) && pwd
 
 mkdir test && cd test && rmdir ../test && pwd
+
+echo hello > file
+> file echo hello
+
+cat < file
+< file cat
+

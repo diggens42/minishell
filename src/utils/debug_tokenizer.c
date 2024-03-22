@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   debug_tokenizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:59:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/14 14:38:54 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 15:14:48 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static const char *token_type_to_string(t_token_type type)
+static const char *token_type_to_string2(t_token_type type)
 {
 	switch(type)
 	{
@@ -55,16 +55,16 @@ void	check_tokens(t_token *tokens)
 {
 	t_token *current_token;
 	int		i;
-	
+
 	current_token = tokens;
 	i = 1;
 	while (current_token != NULL)
 	{
 		ft_printf("Token: %d\n", i);
 		ft_printf("%s\n", current_token->content);
-		ft_printf("%s\n", token_type_to_string(current_token->type));
+		ft_printf("%s\n", token_type_to_string2(current_token->type));
 		ft_printf("-----------\n");
 		i++;
-		current_token = current_token->next; 
+		current_token = current_token->next;
 	}
 }
