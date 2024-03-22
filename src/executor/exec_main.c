@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 19:01:14 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ void	reset_fd(t_exec *exec)
 
 bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 {
-	if (ast_node->argv != NULL)
-		fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
-	else
-		fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+	// if (ast_node->argv != NULL)
+	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
 	bool	exit_status;
 
 	if (ast_node == NULL)
@@ -86,7 +86,7 @@ bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 
 void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd_out;
 	struct stat stat_fd_out;
 	struct stat stat_fd_stdout;
@@ -116,7 +116,7 @@ void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type)
 // reads the input with gnl until LIMITER and sends it to the first pipe
 int	ft_handle_here_doc(char *limiter)
 {
-	fprintf(stderr, "\x1b[33mEnter ft_handle_here_doc with %s\n\x1b[0m", limiter);
+	// fprintf(stderr, "\x1b[33mEnter ft_handle_here_doc with %s\n\x1b[0m", limiter);
 	int		fd_pipe[2];
 	char	*line;
 
@@ -140,7 +140,7 @@ int	ft_handle_here_doc(char *limiter)
 
 void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
+	// fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd_in;
 	struct stat stat_fd_in;
 	struct stat stat_fd_stdin;
@@ -165,10 +165,10 @@ void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type)
 
 bool	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
 {
-	if (ast_node->argv != NULL)
-		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", ast_node->argv[0]);
-	else
-		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+	// if (ast_node->argv != NULL)
+	// 	fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", ast_node->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
 	pid_t	pid;
 	int		wstatus;
 
@@ -187,10 +187,10 @@ bool	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
 
 void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
 {
-	if (ast_node->argv != NULL)
-		fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", ast_node->argv[0]);
-	else
-		fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+	// if (ast_node->argv != NULL)
+	// 	fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", ast_node->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
 
 	int		fd[2];
 	pid_t	pid;
@@ -275,7 +275,7 @@ void	exec_finish(char **argv, t_env *env)
 		pathname = find_pathname(path);
 		free_char_array(path);
 	}
-	fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
+ 	// fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
 	envp = env_to_char_array(env);
 	if (execve(pathname, argv, envp) == -1)
 	{
