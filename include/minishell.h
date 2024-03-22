@@ -120,7 +120,6 @@ typedef struct	s_exec
 // minishell.c
 int			main(int argc, char **argv, char **envp);
 void		read_eval_print_loop(t_env *env);
-char		*find_limiter(char *user_input);
 
 // LEXER
 t_token		*tokenizer(char *user_input, t_env *env);
@@ -168,12 +167,12 @@ void			update_env(t_env **env, char *key, char *value);
 
 // EXECUTOR
 // exec_main
-bool			exec_main(t_ast *ast_head, t_env *env, t_exec *exec);
+int				exec_main(t_ast *ast_head, t_env *env, t_exec *exec);
 bool			exec_pipe(t_ast *ast_head, t_env *env, t_exec *exec);
 void			exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
-bool 			exec_command(char **argv, t_env *env);
-bool			exec_builtin(char **argv, t_env *env);
-void			exec_finish(char **argv, t_env *env);
+int 			exec_command(char **argv, t_env *env, t_exec *exec);
+bool			exec_builtin(char **argv, t_env *env, t_exec *exec);
+void			exec_finish(char **argv, t_env *env, t_exec *exec);
 void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type);
 void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type);
 t_exec			*init_fd(void);

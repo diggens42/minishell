@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 15:20:22 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 19:50:42 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@ t_exec	*init_fd(void)
 	exec = (t_exec *)ft_calloc(1, sizeof(t_exec));
 	if (exec == NULL)
 		ft_exit("malloc");
-
 	exec->fd_stdin = dup(STDIN_FILENO);
 	if (exec->fd_stdin == -1)
 		ft_exit("dup");
-
 	exec->fd_stdout = dup(STDOUT_FILENO);
 	if (exec->fd_stdout == -1)
 		ft_exit("dup");
-
 	exec->exit_status = 0;
 	return (exec);
 }
@@ -41,13 +38,13 @@ void	reset_fd(t_exec *exec)
 	// free(exec);
 }
 
-bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
+int	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 {
 	if (ast_node->argv != NULL)
 		fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
 	else
 		fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
-	bool	exit_status;
+	int	exit_status;
 
 	if (ast_node == NULL)
 		return (true);
@@ -79,7 +76,7 @@ bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 	}
 	else
 	{
-		exit_status = exec_command(ast_node->argv, env);
+		exit_status = exec_command(ast_node->argv, env, exec);
 	}
 	return (exit_status);
 }
@@ -216,33 +213,40 @@ void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
 	}
 }
 
-bool	exec_command(char **argv, t_env *env)
+int	exec_command(char **argv, t_env *env, t_exec *exec)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
 	pid_t	pid;
 	int		wstatus;
 
-	if (exec_builtin(argv, env) == true)
+	if (exec_builtin(argv, env, exec) == true)
 		return (true);
 	pid = ft_fork(); // TODO
 	if (pid == 0)
 	{
-		exec_finish(argv, env);
+		exec_finish(argv, env, exec);
 	}
+	// ft_putstr_fd("here1", STDERR_FILENO);
 	waitpid(pid, &wstatus, 0);
-	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
-	{
-		return (true);
-	}
+	// ft_putstr_fd("here2", STDERR_FILENO);
+	// if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
+	// {
+	// 	return (true);
+	// }
+	// else
+	// {
+	// 	return (false);
+	// }
+	if (WIFEXITED(wstatus) ==  true)
+		return (WEXITSTATUS(wstatus));
 	else
-	{
-		return (false);
-	}
+		return (EXIT_FAILURE);
 }
 
-bool	exec_builtin(char **argv, t_env *env)
+bool	exec_builtin(char **argv, t_env *env, t_exec *exec)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+	(void)exec;
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -260,9 +264,9 @@ bool	exec_builtin(char **argv, t_env *env)
 	return (false);
 }
 
-void	exec_finish(char **argv, t_env *env)
+void	exec_finish(char **argv, t_env *env, t_exec *exec)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
 	char	**path;
 	char	*pathname;
 	char	**envp;
@@ -279,9 +283,13 @@ void	exec_finish(char **argv, t_env *env)
 	envp = env_to_char_array(env);
 	if (execve(pathname, argv, envp) == -1)
 	{
+		fprintf(stderr, "\x1b[33mexecve error\n\x1b[0m");
 		free(pathname);
 		free_char_array(argv);
 		free_char_array(envp);
+		exec->exit_status = 1;
 		ft_exit("execve");
 	}
+	// else
+		// exec->exit_status = 0;
 }
