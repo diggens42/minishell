@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 15:20:22 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ bool	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
 	return (exit_status);
 }
 
-void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type)
+void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type)
 {
 	fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd_out;
@@ -138,7 +138,7 @@ int	ft_handle_here_doc(char *limiter)
 	return (fd_pipe[0]);
 }
 
-void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type)
+void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type)
 {
 	fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
 	int fd_in;

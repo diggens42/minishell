@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 17:57:19 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static t_token_type	token_type_one_symbol(char *content)
+static t_type	token_type_one_symbol(char *content)
 {
 	if (*content == '|')
 		return (PIPE);
@@ -29,7 +29,7 @@ static t_token_type	token_type_one_symbol(char *content)
 	return (COMMAND);
 }
 
-static t_token_type	token_type_two_symbols(char *content)
+static t_type	token_type_two_symbols(char *content)
 {
 	if (ft_strncmp(content, "$?", 2) == 0)
 		return (DQMARK);
@@ -44,9 +44,9 @@ static t_token_type	token_type_two_symbols(char *content)
 	return (COMMAND);
 }
 
-t_token_type	set_token_type(char	*content, int token_length)
+t_type	set_type(char	*content, int token_length)
 {
-	t_token_type	type;
+	t_type	type;
 
 	type = COMMAND;
 	if (token_length == 1)

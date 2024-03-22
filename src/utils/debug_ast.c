@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   debug_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 18:54:18 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 12:59:58 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*token_type_to_string(t_token_type type)
+char	*token_type_to_string(t_type type)
 {
     switch (type) {
         case COMMAND: return "COMMAND";

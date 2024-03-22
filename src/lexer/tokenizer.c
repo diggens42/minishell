@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/22 18:12:32 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*tokenizer(char *user_input, t_env *env, t_exec *exec)
 		token = token_new();
 		token->length = set_token_length(user_input);
 		token->content = ft_substr(user_input, 0, token->length);
-		token->type = set_token_type(token->content, token->length);
+		token->type = set_type(token->content, token->length);
 		check_tokens(token);
 		token_add_back(&token_head, token);
 		user_input += token->length;

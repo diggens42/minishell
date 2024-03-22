@@ -84,11 +84,11 @@ typedef enum	e_token_type
 	PARENTHESIS_L,
 	PARENTHESIS_R,
 	WILDCARD
-}	t_token_type;
+}	t_type;
 
 typedef struct	s_token
 {
-	t_token_type	type;
+	t_type	type;
 	char			*content;
 	int				length;
 	struct s_token	*next;
@@ -96,7 +96,7 @@ typedef struct	s_token
 
 typedef struct	s_ast
 {
-	t_token_type	type;
+	t_type	type;
 	char			**argv;
 	struct s_ast	*left;
 	struct s_ast	*right;
@@ -125,7 +125,7 @@ char			*find_limiter(char *user_input);
 // LEXER
 t_token			*tokenizer(char *user_input, t_env *env, t_exec *exec);
 int				set_token_length(char *user_input);
-t_token_type	set_token_type(char	*content, int token_length);
+t_type	set_type(char	*content, int token_length);
 void			expand_token(t_token *token, t_env *env, t_exec *exec);
 char			*expand_dollar_sign(const char *content, t_env *env);
 char			*expand_dollar_qmark(t_exec *exec);
@@ -151,8 +151,8 @@ t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
 char			**token_to_str_array(t_token *tokens);
 int				count_command_group(t_token *tokens);
-bool			is_redirect(t_token_type type);
-bool			is_logical(t_token_type type);
+bool			is_redirect(t_type type);
+bool			is_logical(t_type type);
 void			print_ast(t_ast* node, int level);
 // EXECUTOR
 // exec_main
@@ -162,8 +162,8 @@ void			exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
 bool 			exec_command(char **argv, t_env *env);
 bool			exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
-void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_token_type type);
-void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_token_type type);
+void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type);
+void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type);
 t_exec			*init_fd(void);
 void			reset_fd(t_exec *exec);
 int				ft_handle_here_doc(char *limiter);
@@ -207,5 +207,5 @@ void			token_print(t_token *tokens);
 void			print_char_array(char **str);
 void			check_tokens(t_token *tokens);
 void			print_ast(t_ast* node, int level);
-char			*token_type_to_string(t_token_type type);
+char			*token_type_to_string(t_type type);
 #endif

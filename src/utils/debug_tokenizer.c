@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:59:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 17:54:15 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static const char *token_type_to_string2(t_token_type type)
+static const char *token_type_to_string2(t_type type)
 {
 	switch(type)
 	{

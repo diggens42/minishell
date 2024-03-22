@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:27 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/18 15:57:06 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-bool	is_logical(t_token_type type)
+bool	is_logical(t_type type)
 {
 	return(type == AND || type == OR);
 }
