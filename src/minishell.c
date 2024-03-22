@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/22 15:19:08 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 18:11:10 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	signal(SIGINT, ctrl_c_handler);
-	signal(SIGQUIT, ctrl_backslash_handler);
-	disable_signal_echo();
+	// signal(SIGINT, ctrl_c_handler);
+	// signal(SIGQUIT, ctrl_backslash_handler);
+	// disable_signal_echo();
 	env = init_env(envp);
 	read_eval_print_loop(env);
 	return (EXIT_SUCCESS);
@@ -78,12 +78,12 @@ void	read_eval_print_loop(t_env *env)
 			free(temp);
 			free(user_input2);
 		}
-		token_head = tokenizer(user_input, env);
+		token_head = tokenizer(user_input, env, exec);
 		free(user_input);
-		check_tokens(token_head);
+		// check_tokens(token_head);
 		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
-		print_ast(ast_head, 0);
+		// print_ast(ast_head, 0);
 		exec_main(ast_head, env, exec);
 		reset_fd(exec);
 	}

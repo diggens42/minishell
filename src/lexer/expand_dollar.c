@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/21 19:29:52 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:24:04 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,21 @@ char	*expand_dollar_sign(const char *content, t_env *env)
 {
 	char	*var_name;
 	char	*var_value;
-	char	*new_content;
+	char	*expanded_content;
 
 	var_name = extract_var_name(content);
 	var_value = ft_getenv(var_name, env);
 	if (!var_value)
 		var_value = "";
-	new_content = construct_new_content(var_value, content);
+	expanded_content = construct_new_content(var_value, content);
 	free(var_name);
-	return (new_content);
+	return (expanded_content);
+}
+
+char	*expand_dollar_qmark(t_exec *exec)
+{
+	char	*expanded_content;
+
+	expanded_content = ft_itoa(exec->exit_status);
+	return (expanded_content);
 }
