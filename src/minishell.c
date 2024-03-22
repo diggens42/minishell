@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/22 19:07:13 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 20:20:36 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	signal(SIGINT, ctrl_c_handler);
-	signal(SIGQUIT, ctrl_backslash_handler);
-	disable_signal_echo();
+	// signal(SIGINT, ctrl_c_handler);
+	// signal(SIGQUIT, ctrl_backslash_handler);
+	// disable_signal_echo();
 	env = init_env(envp);
 	read_eval_print_loop(env);
 	return (EXIT_SUCCESS);
@@ -59,14 +59,14 @@ void	read_eval_print_loop(t_env *env)
 			free(temp);
 			free(user_input2);
 		}
-		token_head = tokenizer(user_input, env);
+		token_head = tokenizer(user_input, env, exec);
 		free(user_input);
 		// check_tokens(token_head);
 		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
-		print_ast(ast_head, 0);
+		// print_ast(ast_head, 0);
 		exec->exit_status = exec_main(ast_head, env, exec);
-		fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", exec->exit_status);
+		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", exec->exit_status);
 		reset_fd(exec);
 	}
 }

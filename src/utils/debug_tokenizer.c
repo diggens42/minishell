@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   debug_tokenizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:59:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 15:14:48 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static const char *token_type_to_string2(t_token_type type)
+static const char *token_type_to_string2(t_type type)
 {
 	switch(type)
 	{
@@ -36,6 +36,8 @@ static const char *token_type_to_string2(t_token_type type)
 			return "PIPE";
 		case DOLLAR:
 			return "DOLLAR";
+		case DQMARK:
+			return "DQMARK";
 		case AND:
 			return "AND";
 		case OR:
@@ -61,6 +63,7 @@ void	check_tokens(t_token *tokens)
 	while (current_token != NULL)
 	{
 		ft_printf("Token: %d\n", i);
+		ft_printf("Length: %d\n", current_token->length);
 		ft_printf("%s\n", current_token->content);
 		ft_printf("%s\n", token_type_to_string2(current_token->type));
 		ft_printf("-----------\n");

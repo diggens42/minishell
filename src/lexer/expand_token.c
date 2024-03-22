@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/21 19:17:33 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:24:26 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,14 @@ static void	process_double_quotes(t_token *token, t_env *env)
 }
 
 //expands a variable within a tokens content
-static void	process_dollar_sign(t_token *token, t_env *env)
+static void	process_dollar_sign(t_token *token, t_env *env, t_exec *exec)
 {
 	char	*expanded_content;
 
-	expanded_content = expand_dollar_sign(token->content, env);
+	if (token->type == DOLLAR)
+		expanded_content = expand_dollar_sign(token->content, env);
+	if (token->type == DQMARK)
+		expanded_content = expand_dollar_qmark(exec);
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);
@@ -71,14 +74,14 @@ static void	process_dollar_sign(t_token *token, t_env *env)
 }
 
 //expands a token based on its type
-void	expand_token(t_token *token, t_env *env)
+void	expand_token(t_token *token, t_env *env, t_exec *exec)
 {
 	if (token == NULL || token->content == NULL)
 		return ;
 	if (token->type == WILDCARD)
 		process_wildcard(token);
-	else if (token->type == DOLLAR)
-		process_dollar_sign(token, env);
+	else if (token->type == DOLLAR || token->type == DQMARK)
+		process_dollar_sign(token, env, exec);
 	else if (token->type == DOUBLE_QUOTE)
 		process_double_quotes(token, env);
 	else if (token->type == SINGLE_QUOTE)

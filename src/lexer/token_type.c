@@ -6,14 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 15:59:09 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:58:15 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//TODO PARENTHESIS
-static t_token_type	token_type_one_symbol(char *content)
+static t_type	token_type_one_symbol(char *content)
 {
 	if (*content == '|')
 		return (PIPE);
@@ -30,8 +29,10 @@ static t_token_type	token_type_one_symbol(char *content)
 	return (COMMAND);
 }
 
-static t_token_type	token_type_two_symbols(char *content)
+static t_type	token_type_two_symbols(char *content)
 {
+	if (ft_strncmp(content, "$?", 2) == 0)
+		return (DQMARK);
 	if (ft_strncmp(content, "&&", 2) == 0)
 		return (AND);
 	if (ft_strncmp(content, "||", 2) == 0)
@@ -40,16 +41,12 @@ static t_token_type	token_type_two_symbols(char *content)
 		return (REDIR_HEREDOC);
 	if (ft_strncmp(content, ">>", 2) == 0)
 		return (REDIR_APPEND);
-	if (ft_strncmp(content, "$?", 2) == 0)
-		return (DOLLAR_QMARK);
-	if (ft_strncmp(content, "$$", 2) == 0)
-		return (DOLLAR_DOLLAR);
 	return (COMMAND);
 }
 
-t_token_type	set_token_type(char	*content, int token_length)
+t_type	set_type(char	*content, int token_length)
 {
-	t_token_type	type;
+	t_type	type;
 
 	type = COMMAND;
 	if (token_length == 1)
@@ -58,14 +55,14 @@ t_token_type	set_token_type(char	*content, int token_length)
 		type = token_type_two_symbols(content);
 	else if (token_length > 1)
 	{
-		if (content[0] == '$' && content[1] != '?' && content[1] != '$')
-			return (DOLLAR);
-		else if (ft_strchr(content, '*') != NULL)
-			type = WILDCARD;
+		if (content[0] == '$' && content[1] != '?')
+			type = DOLLAR;
 		else if (content[0] == '\'' && content[token_length - 1] == '\'')
 			type = SINGLE_QUOTE;
 		else if (content[0] == '"' && content[token_length - 1] == '"')
 			type = DOUBLE_QUOTE;
+		else if (ft_strchr(content, '*') != NULL)
+			type = WILDCARD;
 	}
 	return (type);
 }

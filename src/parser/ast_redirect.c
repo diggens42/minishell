@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:44:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/18 16:19:49 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_ast	*ast_redirect(t_token **token, t_ast *cmd_node)
 	t_ast	*redirect;
 	t_ast	*target;
 	t_token	*next_token;
-	
+
 	while (*token && is_redirect((*token)->type))
 	{
 		redirect = new_ast_node(*token);
@@ -38,7 +38,7 @@ t_ast	*ast_redirect(t_token **token, t_ast *cmd_node)
 	return (cmd_node);
 }
 
-bool	is_redirect(t_token_type type)
+bool	is_redirect(t_type type)
 {
 	if (type == REDIR_IN || type == REDIR_OUT
 		|| type == REDIR_APPEND || type == REDIR_HEREDOC)
