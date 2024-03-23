@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/22 19:59:04 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/23 16:02:58 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,18 @@ void	read_eval_print_loop(t_env *env)
 	char		*user_input;
 	char		*user_input2;
 	char		*temp;
-	// char		*limiter;
 	t_token		*token_head;
 	t_ast		*ast_head;
 	t_exec		*exec;
 
+	exec = init_fd();
 	while (true)
 	{
-		exec = init_fd();
 		user_input = readline(PROMPT_STD);
 		add_history(user_input);
 		if (user_input == NULL)
 		{
-			ft_putstr_fd("exit\n", STDERR_FILENO);
+			// ft_putstr_fd("exit\n", STDERR_FILENO);
 			break ;
 		}
 		if (user_input[0] == '\0')
@@ -51,24 +50,6 @@ void	read_eval_print_loop(t_env *env)
 			free(user_input);
 			continue ;
 		}
-		// else if (ft_strstr(user_input, "<<") != NULL)
-		// {
-		// 	limiter = find_limiter(ft_strstr(user_input, "<<"));
-		// 	while (true)
-		// 	{
-		// 		user_input2 = readline(PROMPT_MULTI_LINE);
-		// 		if (ft_strncmp(user_input2, limiter, ft_strlen(limiter)) == 0)
-		// 		{
-		// 			free(user_input2);
-		// 			free(limiter);
-		// 			break ;
-		// 		}
-		// 		temp = user_input;
-		// 		user_input = ft_strjoin(user_input, user_input2);
-		// 		free (temp);
-		// 		free (user_input2);
-		// 	}
-		// }
 		while (user_input[ft_strlen(user_input) - 1] == '\\')
 		{
 			user_input[ft_strlen(user_input) - 1] = '\0';
@@ -84,25 +65,8 @@ void	read_eval_print_loop(t_env *env)
 		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
 		// print_ast(ast_head, 0);
-		exec_main(ast_head, env, exec);
+		exec->exit_status = exec_main(ast_head, env, exec);
+		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", exec->exit_status);
 		reset_fd(exec);
 	}
-}
-
-char	*find_limiter(char *user_input)
-{
-	char	*limiter;
-	int		i;
-
-	while (*user_input == '<' || ft_isspace(*user_input) == true)
-		user_input++;
-	i = 0;
-	while (user_input[i] != '\0' && ft_isspace(user_input[i]) == false)
-		i++;
-	if (i == 0)
-		return (NULL);
-	limiter = ft_substr(user_input, 0, i);
-	if (limiter == NULL)
-		ft_exit(NULL);
-	return (limiter);
 }

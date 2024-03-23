@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 16:02:11 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/23 16:05:32 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 void proccess_commands(t_token *token, t_env *env)
 {
-
+	(void)token;
+	(void)env;
 }

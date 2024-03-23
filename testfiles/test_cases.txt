@@ -203,3 +203,6 @@ echo hello > file
 cat < file
 < file cat
 
+ls | sort -r > file
+ls | > file sort -r
+
