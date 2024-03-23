@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/21 19:31:05 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/23 21:15:06 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,33 +44,13 @@ static char	*expand_and_concatenate(char *result, const char *var, t_env *env)
 	return (new_result);
 }
 
-//appends a single char to the end of the string
-static char	*append_char(char *original, char c)
-{
-	char	*new_str;
-	size_t	original_len;
-	size_t	new_len;
-
-	original_len = 0;
-	if (original != NULL)
-		original_len = ft_strlen(original);
-	new_len = original_len + 2;
-	new_str = (char *)ft_calloc(new_len, sizeof(char));
-	if (new_str == NULL)
-		return (original); //TODO handle malloc error
-	if (original != NULL)
-		ft_strlcpy(new_str, original, original_len + 1);
-	new_str[original_len] = c;
-	new_str[original_len + 1] = '\0';
-	free(original);
-	return (new_str);
-}
-
 //processes a string enclosed in double quotes, expanding variables and concatenating literals
 char	*expand_double_quote(const char *content, t_env *env)
 {
 	char	*result;
 	char	*var;
+	char	*temp;
+	char	c;
 	int		i;
 
 	result = NULL;
@@ -80,24 +60,25 @@ char	*expand_double_quote(const char *content, t_env *env)
 		if (content[i] == '$')
 		{
 			i++;
-			var = extract_var(content, &i);
-			result = expand_and_concatenate(result, var, env);
-			free(var);
+			if ((ft_isalpha(content[i]) || content[i] == '_'))
+			{
+				var = extract_var(content, &i);
+				result = expand_and_concatenate(result, var, env);
+				free(var);
+			}
+			else
+				result = ft_strjoin(result, "$");
 		}
 		else
-			result = append_char(result, content[i++]);
+		{
+			c = content[i++];
+			temp = ft_calloc(2, sizeof(char));
+			temp[0] = c;
+			result = ft_strjoin(result, temp);
+			free(temp);
+		}
 	}
 	if (!result)
 		result = (char *)ft_calloc(1, sizeof(char));
 	return (result);
-}
-
-//removes leading and trailing double quotes from a string
-char	*remove_double_quotes(const char *content)
-{
-	char	*remove_quotes;
-
-	remove_quotes = ft_strdup(content + 1);
-	remove_quotes[ft_strlen(remove_quotes) - 1] = '\0';
-	return (remove_quotes);
 }

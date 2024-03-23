@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:24:03 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 19:27:22 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/23 21:00:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,14 @@ char	*remove_single_quotes(const char *content)
 		return (NULL); //TODO handle malloc error
 	ft_strlcpy(result, content + 1, len - 1);
 	return (result);
+}
+
+//removes leading and trailing double quotes from a string
+char	*remove_double_quotes(const char *content)
+{
+	char	*remove_quotes;
+
+	remove_quotes = ft_strdup(content + 1);
+	remove_quotes[ft_strlen(remove_quotes) - 1] = '\0';
+	return (remove_quotes);
 }
