@@ -42,6 +42,7 @@ SRCS =	./src/minishell.c \
 		./src/builtin/export.c \
 		./src/builtin/pwd.c \
 		./src/builtin/unset.c \
+		./src/builtin/utils.c \
 		\
 		./src/executor/exec_main.c \
 		./src/executor/exec_path.c \

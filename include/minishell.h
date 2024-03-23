@@ -157,8 +157,8 @@ void			print_ast(t_ast* node, int level);
 int				exec_main(t_ast *ast_head, t_env *env, t_exec *exec);
 bool			exec_pipe(t_ast *ast_head, t_env *env, t_exec *exec);
 void			exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
-int 			exec_command(char **argv, t_env *env, t_exec *exec);
-bool			exec_builtin(char **argv, t_env *env, t_exec *exec);
+int				exec_command(char **argv, t_env *env, t_exec *exec);
+int				exec_builtin(char **argv, t_env *env, t_exec *exec);
 void			exec_finish(char **argv, t_env *env, t_exec *exec);
 void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type);
 void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type);
@@ -176,16 +176,19 @@ int				envp_size(t_env *env);
 // exec_utils2
 void			ft_pipe(int *fd);
 pid_t			ft_fork(void);
+
 // BUILTIN
-bool			builtin_cd(char **argv, t_env **env);
-bool			builtin_echo(char **argv);
+int				builtin_cd(char **argv, t_env **env);
+int				builtin_echo(char **argv);
 bool			builtin_env(t_env *env);
 bool			builtin_exit(char **argv);
-bool			builtin_export(char **argv, t_env **env);
-bool			builtin_pwd(void);
-bool			builtin_unset(char **argv, t_env **env);
+int				builtin_export(char **argv, t_env **env);
+int				builtin_pwd(void);
+int				builtin_unset(char **argv, t_env **env);
+
 // builtin_utils
-void			update_env(t_env **env, char *key, char *value);
+int				builtin_env_update(t_env **env, char *key, char *value);
+
 //signals
 void			ctrl_c_handler(int signal);
 void			ctrl_backslash_handler(int signal);

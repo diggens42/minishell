@@ -6,65 +6,41 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 18:22:50 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 14:23:14 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	update_env(t_env **env, char *key, char *value)
+static int	builtin_export_print(t_env **env)
 {
 	t_env	*current;
-	t_env	*prev;
-	t_env	*new_env;
 
 	current = *env;
-	prev = NULL;
 	while (current != NULL)
 	{
-		if (ft_strcmp(current->key, key) == 0)
-		{
-			free(current->value);
-			if (value != NULL)
-				current->value = ft_strdup(value);
-			return ;
-		}
-		prev = current;
+		ft_printf("declare -x %s", current->key);
+		if (current->value != NULL)
+			ft_printf("=\"%s\"", current->value);
+		ft_printf("\n", current->value);
 		current = current->next;
 	}
-	new_env = (t_env *)ft_calloc(1, sizeof(t_env));
-	if (new_env == NULL)
-		ft_exit("malloc");
-	new_env->key = ft_strdup(key);
-	if (value != NULL)
-		new_env->value = ft_strdup(value);
-	if (prev == NULL)
-		*env = new_env;
-	else
-		prev->next = new_env;
+	return (EXIT_SUCCESS);
 }
 
-bool	builtin_export(char **argv, t_env **env)
+int	builtin_export(char **argv, t_env **env)
 {
 	int		i;
 	char	*key;
 	char	*equal_sign;
 	char	*value;
+	int		exit_status;
 
 	if (argv[1] == NULL)
-	{
-		while (*env != NULL)
-		{
-			ft_printf("declare -x %s", (*env)->key);
-			if ((*env)->value != NULL)
-				ft_printf("=\"%s\"", (*env)->value);
-			ft_printf("\n", (*env)->value);
-			*env = (*env)->next;
-		}
-		return (true);
-	}
-	i = 1;
-	while (argv[i] != NULL)
+		return (builtin_export_print(env));
+	exit_status = EXIT_SUCCESS;
+	i = 0;
+	while (argv[++i] != NULL)
 	{
 		key = ft_strdup(argv[i]);
 		value = NULL;
@@ -74,9 +50,9 @@ bool	builtin_export(char **argv, t_env **env)
 			*equal_sign = '\0';
 			value = equal_sign + 1;
 		}
-		update_env(env, key, value);
+		if (builtin_env_update(env, key, value) == EXIT_FAILURE)
+			exit_status = EXIT_FAILURE;
 		free(key);
-		i++;
 	}
-	return (true);
+	return (exit_status);
 }

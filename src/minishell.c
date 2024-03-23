@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/22 20:20:36 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 15:19:36 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	read_eval_print_loop(t_env *env)
 		add_history(user_input);
 		if (user_input == NULL)
 		{
-			ft_putstr_fd("exit\n", STDERR_FILENO);
+			// ft_putstr_fd("exit\n", STDERR_FILENO);
 			break ;
 		}
 		if (user_input[0] == '\0')

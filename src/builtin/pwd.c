@@ -6,20 +6,23 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:15:17 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/19 13:31:12 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 12:57:24 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-bool	builtin_pwd(void)
+int	builtin_pwd(void)
 {
 	char	*cwd;
 
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
-		ft_exit("getcwd");
+	{
+		perror("getcwd");
+		return (EXIT_FAILURE);
+	}
 	ft_printf("%s\n", cwd);
 	free(cwd);
-	return (true);
+	return (EXIT_SUCCESS);
 }
