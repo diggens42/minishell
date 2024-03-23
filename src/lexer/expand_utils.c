@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_squotes.c                                   :+:      :+:    :+:   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/12 20:43:39 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/21 19:12:29 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/23 19:24:03 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/23 19:27:22 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//removes leading and trailing single quotes from a string
+char *get_quote_start(char *str)
+{
+	while (*str != '\'' && *str != '"' && *str != '\0')
+		str++;
+	return (str);
+}
+
+char *get_quote_end(char *str, char quote_type)
+{
+	char	*end;
+
+	end = str + 1;
+	while (*end != quote_type && *end != '\0')
+		end++;
+	return (end);
+}
+
 char	*remove_single_quotes(const char *content)
 {
 	char	*result;

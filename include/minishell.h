@@ -134,6 +134,8 @@ int				match_wildcard(char *pattern, char *str);
 void			wildcard_path_to_token(char *path, t_token **current);
 char			*remove_double_quotes(const char *content);
 char			*remove_single_quotes(const char *content);
+char			*get_quote_start(char *str);
+char 			*get_quote_end(char *str, char quote_type);
 // token_ops
 t_token			*token_new(void);
 t_token			*token_last(t_token *token);
