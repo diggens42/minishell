@@ -122,10 +122,11 @@ void			read_eval_print_loop(t_env *env);
 
 // LEXER
 t_token			*tokenizer(char *user_input, t_env *env, t_exec *exec);
-int				set_token_length(char *user_input);
 t_type			set_type(char	*content, int token_length);
+int				set_token_length(char *user_input);
+int				get_single_char_len(char c);
 void			expand_token(t_token *token, t_env *env, t_exec *exec);
-void			proccess_commands(t_token *token, t_env *env);
+void			proccess_commands(t_token *token, t_env *env, t_exec *exec);
 char			*expand_dollar_sign(const char *content, t_env *env);
 char			*expand_dollar_qmark(t_exec *exec);
 char			*expand_double_quote(const char *content, t_env *env);

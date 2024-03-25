@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/03/23 18:19:53 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/25 15:42:23 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ void	read_eval_print_loop(t_env *env)
 			free(temp);
 			free(user_input2);
 		}
+
 		token_head = tokenizer(user_input, env, exec);
 		free(user_input);
 		// check_tokens(token_head);
 		ast_head = ast_parser(&token_head);
 		free_token_list(token_head);
-		// print_ast(ast_head, 0);
+		exec = init_fd();
 		exec->exit_status = exec_main(ast_head, env, exec);
 		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", exec->exit_status);
 		reset_fd(exec);

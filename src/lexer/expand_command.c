@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 19:27:49 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/25 14:08:11 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,33 @@ static char *expand_str_with_quotes(char *str, t_env *env)
 	return (new_str);
 }
 
-void proccess_commands(t_token *token, t_env *env)
+static char	*expand_str_with_dqmark(char *content, t_exec *exec)
+{
+	char	*pos;
+	char	*before_dqmark;
+	char	*after_dqmark;
+	char	*status_str;
+	char	*expanded_content;
+
+	pos = ft_strstr(content, "$?");
+	if (!pos)
+		return (ft_strdup(content));
+	before_dqmark = ft_substr(content, 0, pos - content);
+	status_str = ft_itoa(exec->exit_status);
+	after_dqmark = ft_strjoin(status_str, pos + 2);
+	expanded_content = ft_strjoin(before_dqmark, after_dqmark);
+	free(before_dqmark);
+	free(status_str);
+	free(after_dqmark);
+	return (expanded_content);
+}
+
+void proccess_commands(t_token *token, t_env *env, t_exec *exec)
 {
 	char	*expanded_content;
 
 	expanded_content = expand_str_with_quotes(token->content, env);
+	expanded_content = expand_str_with_dqmark(expanded_content, exec);
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);

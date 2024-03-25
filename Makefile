@@ -19,6 +19,7 @@ SRCS =	./src/minishell.c \
 		./src/lexer/tokenizer.c \
 		./src/lexer/token_ops.c \
 		./src/lexer/token_length.c \
+		./src/lexer/token_length2.c \
 		./src/lexer/token_type.c \
 		./src/lexer/expand_token.c \
 		./src/lexer/expand_command.c \

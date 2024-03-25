@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 16:01:10 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/24 19:56:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	expand_token(t_token *token, t_env *env, t_exec *exec)
 	if (token == NULL || token->content == NULL)
 		return ;
 	if (token->type == COMMAND)
-		proccess_commands(token, env);
+		proccess_commands(token, env, exec);
 	else if (token->type == WILDCARD)
 		process_wildcard(token);
 	else if (token->type == DOLLAR || token->type == DQMARK)
