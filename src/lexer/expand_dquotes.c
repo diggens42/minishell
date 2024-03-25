@@ -6,14 +6,14 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/25 18:07:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/25 18:57:23 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 //extracts a variable name or path starting at a specified index
-static char	*extract_var(const char *content, int *start)
+static char	*var_extract(const char *content, int *start)
 {
 	char	*var_path;
 	int		end;
@@ -21,74 +21,87 @@ static char	*extract_var(const char *content, int *start)
 
 	extr = *start - 1;
 	end = *start;
-	if (!(ft_isalpha(content[end]) || content[end] != '_'))
+	if (!(ft_isalpha(content[end]) || content[end] == '_'))
 		return (NULL);
 	while (content[end] != '\0' && (ft_isalnum(content[end])
-		|| content[end] == '_' || content[end] == '/' || content[end] == '.'))
+			|| content[end] == '_' || content[end] == '/'
+			|| content[end] == '.'))
 		end++;
 	var_path = ft_substr(content, (unsigned int)extr, (size_t)(end - extr));
 	*start = end;
 	return (var_path);
 }
 
-//expands a variable into its value and concatenates it
-static char	*expand_and_concatenate(char *result, const char *var, t_env *env)
+static char	*var_expand(const char *content, int *i, char *result, t_env *env)
 {
+	char	*var;
 	char	*expanded;
 	char	*new_result;
 
+	var = var_extract(content, i);
 	expanded = expand_dollar_sign(var, env);
 	new_result = ft_strjoin(result, expanded);
 	free(result);
 	free(expanded);
+	free(var);
 	return (new_result);
 }
 
-//processes a string enclosed in double quotes, expanding variables and concatenating literals
+static char	*exit_status_expand(char *result, t_exec *exec)
+{
+	char	*temp;
+	char	*exit_status;
+
+	temp = result;
+	exit_status = ft_itoa(exec->exit_status);
+	result = ft_strjoin(result, exit_status);
+	free(temp);
+	free(exit_status);
+	return (result);
+}
+
+static char	*char_join(char *result, char c)
+{
+	char	*temp;
+	char	*new_result;
+
+	temp = (char *)ft_calloc(2, sizeof(char));
+	if (!temp)
+		return (result);
+	temp[0] = c;
+	temp[1] = '\0';
+	new_result = ft_strjoin(result, temp);
+	free(result);
+	free(temp);
+	return (new_result);
+}
+
 char	*expand_double_quote(const char *content, t_env *env, t_exec *exec)
 {
 	char	*result;
-	char	*var;
-	char	*temp;
-	char	*exit_status;
-	char	c;
 	int		i;
 
-	result = NULL;
+	result = (char *)ft_calloc(1, sizeof(char));
+	if (!result)
+		return (NULL); //TODO handle malloc error or maybe just don't handle it so this shit is 25lines?????
 	i = 0;
 	while (content[i])
 	{
 		if (content[i] == '$' && content [i + 1] == '?')
 		{
 			i += 2;
-			temp = result;
-			exit_status = ft_itoa(exec->exit_status);
-			result = ft_strjoin(result, exit_status);
-			free(temp);
-			free(exit_status);
+			result = exit_status_expand(result, exec);
 		}
 		else if (content[i] == '$')
 		{
 			i++;
 			if ((ft_isalpha(content[i]) || content[i] == '_'))
-			{
-				var = extract_var(content, &i);
-				result = expand_and_concatenate(result, var, env);
-				free(var);
-			}
+				result = var_expand(content, &i, result, env);
 			else
-				result = ft_strjoin(result, "$");
+				result = char_join(result, '$');
 		}
 		else
-		{
-			c = content[i++];
-			temp = ft_calloc(2, sizeof(char));
-			temp[0] = c;
-			result = ft_strjoin(result, temp);
-			free(temp);
-		}
+			result = char_join(result, content[i++]);
 	}
-	if (!result)
-		result = (char *)ft_calloc(1, sizeof(char));
 	return (result);
 }
