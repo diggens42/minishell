@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/24 19:56:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/25 18:05:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static void process_single_quotes(t_token *token)
 }
 
 //removes double quotes and expands content inside
-static void	process_double_quotes(t_token *token, t_env *env)
+static void	process_double_quotes(t_token *token, t_env *env, t_exec *exec)
 {
 	char	*removed_dquotes;
 	char	*expanded_content;
 
 	removed_dquotes = remove_double_quotes(token->content);
-	expanded_content = expand_double_quote(removed_dquotes, env);
+	expanded_content = expand_double_quote(removed_dquotes, env, exec);
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);
@@ -85,7 +85,7 @@ void	expand_token(t_token *token, t_env *env, t_exec *exec)
 	else if (token->type == DOLLAR || token->type == DQMARK)
 		process_dollar_sign(token, env, exec);
 	else if (token->type == DOUBLE_QUOTE)
-		process_double_quotes(token, env);
+		process_double_quotes(token, env, exec);
 	else if (token->type == SINGLE_QUOTE)
 		process_single_quotes(token);
 }

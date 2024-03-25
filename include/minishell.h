@@ -129,7 +129,7 @@ void			expand_token(t_token *token, t_env *env, t_exec *exec);
 void			proccess_commands(t_token *token, t_env *env, t_exec *exec);
 char			*expand_dollar_sign(const char *content, t_env *env);
 char			*expand_dollar_qmark(t_exec *exec);
-char			*expand_double_quote(const char *content, t_env *env);
+char			*expand_double_quote(const char *content, t_env *env, t_exec *exec);
 char			*expand_wildcard(char *content);
 int				match_wildcard(char *pattern, char *str);
 void			wildcard_path_to_token(char *path, t_token **current);

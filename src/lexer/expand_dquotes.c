@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 21:15:06 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/25 18:07:37 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static char	*extract_var(const char *content, int *start)
 	end = *start;
 	if (!(ft_isalpha(content[end]) || content[end] != '_'))
 		return (NULL);
-	while (content[end] != '\0' && (ft_isalnum(content[end]) || content[end] == '_'
-		|| content[end] == '/' || content[end] == '.'))
+	while (content[end] != '\0' && (ft_isalnum(content[end])
+		|| content[end] == '_' || content[end] == '/' || content[end] == '.'))
 		end++;
 	var_path = ft_substr(content, (unsigned int)extr, (size_t)(end - extr));
 	*start = end;
@@ -45,11 +45,12 @@ static char	*expand_and_concatenate(char *result, const char *var, t_env *env)
 }
 
 //processes a string enclosed in double quotes, expanding variables and concatenating literals
-char	*expand_double_quote(const char *content, t_env *env)
+char	*expand_double_quote(const char *content, t_env *env, t_exec *exec)
 {
 	char	*result;
 	char	*var;
 	char	*temp;
+	char	*exit_status;
 	char	c;
 	int		i;
 
@@ -57,7 +58,16 @@ char	*expand_double_quote(const char *content, t_env *env)
 	i = 0;
 	while (content[i])
 	{
-		if (content[i] == '$')
+		if (content[i] == '$' && content [i + 1] == '?')
+		{
+			i += 2;
+			temp = result;
+			exit_status = ft_itoa(exec->exit_status);
+			result = ft_strjoin(result, exit_status);
+			free(temp);
+			free(exit_status);
+		}
+		else if (content[i] == '$')
 		{
 			i++;
 			if ((ft_isalpha(content[i]) || content[i] == '_'))
