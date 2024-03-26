@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:44:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/26 20:45:26 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 21:07:19 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_ast	*ast_redirect(t_token **token, t_ast *cmd_node)
 {
 	t_ast	*redirect;
-	t_ast	*target;
 
 	while (*token && is_redirect((*token)->type))
 	{
@@ -23,9 +22,8 @@ t_ast	*ast_redirect(t_token **token, t_ast *cmd_node)
 		advance_and_free_token(token);
 		if (*token == NULL || (*token)->type != COMMAND)
 			return (NULL); //TODO handle missing redirection target
-		target = new_ast_node(*token);
 		redirect->left = cmd_node;
-		redirect->right = target;
+		redirect->right = new_ast_node(*token);
 		cmd_node = redirect;
 		advance_and_free_token(token);
 	}
