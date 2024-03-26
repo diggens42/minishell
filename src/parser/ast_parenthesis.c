@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/18 15:58:30 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 18:27:04 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_ast	*ast_parenthesis(t_token **token)
 	subtree = ast_parser(token);
 	if (*token == NULL || (*token)->type != PARENTHESIS_R)
 		return (NULL); //TODO handle unclosed parenthesis
-	*token = (*token)->next;
+	next_token = (*token)->next;
+	free_token(*token);
+	*token = next_token;
 	return (subtree);
 }

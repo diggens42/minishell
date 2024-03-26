@@ -88,9 +88,10 @@ typedef enum	e_token_type
 
 typedef struct	s_token
 {
-	t_type	type;
+	t_type			type;
 	char			*content;
 	int				length;
+	bool			stop_recursion;
 	struct s_token	*next;
 }	t_token;
 

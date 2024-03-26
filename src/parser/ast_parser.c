@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/14 20:30:13 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:00:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ t_ast	*ast_parser(t_token **token)
 	{
 		if ((*token)->type == PARENTHESIS_L)
 			node = ast_parenthesis(token);
+		else if ((*token)->stop_recursion == true)
+			return(node);
 		else if ((*token)->type == COMMAND)
 			node = ast_cmd(token);
 		else if (*token != NULL && (*token)->type == PIPE)

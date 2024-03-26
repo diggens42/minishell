@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 18:54:18 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 18:36:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 17:50:23 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,13 @@ void print_ast(t_ast* node, int level) {
     // Print the current node.
     printf("%s", token_type_to_string(node->type));
     if (node->type == COMMAND) {
-        printf(": %s", node->argv[0]); // Assuming argv[0] is the command name.
+        int j = 0;
+        while (node->argv[j] != NULL)
+        {
+            printf(": %s", node->argv[j]); // Assuming argv[0] is the command name.
+            j++;
+        }
+
     }
     printf("\n");
 
