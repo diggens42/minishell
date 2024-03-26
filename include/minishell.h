@@ -152,6 +152,7 @@ t_ast			*ast_pipe(t_token **token, t_ast *left);
 t_ast			*ast_logical(t_token **token, t_ast *left);
 t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
+void			advance_and_free_token(t_token **token);
 char			**token_to_str_array(t_token *tokens);
 int				count_command_group(t_token *tokens);
 bool			is_redirect(t_type type);
@@ -205,7 +206,6 @@ char			*ft_getenv(char *key, t_env *env);
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
 void			free_char_array(char **str);
-void			free_token(t_token *token);
 // exit
 void			ft_exit(char *command);
 // debug

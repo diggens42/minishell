@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/26 15:56:40 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 20:39:06 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,19 @@ t_ast	*new_ast_node(t_token *token)
 	else
 		node->argv = NULL;
 	return (node);
+}
+
+void	advance_and_free_token(t_token **token)
+{
+	t_token	*next_token;
+
+	if (token == NULL || *token == NULL)
+		return ;
+	next_token = (*token)->next;
+	if (*token)
+	{
+		free((*token)->content);
+		free(*token);
+	}
+	*token = next_token;
 }
