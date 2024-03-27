@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 17:48:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 18:05:38 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static int n_red(t_token *tokens)
 t_ast	*new_ast_node(t_token *token)
 {
 	t_ast	*node;
+	int		i;
 
 	node = (t_ast *)ft_calloc(1, sizeof(t_ast));
 	if (!node)
@@ -92,6 +93,12 @@ t_ast	*new_ast_node(t_token *token)
 		node->cmd->argv = (char **)ft_calloc(n_cmd(token) + 1, sizeof(char *));
 		// if (is_redirect(token->type))
 		node->cmd->redir = (t_redir **)ft_calloc(n_red(token) + 1, sizeof(t_redir *));
+		i = 0;
+		while (i < n_red(token))
+		{
+			node->cmd->redir[i] = (t_redir *)ft_calloc(1, sizeof(t_redir));
+			i++;
+		}
 	}
 	return (node);
 }

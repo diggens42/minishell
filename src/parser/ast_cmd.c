@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:58:21 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 17:46:03 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 18:24:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,13 @@ t_ast	*ast_cmd(t_token **token)
 	{
 		if (is_redirect((*token)->type))
 		{
-			fprintf(stderr, "\x1b[34m  hello  \x1b[0m");
-			fprintf(stderr, "\x1b[34m    %s:\x1b[0m", token_type_to_string((*token)->type));
 			cmd_node->cmd->redir[i]->type = (*token)->type;
-			fprintf(stderr, "\x1b[34m    %s:\x1b[0m", token_type_to_string(cmd_node->cmd->redir[i]->type));
 			advance_and_free_token(token);
 			cmd_node->cmd->redir[i]->file = ft_strdup((*token)->content);
 			advance_and_free_token(token);
 			i++;
 		}
-		if (is_cmd((*token)->type))
+		if (*token != NULL && is_cmd((*token)->type))
 		{
 			cmd_node->cmd->argv[j] = ft_strdup((*token)->content);
 			advance_and_free_token(token);
