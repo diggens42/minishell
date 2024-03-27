@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/26 15:57:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/27 16:41:44 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ t_token	*token_new(void)
 	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
 	if (new_token == NULL)
 		ft_exit("malloc");
-	new_token->content = NULL;
-	new_token->type = UNKNOWN;
-	new_token->length = 0;
-	new_token->stop_recursion = false;
-	new_token->next = NULL;
 	return (new_token);
 }
 

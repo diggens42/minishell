@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:44:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/26 21:07:19 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:20:24 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,13 @@ t_ast	*ast_redirect(t_token **token, t_ast *cmd_node)
 
 bool	is_redirect(t_type type)
 {
-	if (type == REDIR_IN || type == REDIR_OUT
-		|| type == REDIR_APPEND || type == REDIR_HEREDOC)
-		return (1);
-	return (0);
+	if (type == REDIR_IN)
+		return (true);
+	if (type == REDIR_OUT)
+		return (true);
+	if (type == REDIR_APPEND)
+		return (true);
+	if (type == REDIR_HEREDOC)
+		return (true);
+	return (false);
 }

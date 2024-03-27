@@ -66,7 +66,7 @@
 # define PROMPT_STD "$ "
 # define PROMPT_MULTI_LINE "> "
 
-typedef enum	e_token_type
+typedef enum	e_type
 {
 	UNKNOWN,
 	COMMAND,
@@ -91,16 +91,29 @@ typedef struct	s_token
 	t_type			type;
 	char			*content;
 	int				length;
-	bool			stop_recursion;
 	struct s_token	*next;
 }	t_token;
 
+typedef struct	s_redir
+{
+	t_type			type;
+	char			*file;
+}	t_redir;
+
+typedef struct	s_cmd
+{
+	char			**argv;
+	t_redir			**redir;
+	int				exit_status;
+}	t_cmd;
+
 typedef struct	s_ast
 {
-	t_type	type;
-	char			**argv;
+	t_type			type;
+	t_cmd			*cmd;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	bool			subshell;
 }	t_ast;
 
 typedef struct	s_env
@@ -154,9 +167,10 @@ t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
 void			advance_and_free_token(t_token **token);
 char			**token_to_str_array(t_token *tokens);
-int				count_command_group(t_token *tokens);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
+bool			is_operator(t_type type);
+bool			is_cmd(t_type	type);
 void			print_ast(t_ast* node, int level);
 // EXECUTOR
 // exec_main
