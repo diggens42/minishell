@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 18:54:18 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/26 13:28:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 15:46:02 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void print_ast(t_ast* node, int level) {
 	fprintf(stderr, "\x1b[34m%s\x1b[0m", token_type_to_string(node->type));
     if (node->type == COMMAND) {
         // printf(": %s", node->argv[0]); // Assuming argv[0] is the command name.
-		fprintf(stderr, "\x1b[34m: %s\x1b[0m", node->argv[0]);
+		fprintf(stderr, "\x1b[34m: %s\x1b[0m", node->cmd->argv[0]);
     }
     printf("\n");
 

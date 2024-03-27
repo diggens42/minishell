@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 20:41:20 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:45:35 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ t_ast	*new_ast_node(t_token *token)
 	node->left = NULL;
 	node->right = NULL;
 	if (token->type == COMMAND)
-	node->argv = token_to_str_array(token);
+	node->cmd->argv = token_to_str_array(token);
 	else
-		node->argv = NULL;
+		node->cmd->argv = NULL;
 	return (node);
 }

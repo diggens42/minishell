@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 16:01:10 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:47:58 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ static void	process_double_quotes(t_token *token, t_env *env)
 }
 
 //expands a variable within a tokens content
-static void	process_dollar_sign(t_token *token, t_env *env, t_exec *exec)
+static void	process_dollar_sign(t_token *token, t_env *env)
 {
 	char	*expanded_content;
 
-	if (token->type == DOLLAR)
-		expanded_content = expand_dollar_sign(token->content, env);
-	if (token->type == DQMARK)
-		expanded_content = expand_dollar_qmark(exec);
+	// if (token->type == DOLLAR)
+	expanded_content = expand_dollar_sign(token->content, env);
+	// if (token->type == DQMARK)
+	// 	expanded_content = expand_dollar_qmark();
 	free(token->content);
 	token->content = expanded_content;
 	token->length = ft_strlen(expanded_content);
@@ -74,7 +74,7 @@ static void	process_dollar_sign(t_token *token, t_env *env, t_exec *exec)
 }
 
 //expands a token based on its type
-void	expand_token(t_token *token, t_env *env, t_exec *exec)
+void	expand_token(t_token *token, t_env *env)
 {
 	if (token == NULL || token->content == NULL)
 		return ;
@@ -83,7 +83,7 @@ void	expand_token(t_token *token, t_env *env, t_exec *exec)
 	else if (token->type == WILDCARD)
 		process_wildcard(token);
 	else if (token->type == DOLLAR || token->type == DQMARK)
-		process_dollar_sign(token, env, exec);
+		process_dollar_sign(token, env);
 	else if (token->type == DOUBLE_QUOTE)
 		process_double_quotes(token, env);
 	else if (token->type == SINGLE_QUOTE)

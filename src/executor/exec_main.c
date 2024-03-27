@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 15:31:01 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:42:44 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	exec_main(t_ast *ast, t_env *env)
 
 	if (ast == NULL)
 		return (EXIT_SUCCESS);
+	else if (ast->subshell == true)
+	{
+		// TODO fork() child process -> exec_main
+	}
 	else if (ast->type == AND)
 	{
 		exit_status = exec_main(ast->left, env);
@@ -32,27 +36,13 @@ int	exec_main(t_ast *ast, t_env *env)
 	else if (ast->type == OR)
 	{
 		exit_status = exec_main(ast->left, env);
-		if (exit_status == EXIT_FAILURE)
+		if (exit_status != EXIT_SUCCESS)
 			exit_status = exec_main(ast->right, env);
 	}
 	else if (ast->type == PIPE)
 	{
 		exit_status = exec_pipe(ast, env);
 	}
-	else if (ast->type == REDIR_IN || ast->type == REDIR_HEREDOC)
-	{
-		exec_redir_in(ast->right, ast->type);
-		exit_status = exec_main(ast->left, env);
-	}
-	else if (ast->type == REDIR_OUT || ast->type == REDIR_APPEND)
-	{
-		exec_redir_out(ast->right, ast->type);
-		exit_status = exec_main(ast->left, env);
-	}
-	// else if (exec->in_fork == false)
-	// {
-	// 	exit_status = exec_single_command(ast->cmd->argv, env);
-	// }
 	else
 	{
 		exit_status = exec_command(ast->cmd->argv, env);

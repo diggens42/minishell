@@ -135,13 +135,13 @@ typedef struct	s_ast
 int				main(int argc, char **argv, char **envp);
 
 // LEXER
-t_token			*tokenizer(char *user_input, t_env *env, t_exec *exec);
+t_token			*tokenizer(char *user_input, t_env *env);
 int				set_token_length(char *user_input);
 t_type			set_type(char	*content, int token_length);
-void			expand_token(t_token *token, t_env *env, t_exec *exec);
+void			expand_token(t_token *token, t_env *env);
 void			proccess_commands(t_token *token, t_env *env);
 char			*expand_dollar_sign(const char *content, t_env *env);
-char			*expand_dollar_qmark(t_exec *exec);
+// char			*expand_dollar_qmark(void);
 char			*expand_double_quote(const char *content, t_env *env);
 char			*expand_wildcard(char *content);
 int				match_wildcard(char *pattern, char *str);

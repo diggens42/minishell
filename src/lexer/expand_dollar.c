@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 18:24:04 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:44:16 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ char	*expand_dollar_sign(const char *content, t_env *env)
 	return (expanded_content);
 }
 
-char	*expand_dollar_qmark(t_exec *exec)
-{
-	char	*expanded_content;
+// char	*expand_dollar_qmark(void)
+// {
+// 	char	*expanded_content;
 
-	expanded_content = ft_itoa(exec->exit_status);
-	return (expanded_content);
-}
+// 	expanded_content = ft_itoa(exec->exit_status);
+// 	return (expanded_content);
+// }
