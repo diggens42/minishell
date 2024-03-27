@@ -6,224 +6,214 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 12:43:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 15:31:01 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	exec_main(t_ast *ast_node, t_env *env, t_exec *exec)
+int	exec_main(t_ast *ast, t_env *env)
 {
-	// if (ast_node->argv != NULL)
-	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast_node->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+	if (ast->cmd->argv != NULL)
+		fprintf(stderr, "\x1b[33mEnter exec_main with: %s, \x1b[0m", ast->cmd->argv[0]);
+	else
+		fprintf(stderr, "\x1b[33mEnter exec_main with: %s, \x1b[0m", token_type_to_string(ast->type));
+
 	int	exit_status;
 
-	if (ast_node == NULL)
-		return (true);
-	if (ast_node->type == AND)
+	if (ast == NULL)
+		return (EXIT_SUCCESS);
+	else if (ast->type == AND)
 	{
-		exit_status = exec_main(ast_node->left, env, exec);
-		if (exit_status == true)
-			exit_status = exec_main(ast_node->right, env, exec);
+		exit_status = exec_main(ast->left, env);
+		if (exit_status == EXIT_SUCCESS)
+			exit_status = exec_main(ast->right, env);
 	}
-	else if (ast_node->type == OR)
+	else if (ast->type == OR)
 	{
-		exit_status = exec_main(ast_node->left, env, exec);
-		if (exit_status == false)
-			exit_status = exec_main(ast_node->right, env, exec);
+		exit_status = exec_main(ast->left, env);
+		if (exit_status == EXIT_FAILURE)
+			exit_status = exec_main(ast->right, env);
 	}
-	else if (ast_node->type == PIPE)
-		exit_status = exec_pipe(ast_node, env, exec);
-	else if (ast_node->type == REDIR_IN || ast_node->type == REDIR_HEREDOC)
+	else if (ast->type == PIPE)
 	{
-		// if (ast_node->left->type == REDIR_HEREDOC)
-		// 	exec_main(ast_node->left, env, exec);
-		exec_redir_in(ast_node->right, exec, ast_node->type);
-		exit_status = exec_main(ast_node->left, env, exec);
+		exit_status = exec_pipe(ast, env);
 	}
-	else if (ast_node->type == REDIR_OUT || ast_node->type == REDIR_APPEND)
+	else if (ast->type == REDIR_IN || ast->type == REDIR_HEREDOC)
 	{
-		exec_redir_out(ast_node->right, exec, ast_node->type);
-		exit_status = exec_main(ast_node->left, env, exec);
+		exec_redir_in(ast->right, ast->type);
+		exit_status = exec_main(ast->left, env);
 	}
+	else if (ast->type == REDIR_OUT || ast->type == REDIR_APPEND)
+	{
+		exec_redir_out(ast->right, ast->type);
+		exit_status = exec_main(ast->left, env);
+	}
+	// else if (exec->in_fork == false)
+	// {
+	// 	exit_status = exec_single_command(ast->cmd->argv, env);
+	// }
 	else
 	{
-		exit_status = exec_command(ast_node->argv, env, exec);
+		exit_status = exec_command(ast->cmd->argv, env);
 	}
 	return (exit_status);
 }
 
-void	exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type)
-{
-	// fprintf(stderr, "\x1b[33mEnter exec_redir_out with %s\n\x1b[0m", ast_node->argv[0]);
-	int fd_out;
-	struct stat stat_fd_out;
-	struct stat stat_fd_stdout;
+// int	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
+// {
+// 	if (ast_node->argv != NULL)
+// 		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", ast_node->argv[0]);
+// 	else
+// 		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+// 	pid_t	pid;
+// 	int		wstatus;
+// 	// int		exit_status;
 
-	if (type == REDIR_OUT)
-		fd_out = open(ast_node->argv[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 	exec->in_fork = true;
+// 	pid = ft_fork();
+// 	if (pid == 0)
+// 	{
+// 		exec_children(ast_node, env, exec);
+// 		// exit(EXIT_SUCCESS);
+// 	}
+// 	waitpid(pid, &wstatus, 0);
+// 	return (WEXITSTATUS(wstatus));
+// 	// return (exit_status);
+// }
+
+int	exec_pipe(t_ast *ast, t_env *env)
+{
+	if (ast->cmd->argv != NULL)
+		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s, \x1b[0m", ast->cmd->argv[0]);
 	else
-	{
-		ft_putstr_fd("here\n", STDERR_FILENO);
-		fd_out = open(ast_node->argv[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
-	}
-	if (fd_out == -1)
-		ft_exit("open");
-
-	fstat(STDOUT_FILENO, &stat_fd_out);
-	fstat(exec->fd_stdout, &stat_fd_stdout);
-
-	if (stat_fd_out.st_ino == stat_fd_stdout.st_ino)
-	{
-		if (dup2(fd_out, STDOUT_FILENO) == -1)
-			ft_exit("dup2");
-	}
-	close(fd_out);
-
-}
-
-// reads the input with gnl until LIMITER and sends it to the first pipe
-int	ft_handle_here_doc(char *limiter)
-{
-	// fprintf(stderr, "\x1b[33mEnter ft_handle_here_doc with %s\n\x1b[0m", limiter);
-	int		fd_pipe[2];
-	char	*line;
-
-	ft_pipe(fd_pipe);
-	while (42)
-	{
-		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
-		line = get_next_line(STDIN_FILENO);
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
-		{
-			free(line);
-			// free(limiter);
-			break ;
-		}
-		ft_putstr_fd(line, fd_pipe[1]);
-		free(line);
-	}
-	close(fd_pipe[1]);
-	return (fd_pipe[0]);
-}
-
-void	exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type)
-{
-	// fprintf(stderr, "\x1b[33mEnter exec_redir_in with %s\n\x1b[0m", ast_node->argv[0]);
-	int fd_in;
-	struct stat stat_fd_in;
-	struct stat stat_fd_stdin;
-
-	if (type == REDIR_IN)
-		fd_in = open(ast_node->argv[0], O_RDONLY);
-	else
-		fd_in = ft_handle_here_doc(ast_node->argv[0]);
-	if (fd_in == -1)
-		ft_exit("open");
-
-	fstat(STDIN_FILENO, &stat_fd_in);
-	fstat(exec->fd_stdin, &stat_fd_stdin);
-
-	if (stat_fd_in.st_ino == stat_fd_stdin.st_ino)
-	{
-		if (dup2(fd_in, STDIN_FILENO) == -1)
-			ft_exit("dup2");
-	}
-	close(fd_in);
-}
-
-bool	exec_pipe(t_ast *ast_node, t_env *env, t_exec *exec)
-{
-	// if (ast_node->argv != NULL)
-	// 	fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", ast_node->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
-	pid_t	pid;
-	int		wstatus;
-
-	pid = ft_fork();
-	if (pid == 0)
-	{
-		exec_children(ast_node, env, exec);
-		exit(EXIT_SUCCESS);
-	}
-	waitpid(pid, &wstatus, 0);
-	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
-		return (true);
-	else
-		return (false);
-}
-
-void	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
-{
-	// if (ast_node->argv != NULL)
-	// 	fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", ast_node->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s, \x1b[0m", token_type_to_string(ast->type));
 
 	int		fd[2];
-	pid_t	pid;
+	int		exit_status;
 
 	ft_pipe(fd);
-	pid = ft_fork();
-	if (pid == 0)
-	{
-		close(fd[0]);
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-			ft_exit("dup2");
-		close(fd[1]);
-		exec_main(ast_node->left, env, exec);
-	}
-	else
-	{
-		close(fd[1]);
-		if (dup2(fd[0], STDIN_FILENO) == -1)
-			ft_exit("dup2");
-		close(fd[0]);
-		exec_main(ast_node->right, env, exec);
-		waitpid(pid, NULL, 0);
-	}
+	exit_status = exec_main(ast->left, env);
+	close(fd[1]);
+	exit_status = exec_main(ast->right, env);
+	close(fd[0]);
+	return (exit_status);
 }
 
-int	exec_command(char **argv, t_env *env, t_exec *exec)
+// int	exec_children(t_ast *ast_node, t_env *env, t_exec *exec)
+// {
+// 	if (ast_node->argv != NULL)
+// 		fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", ast_node->argv[0]);
+// 	else
+// 		fprintf(stderr, "\x1b[33mEnter exec_children with: %s\n\x1b[0m", token_type_to_string(ast_node->type));
+
+// 	int		fd[2];
+// 	pid_t	pid;
+// 	int		wstatus;
+// 	int		exit_status;
+
+// 	ft_pipe(fd);
+// 	pid = ft_fork();
+// 	if (pid == 0)
+// 	{
+// 		close(fd[0]);
+// 		if (dup2(fd[1], STDOUT_FILENO) == -1)
+// 		{
+// 			perror("dup2a");
+// 			return (EXIT_FAILURE);
+// 		}
+// 		close(fd[1]);
+// 		exit_status = exec_main(ast_node->left, env, exec);
+// 	}
+// 	else
+// 	{
+// 		close(fd[1]);
+// 		if (dup2(fd[0], STDIN_FILENO) == -1)
+// 		{
+// 			perror("dup2b");
+// 			return (EXIT_FAILURE);
+// 		}
+// 		close(fd[0]);
+// 		exit_status = exec_main(ast_node->right, env, exec);
+// 		waitpid(pid, &wstatus, 0);
+// 		return (WEXITSTATUS(wstatus));
+// 	}
+// 	return (exit_status);
+// }
+
+int	exec_command(char **argv, t_env *env)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+	fprintf(stderr, "\x1b[33mEnter exec_command with %s, \x1b[0m", argv[0]);
+
 	pid_t	pid;
 	int		wstatus;
 	int		exit_status;
 
-	exit_status = exec_builtin(argv, env, exec);
+	exit_status = exec_builtin(argv, env);
 	if (exit_status != -1)
 		return (exit_status);
-	// ft_putstr_fd("here1", STDERR_FILENO);
-	pid = ft_fork(); // TODO
+	pid = ft_fork();
 	if (pid == 0)
 	{
-		exec_finish(argv, env, exec);
+		// if (ft_strcmp(child, "left") == 0)
+		// {
+		// 	close(fd_in);
+		// 	if (dup2(fd_out, STDOUT_FILENO) == -1)
+		// 	{
+		// 		perror("dup2a");
+		// 		return (EXIT_FAILURE);
+		// }
+		// 	close(fd_out);
+		// }
+		// if (ft_strcmp(child, "right") == 0)
+		// {
+		// 	close(fd_out);
+		// 	if (dup2(fd_in, STDIN_FILENO) == -1)
+		// 	{
+		// 		perror("dup2b");
+		// 		return (EXIT_FAILURE);
+		// 	}
+		// 	close(fd_in);
+		// }
+		exec_finish(argv, env);
 	}
 	waitpid(pid, &wstatus, 0);
-	// ft_putstr_fd("here2", STDERR_FILENO);
-	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == EXIT_SUCCESS)
-	{
-		return (true);
-	}
-	else
-	{
-		return (false);
-	}
-	// if (WIFEXITED(wstatus) ==  true)
-	// 	return (WEXITSTATUS(wstatus));
-	// else
-	// 	return (EXIT_FAILURE);
+	return (WEXITSTATUS(wstatus));
 }
 
-int	exec_builtin(char **argv, t_env *env, t_exec *exec)
-{
-	// fprintf(stderr, "\x1b[33mEnter exec_builtin with %s\n\x1b[0m", argv[0]);
+// int	exec_command(char **argv, t_env *env)
+// {
+// 	fprintf(stderr, "\x1b[33mEnter exec_command with %s\n\x1b[0m", argv[0]);
+// 	int	exit_status;
 
-	(void)exec;
+// 	exit_status = exec_builtin(argv, env);
+// 	if (exit_status != -1)
+// 		return (exit_status);
+// 	exec_finish(argv, env);
+// 	return (exit_status);
+// }
+
+// int	exec_single_command(char **argv, t_env *env)
+// {
+// 	// fprintf(stderr, "\x1b[33mEnter exec_single_command with: %s\n\x1b[0m", argv[0]);
+
+// 	pid_t	pid;
+// 	int		wstatus;
+// 	int		exit_status;
+
+// 	exit_status = exec_builtin(argv, env);
+// 	if (exit_status != -1)
+// 		return (exit_status);
+// 	pid = ft_fork();
+// 	if (pid == 0)
+// 		exec_finish(argv, env);
+// 	waitpid(pid, &wstatus, 0);
+// 	return (WEXITSTATUS(wstatus));
+// }
+
+int	exec_builtin(char **argv, t_env *env)
+{
+	fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -241,32 +231,24 @@ int	exec_builtin(char **argv, t_env *env, t_exec *exec)
 	return (-1);
 }
 
-void	exec_finish(char **argv, t_env *env, t_exec *exec)
+void	exec_finish(char **argv, t_env *env)
 {
-	// fprintf(stderr, "\x1b[33mEnter exec_finish with %s\n\x1b[0m", argv[0]);
-	char	**path;
+	fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
 	char	*pathname;
 	char	**envp;
 
 	if (ft_strchr(argv[0], '/') != NULL)
-		pathname = argv[0];
+		pathname = create_absolute_path(argv[0]);
 	else
-	{
-		path = create_pathname(argv[0], env);
-		pathname = find_pathname(path);
-		free_char_array(path);
-	}
- 	// fprintf(stderr, "\x1b[33mEnter execve with %s\n\x1b[0m", pathname);
+		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
+ 	fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
 	if (execve(pathname, argv, envp) == -1)
 	{
-		// fprintf(stderr, "\x1b[33mexecve error\n\x1b[0m");
 		free(pathname);
-		free_char_array(argv);
-		free_char_array(envp);
-		exec->exit_status = 1;
-		ft_exit("execve");
+		// free_char_array(argv);
+		// free_char_array(envp);
+		ft_perror(argv[0], strerror(errno));
+		exit(EXIT_FAILURE);
 	}
-	// else
-		// exec->exit_status = 0;
 }

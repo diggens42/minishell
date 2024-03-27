@@ -6,22 +6,22 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:56:05 by mott              #+#    #+#             */
-/*   Updated: 2024/03/23 14:36:29 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 18:22:09 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static bool	valid_num(char *str)
+static int	valid_num(char *str)
 {
 	if (*str == '+' || *str == '-')
 		str++;
 	while (ft_isdigit(*str++) == 1)
 	{
 		if (*str == '\0')
-			return (true);
+			return (EXIT_SUCCESS);
 	}
-	return (false);
+	return (EXIT_FAILURE);
 }
 
 static char	atoexit(char *str)
@@ -40,14 +40,14 @@ static char	atoexit(char *str)
 	return (sign * num);
 }
 
-bool	builtin_exit(char **argv)
+int	builtin_exit(char **argv)
 {
 	// ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (argv[1] == NULL)
-		exit(0);
+		exit(EXIT_SUCCESS);
 	else if (argv[2] == NULL)
 	{
-		if (valid_num(argv[1]) == false)
+		if (valid_num(argv[1]) == EXIT_FAILURE)
 		{
 			ft_putstr_fd("exit: ", STDERR_FILENO);
 			ft_putstr_fd(argv[1], STDERR_FILENO);
@@ -59,5 +59,5 @@ bool	builtin_exit(char **argv)
 	}
 	else
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
-	return (true);
+	return (EXIT_FAILURE);
 }

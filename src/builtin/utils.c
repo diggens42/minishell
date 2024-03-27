@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/03/23 14:56:41 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 16:24:44 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	is_valid_key(char *key)
 	return (EXIT_SUCCESS);
 }
 
-static int	builtin_env_new(t_env **env, t_env *previous, char *key, char *value)
+static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 {
 	t_env	*new_env;
 
@@ -54,7 +54,7 @@ static int	builtin_env_new(t_env **env, t_env *previous, char *key, char *value)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_env_update(t_env **env, char *key, char *value)
+int	env_update(t_env **env, char *key, char *value)
 {
 	t_env	*current;
 	t_env	*previous;
@@ -73,5 +73,5 @@ int	builtin_env_update(t_env **env, char *key, char *value)
 		previous = current;
 		current = current->next;
 	}
-	return (builtin_env_new(env, previous, key, value));
+	return (env_new(env, previous, key, value));
 }

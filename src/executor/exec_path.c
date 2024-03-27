@@ -6,13 +6,45 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/03/13 13:34:51 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/24 18:17:39 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**create_pathname(char *command, t_env *env)
+char	*create_absolute_path(char *command)
+{
+	char	*pathname;
+
+	pathname = ft_strdup(command);
+	if (access(pathname, X_OK) == -1)
+	{
+		ft_perror(command, strerror(errno));
+		if (errno == 13)
+			exit(126);
+		else
+			exit(127);
+	}
+	return (pathname);
+}
+
+char	*create_relative_path(char *command, t_env *env)
+{
+	char	**path;
+	char	*pathname;
+
+	path = split_path(command, env);
+	pathname = find_pathname(path);
+	free_char_array(path);
+	if (pathname == NULL)
+	{
+		ft_perror(command, "command not found");
+		exit(127);
+	}
+	return (pathname);
+}
+
+char	**split_path(char *command, t_env *env)
 {
 	char	**path;
 	char	*temp;

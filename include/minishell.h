@@ -66,7 +66,7 @@
 # define PROMPT_STD "$ "
 # define PROMPT_MULTI_LINE "> "
 
-typedef enum	e_token_type
+typedef enum	e_type
 {
 	UNKNOWN,
 	COMMAND,
@@ -86,22 +86,6 @@ typedef enum	e_token_type
 	WILDCARD
 }	t_type;
 
-typedef struct	s_token
-{
-	t_type	type;
-	char			*content;
-	int				length;
-	struct s_token	*next;
-}	t_token;
-
-typedef struct	s_ast
-{
-	t_type	type;
-	char			**argv;
-	struct s_ast	*left;
-	struct s_ast	*right;
-}	t_ast;
-
 typedef struct	s_env
 {
 	char			*key;
@@ -109,16 +93,46 @@ typedef struct	s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct	s_exec
+typedef struct	s_token
 {
-	int	fd_stdin;
-	int	fd_stdout;
-	int	exit_status;
-}	t_exec;
+	t_type			type;
+	char			*content;
+	int				length;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct	s_redir
+{
+	t_type			type;
+	char			*file;
+}	t_redir;
+
+typedef struct	s_cmd
+{
+	char			**argv;
+	t_redir			**redir;
+	int				exit_status;
+}	t_cmd;
+
+typedef struct	s_ast
+{
+	t_type			type;
+	t_cmd			*cmd;
+	struct s_ast	*left;
+	struct s_ast	*right;
+	bool			subshell;
+}	t_ast;
+
+// typedef struct	s_mini
+// {
+// 	t_ast	*ast;
+// 	t_env	*env;
+// 	int		fd_stdin;
+// 	int		fd_stdout;
+// }	t_mini;
 
 // minishell.c
 int				main(int argc, char **argv, char **envp);
-void			read_eval_print_loop(t_env *env);
 
 // LEXER
 t_token			*tokenizer(char *user_input, t_env *env, t_exec *exec);
@@ -153,22 +167,25 @@ int				count_command_group(t_token *tokens);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
 void			print_ast(t_ast* node, int level);
+
 // EXECUTOR
 // exec_main
-int				exec_main(t_ast *ast_head, t_env *env, t_exec *exec);
-bool			exec_pipe(t_ast *ast_head, t_env *env, t_exec *exec);
-void			exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
-int				exec_command(char **argv, t_env *env, t_exec *exec);
-int				exec_builtin(char **argv, t_env *env, t_exec *exec);
-void			exec_finish(char **argv, t_env *env, t_exec *exec);
-void			exec_redir_out(t_ast *ast_node, t_exec *exec, t_type type);
-void			exec_redir_in(t_ast *ast_node, t_exec *exec, t_type type);
-t_exec			*init_fd(void);
-void			reset_fd(t_exec *exec);
-int				ft_handle_here_doc(char *limiter);
-
+int				exec_main(t_ast *ast, t_env *env);
+int				exec_pipe(t_ast *ast, t_env *env);
+// int				exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
+int				exec_command(char **argv, t_env *env);
+// int				exec_command(char **argv, t_env *env);
+// int				exec_single_command(char **argv, t_env *env);
+int				exec_builtin(char **argv, t_env *env);
+void			exec_finish(char **argv, t_env *env);
+// exec_redir
+int				exec_redir_out(t_ast *ast, t_type type);
+int				exec_redir_in(t_ast *ast, t_type type);
+int				exec_here_doc(char *limiter);
 // exec_path
-char			**create_pathname(char *command, t_env *env);
+char			*create_absolute_path(char *command);
+char			*create_relative_path(char *command, t_env *env);
+char			**split_path(char *command, t_env *env);
 char			*find_pathname(char **path);
 // exec_utils
 char			**tokens_to_char_array(t_token *tokens);
@@ -177,18 +194,20 @@ int				envp_size(t_env *env);
 // exec_utils2
 void			ft_pipe(int *fd);
 pid_t			ft_fork(void);
+// t_exec			*init_fd(void);
+// void			reset_fd(t_exec *exec);
 
 // BUILTIN
 int				builtin_cd(char **argv, t_env **env);
 int				builtin_echo(char **argv);
-bool			builtin_env(t_env *env);
-bool			builtin_exit(char **argv);
+int				builtin_env(t_env *env);
+int				builtin_exit(char **argv);
 int				builtin_export(char **argv, t_env **env);
 int				builtin_pwd(void);
 int				builtin_unset(char **argv, t_env **env);
 
 // builtin_utils
-int				builtin_env_update(t_env **env, char *key, char *value);
+int				env_update(t_env **env, char *key, char *value);
 
 //signals
 void			ctrl_c_handler(int signal);
@@ -204,10 +223,12 @@ void			free_char_array(char **str);
 void			free_token(t_token *token);
 // exit
 void			ft_exit(char *command);
+void			ft_perror(char *command, char *error_message);
 // debug
 void			token_print(t_token *tokens);
 void			print_char_array(char **str);
 void			check_tokens(t_token *tokens);
 void			print_ast(t_ast* node, int level);
 char			*token_type_to_string(t_type type);
+
 #endif

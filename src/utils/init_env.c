@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/08 21:29:48 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 15:02:32 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static t_env	*new_env_node(char *key, char *value)
 
 t_env	*init_env(char **envp)
 {
+	// extern **environ;
 	t_env	*env;
 	char	*key;
 	char	*value;

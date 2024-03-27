@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 14:23:14 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 16:24:34 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_export(char **argv, t_env **env)
 			*equal_sign = '\0';
 			value = equal_sign + 1;
 		}
-		if (builtin_env_update(env, key, value) == EXIT_FAILURE)
+		if (env_update(env, key, value) == EXIT_FAILURE)
 			exit_status = EXIT_FAILURE;
 		free(key);
 	}

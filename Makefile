@@ -47,6 +47,7 @@ SRCS =	./src/minishell.c \
 		\
 		./src/executor/exec_main.c \
 		./src/executor/exec_path.c \
+		./src/executor/exec_redir.c \
 		./src/executor/exec_utils.c \
 		./src/executor/exec_utils2.c \
 		\

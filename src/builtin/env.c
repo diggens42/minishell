@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:52:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/20 17:23:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/23 16:19:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-bool	builtin_env(t_env *env)
+int	builtin_env(t_env *env)
 {
 	while (env != NULL)
 	{
@@ -20,5 +20,5 @@ bool	builtin_env(t_env *env)
 			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
-	return (true);
+	return (EXIT_SUCCESS);
 }
