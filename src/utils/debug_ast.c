@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 18:54:18 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 15:46:02 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 17:36:50 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ char	*token_type_to_string(t_type type)
     }
 }
 
-void print_ast(t_ast* node, int level) {
+void print_ast(t_ast* node, int level)
+{
+	int j = 0;
+	int k = 0;
     if (node == NULL) return;
 
     // Print indentation based on the level of depth in the tree.
@@ -37,12 +40,24 @@ void print_ast(t_ast* node, int level) {
         fprintf(stderr, "  "); // Two spaces per level of depth.
     }
 
-    // Print the current node.
-    // printf("%s", token_type_to_string(node->type));
-	fprintf(stderr, "\x1b[34m%s\x1b[0m", token_type_to_string(node->type));
-    if (node->type == COMMAND) {
-        // printf(": %s", node->argv[0]); // Assuming argv[0] is the command name.
-		fprintf(stderr, "\x1b[34m: %s\x1b[0m", node->cmd->argv[0]);
+	fprintf(stderr, "\x1b[34m%s:\x1b[0m", token_type_to_string(node->type));
+    if (node->type == COMMAND)
+	{
+		while (node->cmd->argv[j] != NULL)
+		{
+			fprintf(stderr, "\x1b[34m %s\x1b[0m", node->cmd->argv[j]);
+			j++;
+		}
+		if (node->cmd->redir != NULL)
+		{
+			while (node->cmd->redir[k] != NULL)
+			{
+				fprintf(stderr, "\x1b[34m    %s:\x1b[0m", token_type_to_string(node->cmd->redir[k]->type));
+				fprintf(stderr, "\x1b[34m    %s\x1b[0m", node->cmd->redir[k]->file);
+				k++;
+			}
+
+		}
     }
     printf("\n");
 

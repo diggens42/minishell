@@ -135,19 +135,22 @@ typedef struct	s_ast
 int				main(int argc, char **argv, char **envp);
 
 // LEXER
-t_token			*tokenizer(char *user_input, t_env *env);
+t_token			*tokenizer(char *user_input);
 int				set_token_length(char *user_input);
 t_type			set_type(char	*content, int token_length);
-void			expand_token(t_token *token, t_env *env);
-void			proccess_commands(t_token *token, t_env *env);
-char			*expand_dollar_sign(const char *content, t_env *env);
+// void			expand_token(t_token *token, t_env *env);
+// void			proccess_commands(t_token *token, t_env *env);
+// char			*expand_dollar_sign(const char *content, t_env *env);
 // char			*expand_dollar_qmark(void);
-char			*expand_double_quote(const char *content, t_env *env);
-char			*expand_wildcard(char *content);
-int				match_wildcard(char *pattern, char *str);
-void			wildcard_path_to_token(char *path, t_token **current);
-char			*remove_double_quotes(const char *content);
-char			*remove_single_quotes(const char *content);
+// char			*expand_double_quote(const char *content, t_env *env);
+// char			*expand_wildcard(char *content);
+// int				match_wildcard(char *pattern, char *str);
+// void			wildcard_path_to_token(char *path, t_token **current);
+// char			*remove_double_quotes(const char *content);
+// char			*remove_single_quotes(const char *content);
+// char			*get_quote_start(char *str);
+// char 			*get_quote_end(char *str, char quote_type);
+int				get_single_char_len(char c);
 // token_ops
 t_token			*token_new(void);
 t_token			*token_last(t_token *token);
@@ -162,10 +165,12 @@ t_ast			*ast_pipe(t_token **token, t_ast *left);
 t_ast			*ast_logical(t_token **token, t_ast *left);
 t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
+void			advance_and_free_token(t_token **token);
 char			**token_to_str_array(t_token *tokens);
-int				count_command_group(t_token *tokens);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
+bool			is_operator(t_type type);
+bool			is_cmd(t_type	type);
 void			print_ast(t_ast* node, int level);
 
 // EXECUTOR
@@ -220,7 +225,6 @@ char			*ft_getenv(char *key, t_env *env);
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
 void			free_char_array(char **str);
-void			free_token(t_token *token);
 // exit
 void			ft_exit(char *command);
 void			ft_perror(char *command, char *error_message);

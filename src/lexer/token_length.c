@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 20:48:09 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/25 15:41:28 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	is_quote(char *user_input)
+static int	get_quote_len(char *user_input)
 {
 	int		len;
 	char	quote_type;
@@ -26,14 +26,9 @@ static int	is_quote(char *user_input)
 	return (len);
 }
 
-static int	is_single_special_char(char c)
+static int	get_double_char_len(char *user_input)
 {
-	return (ft_strchr("|<>()", c) != NULL);
-}
-
-static int	is_double_special_char(char *user_input)
-{
-	const char	*symbols[] = {"&&", "||", "<<", ">>", "$?", NULL};
+	const char	*symbols[] = {"&&", "||", "<<", ">>", NULL};
 	int			len;
 
 	len = 0;
@@ -46,16 +41,70 @@ static int	is_double_special_char(char *user_input)
 	return (0);
 }
 
-static int	is_dollar_sign(char *user_input)
+static int	get_dollar_len(char *user_input)
 {
 	int		len;
 
 	len = 1;
-	while (user_input[len] != '\0' && !ft_isspace(user_input[len])
-			&& !is_single_special_char(user_input[len]))
+	if (user_input[1] == '?')
 	{
-		if (!ft_isalnum(user_input[len]) || user_input[len] == '_'
-			|| user_input[len] == '/' || user_input[len] == '.')
+		if (user_input[2] != '\0' && !ft_isspace(user_input[2])
+			&& !get_single_char_len(user_input[2]))
+		{
+			len = 2;
+			while (user_input[len] != '\0' && !ft_isspace(user_input[len])
+				&& !get_single_char_len(user_input[len]))
+				len++;
+		}
+		else
+			return (2);
+	}
+	else
+	{
+		while (user_input[len] != '\0' && !ft_isspace(user_input[len])
+				&& !get_single_char_len(user_input[len]))
+		{
+			if (!ft_isalnum(user_input[len]) || user_input[len] == '_'
+				|| user_input[len] == '/' || user_input[len] == '.')
+				break ;
+			len++;
+		}
+	}
+	return (len);
+}
+
+static void handle_command_quotes(bool *quotes, char *quote_type, char current)
+{
+	if (current == '"' || current == '\'')
+	{
+		if (!(*quotes))
+		{
+			*quotes = true;
+			*quote_type = current;
+		}
+		else if (*quote_type == current)
+		{
+			*quotes = false;
+			*quote_type = '\'';
+		}
+	}
+}
+
+
+static int	get_command_len(char *user_input)
+{
+	int		len;
+	bool	quotes;
+	char	quote_type;
+
+	len = 0;
+	quotes = false;
+	quote_type = '\0';
+	while (user_input[len] != '\0')
+	{
+		handle_command_quotes(&quotes, &quote_type, user_input[len]);
+		if (!quotes && (ft_isspace(user_input[len])
+			|| get_single_char_len(user_input[len])))
 			break ;
 		len++;
 	}
@@ -66,17 +115,16 @@ int	set_token_length(char *user_input)
 {
 	int	len;
 
-	len = is_double_special_char(user_input);
+	len = get_double_char_len(user_input);
 	if (len > 0)
 		return (len);
-	if (is_single_special_char(user_input[0]))
+	else if (get_single_char_len(user_input[0]))
 		return (1);
-	if (user_input[0] == '"' || user_input[0] == '\'')
-		return (is_quote(user_input));
-	if (user_input[0] == '$')
-		return (is_dollar_sign(user_input));
-	while (user_input[len] != '\0' && !ft_isspace(user_input[len])
-		&& !is_single_special_char(user_input[len]) && user_input[len] != '$')
-		len++;
+	else if (user_input[0] == '"' || user_input[0] == '\'')
+		return (get_quote_len(user_input));
+	else if (user_input[0] == '$')
+		return (get_dollar_len(user_input));
+	else
+		return (get_command_len(user_input));
 	return (len);
 }

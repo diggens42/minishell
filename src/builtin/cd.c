@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/24 18:01:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 17:12:08 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char *builtin_cd_home(char **argv, t_env **env)
+static char	*builtin_cd_home(char **argv, t_env **env)
 {
 	char	*dir;
 
@@ -28,7 +28,7 @@ static char *builtin_cd_home(char **argv, t_env **env)
 	return (dir);
 }
 
-static char *builtin_cd_oldpwd(t_env **env)
+static char	*builtin_cd_oldpwd(t_env **env)
 {
 	char	*dir;
 

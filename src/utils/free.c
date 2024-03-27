@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/03/20 20:42:13 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/03/26 20:38:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,3 @@ void	free_char_array(char **str)
 	}
 	free(str);
 }
-
-void	free_token(t_token *token)
-{
-	free(token->content);
-	free(token);
-}
-

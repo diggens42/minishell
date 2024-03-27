@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:56:05 by mott              #+#    #+#             */
-/*   Updated: 2024/03/23 18:22:09 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 17:12:25 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	atoexit(char *str)
 
 int	builtin_exit(char **argv)
 {
-	// ft_putstr_fd("exit\n", STDERR_FILENO);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (argv[1] == NULL)
 		exit(EXIT_SUCCESS);
 	else if (argv[2] == NULL)

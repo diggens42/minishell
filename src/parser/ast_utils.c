@@ -6,57 +6,76 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 15:45:35 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 17:48:45 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	count_command_group(t_token *tokens)
+static int	n_cmd(t_token *tokens)
 {
 	t_token	*current;
-	int		count;
+	int		n_cmd;
 
 	current = tokens;
-	count = 0;
+	n_cmd = 0;
 	while (current != NULL)
 	{
-		if (current->type != COMMAND)
+		if (is_operator(current->type))
 			break ;
-		count++;
+		if (is_cmd(current->type))
+			n_cmd++;
 		current = current->next;
 	}
-	return (count);
+	return (n_cmd);
 }
 
-char	**token_to_str_array(t_token *tokens)
+static int n_red(t_token *tokens)
 {
-	char	**argv;
-	int		n_tokens;
-	int		i;
+	t_token	*current;
+	int		n_red;
 
-	n_tokens = count_command_group(tokens);
-	argv = (char **)ft_calloc(n_tokens + 1, sizeof(char *));
-	if (argv == NULL)
-		ft_exit("malloc");
-	i = 0;
-	while (tokens != NULL && i < n_tokens)
+	current = tokens;
+	n_red = 0;
+	while (current != NULL)
 	{
-		argv[i] = ft_strdup(tokens->content);
-		if (argv[i] == NULL)
-		{
-			while (i-- > 0)
-				free(argv[i]);
-			free(argv);
-			ft_exit("malloc");
-		}
-		tokens = tokens->next;
-		i++;
+		if (is_operator(current->type))
+			break ;
+		if (is_redirect(current->type))
+			n_red++;
+		current = current->next;
 	}
-	argv[i] = NULL;
-	// print_char_array(argv);
-	return (argv);
+	return (n_red);
 }
+
+// char	**token_to_str_array(t_token *tokens)
+// {
+// 	char	**argv;
+// 	int		n_tokens;
+// 	int		i;
+
+// 	n_tokens = count_command_group(tokens);
+// 	argv = (char **)ft_calloc(n_tokens + 1, sizeof(char *));
+// 	if (argv == NULL)
+// 		ft_exit("malloc");
+// 	i = 0;
+// 	while (tokens != NULL && i < n_tokens)
+// 	{
+// 		argv[i] = ft_strdup(tokens->content);
+// 		if (argv[i] == NULL)
+// 		{
+// 			while (i-- > 0)
+// 				free(argv[i]);
+// 			free(argv);
+// 			ft_exit("malloc");
+// 		}
+// 		tokens = tokens->next;
+// 		i++;
+// 	}
+// 	argv[i] = NULL;
+// 	// print_char_array(argv);
+// 	return (argv);
+// }
 
 t_ast	*new_ast_node(t_token *token)
 {
@@ -66,11 +85,28 @@ t_ast	*new_ast_node(t_token *token)
 	if (!node)
 		ft_exit("malloc");
 	node->type = token->type;
-	node->left = NULL;
-	node->right = NULL;
-	if (token->type == COMMAND)
-	node->cmd->argv = token_to_str_array(token);
-	else
-		node->cmd->argv = NULL;
+	if (is_cmd(token->type) || is_redirect(token->type))
+	{
+		node->type = COMMAND;
+		node->cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
+		node->cmd->argv = (char **)ft_calloc(n_cmd(token) + 1, sizeof(char *));
+		// if (is_redirect(token->type))
+		node->cmd->redir = (t_redir **)ft_calloc(n_red(token) + 1, sizeof(t_redir *));
+	}
 	return (node);
+}
+
+void	advance_and_free_token(t_token **token)
+{
+	t_token	*next_token;
+
+	if (token == NULL || *token == NULL)
+		return ;
+	next_token = (*token)->next;
+	if (*token)
+	{
+		free((*token)->content);
+		free(*token);
+	}
+	*token = next_token;
 }

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_commands.c                                  :+:      :+:    :+:   */
+/*   token_length2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 16:05:32 by fwahl            ###   ########.fr       */
+/*   Created: 2024/03/24 16:39:45 by fwahl             #+#    #+#             */
+/*   Updated: 2024/03/24 16:41:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void proccess_commands(t_token *token, t_env *env)
+int	get_single_char_len(char c)
 {
-	(void)token;
-	(void)env;
+	return (ft_strchr("|<>()", c) != NULL);
 }

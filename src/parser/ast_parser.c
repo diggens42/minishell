@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 15:58:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:52:01 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_ast	*ast_parser(t_token **token)
 	{
 		if ((*token)->type == PARENTHESIS_L)
 			node = ast_parenthesis(token);
-		else if ((*token)->type == COMMAND)
+		else if (*token != NULL && (is_cmd((*token)->type) || is_redirect((*token)->type)))
 			node = ast_cmd(token);
 		else if (*token != NULL && (*token)->type == PIPE)
 			node = ast_pipe(token, node);

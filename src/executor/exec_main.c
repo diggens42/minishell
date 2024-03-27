@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 16:42:44 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 17:14:14 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	exec_main(t_ast *ast, t_env *env)
 
 	if (ast == NULL)
 		return (EXIT_SUCCESS);
-	else if (ast->subshell == true)
-	{
-		// TODO fork() child process -> exec_main
-	}
+	// else if (ast->subshell == true)
+	// {
+	// 	TODO fork() child process -> exec_main
+	// }
 	else if (ast->type == AND)
 	{
 		exit_status = exec_main(ast->left, env);
@@ -133,7 +133,7 @@ int	exec_pipe(t_ast *ast, t_env *env)
 
 int	exec_command(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_command with %s, \x1b[0m", argv[0]);
+		fprintf(stderr, "\x1b[33mEnter exec_command with %s, \x1b[0m", argv[0]);
 
 	pid_t	pid;
 	int		wstatus;
@@ -203,7 +203,8 @@ int	exec_command(char **argv, t_env *env)
 
 int	exec_builtin(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
+		fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
+
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
 	if (ft_strcmp("cd", argv[0]) == 0)
@@ -223,7 +224,8 @@ int	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-	fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
+		fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
+
 	char	*pathname;
 	char	**envp;
 
@@ -232,7 +234,9 @@ void	exec_finish(char **argv, t_env *env)
 	else
 		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
- 	fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
+
+ 		fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
+
 	if (execve(pathname, argv, envp) == -1)
 	{
 		free(pathname);

@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/27 15:42:59 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 16:59:56 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_token	*tokenizer(char *user_input, t_env *env)
+t_token	*tokenizer(char *user_input)
 {
 	t_token	*token_head;
 	t_token	*token;
@@ -31,7 +31,6 @@ t_token	*tokenizer(char *user_input, t_env *env)
 		// check_tokens(token);
 		token_add_back(&token_head, token);
 		user_input += token->length;
-		expand_token(token, env);
 	}
 	// check_tokens(token_head);
 	return (token_head);

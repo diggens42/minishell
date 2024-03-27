@@ -19,14 +19,16 @@ SRCS =	./src/minishell.c \
 		./src/lexer/tokenizer.c \
 		./src/lexer/token_ops.c \
 		./src/lexer/token_length.c \
+		./src/lexer/token_length2.c \
 		./src/lexer/token_type.c \
-		./src/lexer/expand_token.c \
-		./src/lexer/expand_commands.c \
-		./src/lexer/expand_dquotes.c \
-		./src/lexer/expand_dollar.c \
-		./src/lexer/expand_squotes.c \
-		./src/lexer/expand_wildcard.c \
-		./src/lexer/expand_wildcard2.c \
+		\
+		./src/expander/expand_token.c \
+		./src/expander/expand_command.c \
+		./src/expander/expand_dquotes.c \
+		./src/expander/expand_dollar.c \
+		./src/expander/expand_wildcard.c \
+		./src/expander/expand_wildcard2.c \
+		./src/expander/expand_utils.c \
 		\
 		./src/parser/ast_parser.c\
 		./src/parser/ast_cmd.c\
