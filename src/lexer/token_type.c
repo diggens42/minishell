@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/22 18:58:15 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/03 15:56:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_type	token_type_two_symbols(char *content)
 	return (COMMAND);
 }
 
-t_type	set_type(char	*content, int token_length)
+t_type	set_type(char *content, int token_length)
 {
 	t_type	type;
 

@@ -83,7 +83,8 @@ typedef enum	e_type
 	OR,
 	PARENTHESIS_L,
 	PARENTHESIS_R,
-	WILDCARD
+	WILDCARD,
+	SYNTAX_ERROR
 }	t_type;
 
 typedef struct	s_env
@@ -112,6 +113,7 @@ typedef struct	s_redir
 typedef struct	s_cmd
 {
 	char			**argv;
+	t_type			**type;
 	t_redir			**redir;
 	int				exit_status;
 }	t_cmd;

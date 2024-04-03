@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:58:21 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 18:24:23 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/03 18:05:55 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ bool	is_operator(t_type type)
 	return (false);
 }
 
+bool	is_redirect(t_type type)
+{
+	if (type == REDIR_IN)
+		return (true);
+	if (type == REDIR_OUT)
+		return (true);
+	if (type == REDIR_APPEND)
+		return (true);
+	if (type == REDIR_HEREDOC)
+		return (true);
+	return (false);
+}
+
 t_ast	*ast_cmd(t_token **token)
 {
 	t_ast	*cmd_node;
@@ -57,6 +70,10 @@ t_ast	*ast_cmd(t_token **token)
 		{
 			cmd_node->cmd->redir[i]->type = (*token)->type;
 			advance_and_free_token(token);
+			if ((*token) == NULL)
+				ft_printf("syntax error near unexpected token 'newline'\n"); //TODO ft_exit
+			else if (!is_cmd((*token)->type))
+				ft_printf("syntax error near unexpected token '%s'\n", (*token)->content); //TODO ft_exit
 			cmd_node->cmd->redir[i]->file = ft_strdup((*token)->content);
 			advance_and_free_token(token);
 			i++;
@@ -64,25 +81,10 @@ t_ast	*ast_cmd(t_token **token)
 		if (*token != NULL && is_cmd((*token)->type))
 		{
 			cmd_node->cmd->argv[j] = ft_strdup((*token)->content);
+			cmd_node->cmd->type[j] = &(*token)->type;
 			advance_and_free_token(token);
 			j++;
 		}
 	}
 	return (cmd_node);
 }
-
-
-// t_ast	*ast_cmd(t_token **token)
-// {
-// 	t_ast	*cmd_node;
-
-// 	if (token == NULL || *token == NULL || (*token)->type != COMMAND)
-// 		return NULL;
-// 	cmd_node = new_ast_node(*token);
-// 	advance_and_free_token(token);
-// 	while (*token != NULL && (*token)->type == COMMAND)
-// 		advance_and_free_token(token);
-// 	if (*token && is_redirect((*token)->type))
-// 		return (ast_redirect(token, cmd_node));
-// 	return (cmd_node);
-// }
