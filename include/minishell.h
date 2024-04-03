@@ -83,7 +83,8 @@ typedef enum	e_type
 	OR,
 	PARENTHESIS_L,
 	PARENTHESIS_R,
-	WILDCARD
+	WILDCARD,
+	SYNTAX_ERROR
 }	t_type;
 
 typedef struct	s_env
