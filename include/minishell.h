@@ -110,6 +110,7 @@ typedef struct	s_redir
 typedef struct	s_cmd
 {
 	char			**argv;
+	t_type			**type;
 	t_redir			**redir;
 	int				exit_status;
 }	t_cmd;

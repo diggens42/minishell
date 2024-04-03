@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:58:21 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 18:24:23 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/03 16:41:45 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,10 @@ t_ast	*ast_cmd(t_token **token)
 		if (*token != NULL && is_cmd((*token)->type))
 		{
 			cmd_node->cmd->argv[j] = ft_strdup((*token)->content);
+			cmd_node->cmd->type[j] = &(*token)->type;
 			advance_and_free_token(token);
 			j++;
 		}
 	}
 	return (cmd_node);
 }
-
-
-// t_ast	*ast_cmd(t_token **token)
-// {
-// 	t_ast	*cmd_node;
-
-// 	if (token == NULL || *token == NULL || (*token)->type != COMMAND)
-// 		return NULL;
-// 	cmd_node = new_ast_node(*token);
-// 	advance_and_free_token(token);
-// 	while (*token != NULL && (*token)->type == COMMAND)
-// 		advance_and_free_token(token);
-// 	if (*token && is_redirect((*token)->type))
-// 		return (ast_redirect(token, cmd_node));
-// 	return (cmd_node);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 18:26:17 by mott             ###   ########.fr       */
+/*   Updated: 2024/03/27 18:34:27 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	exec_main(t_ast *ast, t_env *env)
 {
-	if (ast->cmd->argv != NULL)
-		fprintf(stderr, "\x1b[33mEnter exec_main with: %s, \x1b[0m", ast->cmd->argv[0]);
-	else
-		fprintf(stderr, "\x1b[33mEnter exec_main with: %s, \x1b[0m", token_type_to_string(ast->type));
+	// if (ast->cmd->argv != NULL)
+	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s, \x1b[0m", ast->cmd->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s, \x1b[0m", token_type_to_string(ast->type));
 
 	int	exit_status;
 
@@ -74,10 +74,10 @@ int	exec_main(t_ast *ast, t_env *env)
 
 int	exec_pipe(t_ast *ast, t_env *env)
 {
-	if (ast->cmd->argv != NULL)
-		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s, \x1b[0m", ast->cmd->argv[0]);
-	else
-		fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s, \x1b[0m", token_type_to_string(ast->type));
+	// if (ast->cmd->argv != NULL)
+	// 	fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s, \x1b[0m", ast->cmd->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mEnter exec_pipe with: %s, \x1b[0m", token_type_to_string(ast->type));
 
 	int		fd[2];
 	int		exit_status;
@@ -133,7 +133,7 @@ int	exec_pipe(t_ast *ast, t_env *env)
 
 int	exec_command(char **argv, t_env *env)
 {
-		fprintf(stderr, "\x1b[33mEnter exec_command with %s, \x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mEnter exec_command with %s, \x1b[0m", argv[0]);
 
 	pid_t	pid;
 	int		wstatus;
@@ -203,7 +203,7 @@ int	exec_command(char **argv, t_env *env)
 
 int	exec_builtin(char **argv, t_env *env)
 {
-		fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
 
 	if (ft_strcmp("echo", argv[0]) == 0)
 		return (builtin_echo(argv));
@@ -224,7 +224,7 @@ int	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-		fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
 
 	char	*pathname;
 	char	**envp;
@@ -235,7 +235,7 @@ void	exec_finish(char **argv, t_env *env)
 		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
 
- 		fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
+ 		// fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
 
 	if (execve(pathname, argv, envp) == -1)
 	{

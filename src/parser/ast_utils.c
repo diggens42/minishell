@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 18:05:38 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/03 16:38:31 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,13 @@ t_ast	*new_ast_node(t_token *token)
 		node->cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 		node->cmd->argv = (char **)ft_calloc(n_cmd(token) + 1, sizeof(char *));
 		// if (is_redirect(token->type))
+		node->cmd->type = (t_type **)ft_calloc(n_cmd(token) + 1, sizeof(t_type *));
+		i = 0;
+		while (i < n_cmd(token))
+		{
+			node->cmd->type[i] = (t_type *)ft_calloc(1, sizeof(t_type));
+			i++;
+		}
 		node->cmd->redir = (t_redir **)ft_calloc(n_red(token) + 1, sizeof(t_redir *));
 		i = 0;
 		while (i < n_red(token))
