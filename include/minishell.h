@@ -91,6 +91,8 @@ typedef struct	s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
+	int				fd_stdin;
+	int				fd_stdout;
 }	t_env;
 
 typedef struct	s_token
@@ -176,11 +178,13 @@ void			print_ast(t_ast* node, int level);
 // EXECUTOR
 // exec_main
 int				exec_main(t_ast *ast, t_env *env);
-int				exec_pipe(t_ast *ast, t_env *env);
+int				exec_pipe(t_ast *ast, t_env *env, int lvl);
+int				exec_pipe_next(t_ast *ast, t_env *env);
+int				exec_pipe_last(t_ast *ast, t_env *env);
 // int				exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
-int				exec_command(char **argv, t_env *env);
+int				exec_pipe_command(char **argv, t_env *env);
 // int				exec_command(char **argv, t_env *env);
-// int				exec_single_command(char **argv, t_env *env);
+int				exec_single_command(char **argv, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
 // exec_redir
@@ -199,8 +203,8 @@ int				envp_size(t_env *env);
 // exec_utils2
 void			ft_pipe(int *fd);
 pid_t			ft_fork(void);
-// t_exec			*init_fd(void);
-// void			reset_fd(t_exec *exec);
+void			init_fd(t_env *env);
+void			reset_fd(t_env *env);
 
 // BUILTIN
 int				builtin_cd(char **argv, t_env **env);
