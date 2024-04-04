@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/26 15:02:32 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 16:26:32 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ t_env	*init_env(char **envp)
 			append_env_node(&env, new_env_node(key, value));
 		i++;
 	}
+	env->exit_status = 0;
 	return (env);
 }

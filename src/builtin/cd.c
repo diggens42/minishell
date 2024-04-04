@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/27 17:12:08 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 18:30:40 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ft_chdir(char *dir, t_env **env)
 	oldpwd = getcwd(NULL, 0);
 	if (chdir(dir) == -1)
 	{
-		ft_perror("chdir", strerror(errno));
+		ft_perror("chdir4", strerror(errno));
 		free(oldpwd);
 		return (EXIT_FAILURE);
 	}
@@ -78,5 +78,6 @@ int	builtin_cd(char **argv, t_env **env)
 	}
 	else
 		dir = argv[1];
+	// fprintf(stderr, "\x1b[33mdir: %s\n\x1b[0m", dir);
 	return (ft_chdir(dir, env));
 }

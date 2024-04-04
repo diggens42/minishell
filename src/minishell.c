@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/03 19:25:07 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 19:02:54 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	handle_input(char *cmd_line, t_env *env)
 	t_token	*token;
 	t_ast	*ast;
 
-	int	exit_status;
+	// int	exit_status;
 
 	token = tokenizer(cmd_line); // free here?
 	// check_tokens(token);
@@ -25,10 +25,10 @@ static int	handle_input(char *cmd_line, t_env *env)
 	ast = ast_parser(&token);
 	// print_ast(ast, 0);
 	init_fd(env);
-	exit_status = exec_main(ast, env);
-		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", exit_status);
+	env->exit_status = exec_main(ast, env);
+		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", env->exit_status);
 	reset_fd(env);
-	return (exit_status);
+	return (env->exit_status);
 }
 
 static char	*multi_cmd_line(char *cmd_line)

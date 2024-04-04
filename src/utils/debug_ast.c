@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 18:54:18 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/03 19:12:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 18:38:52 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*token_type_to_string(t_type type)
 		case REDIR_HEREDOC: return "REDIR_HEREDOC";
 		case REDIR_OUT: return "REDIR_OUT";
 		case REDIR_APPEND : return "REDIR_APPEND";
+		case DOLLAR : return "DOLLAR";
+		case DQMARK : return "DQMARK";
         // Add other cases as necessary.
         default: return "UNKNOWN";
     }
@@ -45,7 +47,7 @@ void print_ast(t_ast* node, int level)
 	{
 		while (node->cmd->argv[j] != NULL)
 		{
-			fprintf(stderr, "\x1b[34m %s\x1b[0m", node->cmd->argv[j]);
+			fprintf(stderr, "\x1b[34m argv[%d]: %s\x1b[0m", j, node->cmd->argv[j]);
 			j++;
 		}
 		if (node->cmd->redir != NULL)

@@ -92,8 +92,9 @@ typedef struct	s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
-	int				fd_stdin;
-	int				fd_stdout;
+	int				fd_stdin; //TODO
+	int				fd_stdout; //TODO
+	int				exit_status; //TODO
 }	t_env;
 
 typedef struct	s_token
@@ -115,7 +116,6 @@ typedef struct	s_cmd
 	char			**argv;
 	t_type			**type;
 	t_redir			**redir;
-	int				exit_status;
 }	t_cmd;
 
 typedef struct	s_ast
@@ -142,18 +142,20 @@ int				main(int argc, char **argv, char **envp);
 t_token			*tokenizer(char *user_input);
 int				set_token_length(char *user_input);
 t_type			set_type(char	*content, int token_length);
-// void			expand_token(t_token *token, t_env *env);
-// void			proccess_commands(t_token *token, t_env *env);
-// char			*expand_dollar_sign(const char *content, t_env *env);
+
+void			expand(t_cmd **cmd, t_env *env);
+void			proccess_commands(char **content, t_env *env);
+char			*expand_dollar_sign(const char *content, t_env *env);
 // char			*expand_dollar_qmark(void);
-// char			*expand_double_quote(const char *content, t_env *env);
-// char			*expand_wildcard(char *content);
-// int				match_wildcard(char *pattern, char *str);
-// void			wildcard_path_to_token(char *path, t_token **current);
-// char			*remove_double_quotes(const char *content);
+char			*expand_double_quote(const char *content, t_env *env);
+char			*expand_wildcard(char *content);
+int				match_wildcard(char *pattern, char *str);
+void			wildcard_path_to_token(char *path, t_token **current);
+char			*remove_double_quotes(const char *content);
 // char			*remove_single_quotes(const char *content);
-// char			*get_quote_start(char *str);
-// char 			*get_quote_end(char *str, char quote_type);
+char			*remove_quotes(const char *content);
+char			*get_quote_start(char *str);
+char 			*get_quote_end(char *str, char quote_type);
 int				get_single_char_len(char c);
 // token_ops
 t_token			*token_new(void);
@@ -184,9 +186,10 @@ int				exec_pipe(t_ast *ast, t_env *env, int lvl);
 int				exec_pipe_next(t_ast *ast, t_env *env);
 int				exec_pipe_last(t_ast *ast, t_env *env);
 // int				exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
-int				exec_pipe_command(char **argv, t_env *env);
+int				exec_pipe_command(t_ast *ast, t_env *env);
 // int				exec_command(char **argv, t_env *env);
-int				exec_single_command(char **argv, t_env *env);
+// int				exec_single_command(char **argv, t_env *env);
+int				exec_single_command(t_ast *ast, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
 // exec_redir

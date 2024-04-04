@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:58:21 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/03 18:05:55 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/04 19:02:09 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_ast	*ast_cmd(t_token **token)
 		if (*token != NULL && is_cmd((*token)->type))
 		{
 			cmd_node->cmd->argv[j] = ft_strdup((*token)->content);
-			cmd_node->cmd->type[j] = &(*token)->type;
+			*(cmd_node->cmd->type[j]) = (*token)->type;
 			advance_and_free_token(token);
 			j++;
 		}

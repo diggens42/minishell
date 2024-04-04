@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:04:09 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 12:23:16 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 17:46:55 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	builtin_echo(char **argv)
 		if (argv[i] != NULL)
 			ft_printf(" ");
 	}
-	if (new_line == true)
+	// if (new_line == true)
 		ft_printf("\n");
 	return (EXIT_SUCCESS);
 }

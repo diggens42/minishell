@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/03 19:26:40 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 17:34:36 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	exec_main(t_ast *ast, t_env *env)
 	}
 	else
 	{
-		exit_status = exec_single_command(ast->cmd->argv, env);
+		exit_status = exec_single_command(ast, env);
 	}
 	return (exit_status);
 }
@@ -116,7 +116,7 @@ int	exec_pipe_next(t_ast *ast, t_env *env)
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			ft_perror("dup2a", strerror(errno)); //TODO right error message?
 		close(fd[1]);
-		exit_status = exec_pipe_command(ast->cmd->argv, env);
+		exit_status = exec_pipe_command(ast, env);
 	}
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -141,7 +141,7 @@ int	exec_pipe_last(t_ast *ast, t_env *env)
 	if (pid == 0)
 	{
 		// exit_status = exec_pipe_command(ast->cmd->argv, env);
-		exec_pipe_command(ast->cmd->argv, env);
+		exec_pipe_command(ast, env);
 	}
 	waitpid(pid, &wstatus, 0);
 	// return (exit_status);
@@ -229,20 +229,21 @@ int	exec_pipe_last(t_ast *ast, t_env *env)
 // 	return (WEXITSTATUS(wstatus));
 // }
 
-int	exec_pipe_command(char **argv, t_env *env)
+int	exec_pipe_command(t_ast *ast, t_env *env)
 {
 		// fprintf(stderr, "\x1b[33mEnter exec_pipe_command with %s\n\x1b[0m", argv[0]);
 
 	int	exit_status;
 
-	exit_status = exec_builtin(argv, env);
+	expand(&ast->cmd, env);
+	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
-	exec_finish(argv, env);
+	exec_finish(ast->cmd->argv, env);
 	return (exit_status);
 }
 
-int	exec_single_command(char **argv, t_env *env)
+int	exec_single_command(t_ast *ast, t_env *env)
 {
 		// fprintf(stderr, "\x1b[33mEnter exec_single_command with: %s\n\x1b[0m", argv[0]);
 
@@ -250,19 +251,19 @@ int	exec_single_command(char **argv, t_env *env)
 	int		wstatus;
 	int		exit_status;
 
-	exit_status = exec_builtin(argv, env);
+	expand(&ast->cmd, env);
+	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
 	pid = ft_fork();
 	if (pid == 0)
-		exec_finish(argv, env);
+		exec_finish(ast->cmd->argv, env);
 	waitpid(pid, &wstatus, 0);
 	return (WEXITSTATUS(wstatus));
 }
 
 int	exec_builtin(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
 		// fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
 
 	if (ft_strcmp("echo", argv[0]) == 0)
