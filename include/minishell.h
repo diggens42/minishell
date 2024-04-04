@@ -83,8 +83,7 @@ typedef enum	e_type
 	OR,
 	PARENTHESIS_L,
 	PARENTHESIS_R,
-	WILDCARD,
-	SYNTAX_ERROR
+	WILDCARD
 }	t_type;
 
 typedef struct	s_env
@@ -124,6 +123,7 @@ typedef struct	s_ast
 	t_cmd			*cmd;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	bool			syntax_error;
 	bool			subshell;
 }	t_ast;
 
@@ -177,6 +177,7 @@ bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
 bool			is_operator(t_type type);
 bool			is_cmd(t_type	type);
+bool			syntax_check(t_ast *node);
 void			print_ast(t_ast* node, int level);
 
 // EXECUTOR

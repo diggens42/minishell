@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:27 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/03 18:56:24 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/04 20:29:12 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_ast	*ast_logical(t_token **token, t_ast *left)
 		logical = new_ast_node(*token);
 		logical->left = node;
 		advance_and_free_token(token);
+		if (logical->left == NULL)
+			logical->syntax_error = true;
 		if (*token != NULL && (*token)->type == PARENTHESIS_L)
 			logical->right = ast_parenthesis(token);
 		else if (*token != NULL && is_cmd((*token)->type))
@@ -36,8 +38,6 @@ t_ast	*ast_logical(t_token **token, t_ast *left)
 			while (*token != NULL && is_cmd((*token)->type))
 				advance_and_free_token(token);
 		}
-		else
-			ft_printf("syntax error near unexpected token '%s'\n", (*token)->content); //TODO ft_exit
 		node = logical;
 		if (*token == NULL || !is_logical((*token)->type))
 			break ;

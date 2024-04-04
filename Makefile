@@ -35,6 +35,7 @@ SRCS =	./src/minishell.c \
 		./src/parser/ast_pipe.c\
 		./src/parser/ast_logical.c\
 		./src/parser/ast_parenthesis.c\
+		./src/parser/ast_syntax.c\
 		./src/parser/ast_utils.c\
 		\
 		./src/builtin/cd.c \
