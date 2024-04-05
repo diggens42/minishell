@@ -194,8 +194,10 @@ int				exec_single_command(t_ast *ast, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
 // exec_redir
-int				exec_redir_out(t_ast *ast, t_type type);
-int				exec_redir_in(t_ast *ast, t_type type);
+int				exec_redir_out(char *file);
+int				exec_redir_app(char *file);
+int				exec_redir_in(char *file);
+int				exec_redir_here_doc(char *limiter);
 int				exec_here_doc(char *limiter);
 // exec_path
 char			*create_absolute_path(char *command);

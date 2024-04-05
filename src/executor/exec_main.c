@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 17:34:36 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/05 17:26:13 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,8 @@ int	exec_pipe_command(t_ast *ast, t_env *env)
 	expand(&ast->cmd, env);
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
-		return (exit_status);
+		// return (exit_status);
+		exit (exit_status);
 	exec_finish(ast->cmd->argv, env);
 	return (exit_status);
 }
@@ -250,8 +251,29 @@ int	exec_single_command(t_ast *ast, t_env *env)
 	pid_t	pid;
 	int		wstatus;
 	int		exit_status;
+	int		i;
 
 	expand(&ast->cmd, env);
+	if (ast->cmd->redir[0] != NULL)
+	{
+		i = 0;
+		// while (ast->cmd->redir[i]->type != 0) //TODO how does redir end? 0, NULL, something else?
+		while (ast->cmd->redir[i] != NULL) //TODO how does redir end? 0, NULL, something else?
+		{
+			if (ast->cmd->redir[i]->type == REDIR_OUT)
+				exec_redir_out(ast->cmd->redir[i]->file);
+
+			else if (ast->cmd->redir[i]->type == REDIR_APPEND)
+				exec_redir_app(ast->cmd->redir[i]->file);
+
+			else if (ast->cmd->redir[i]->type == REDIR_IN)
+				exec_redir_in(ast->cmd->redir[i]->file);
+
+			else if (ast->cmd->redir[i]->type == REDIR_HEREDOC)
+				exec_here_doc(ast->cmd->redir[i]->file);
+			i++;
+		}
+	}
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
