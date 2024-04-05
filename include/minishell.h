@@ -101,6 +101,7 @@ typedef struct	s_token
 	t_type			type;
 	char			*content;
 	int				length;
+	bool			syntax_error;
 	struct s_token	*next;
 }	t_token;
 
@@ -225,8 +226,8 @@ int				env_update(t_env **env, char *key, char *value);
 
 //syntax
 bool			quotes_syntax(char *cmd_line);
-bool			operator_syntax(t_ast *node);
-
+bool			parenthesis_syntax(t_token *token);
+bool			operator_syntax(t_token *token);
 //signals
 void			ctrl_c_handler(int signal);
 void			ctrl_backslash_handler(int signal);

@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:58:21 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 20:32:45 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/05 20:59:56 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,12 @@ t_ast	*ast_cmd(t_token **token)
 	j = 0;
 	while (*token != NULL && !is_operator((*token)->type))
 	{
+		if (*token != NULL && (*token)->type == PARENTHESIS_R)
+			return(cmd_node);
 		if (is_redirect((*token)->type))
 		{
 			cmd_node->cmd->redir[i]->type = (*token)->type;
 			advance_and_free_token(token);
-			if ((*token) == NULL || !is_cmd((*token)->type))
-			{
-				cmd_node->syntax_error = true;
-				break ;
-			}
 			cmd_node->cmd->redir[i]->file = ft_strdup((*token)->content);
 			advance_and_free_token(token);
 			i++;

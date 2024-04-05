@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:17:27 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 20:29:12 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/05 21:00:03 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ t_ast	*ast_logical(t_token **token, t_ast *left)
 		logical = new_ast_node(*token);
 		logical->left = node;
 		advance_and_free_token(token);
-		if (logical->left == NULL)
-			logical->syntax_error = true;
 		if (*token != NULL && (*token)->type == PARENTHESIS_L)
 			logical->right = ast_parenthesis(token);
 		else if (*token != NULL && is_cmd((*token)->type))
 		{
-			logical->right = new_ast_node(*token);
+			logical->right = ast_cmd(token);
 			while (*token != NULL && is_cmd((*token)->type))
 				advance_and_free_token(token);
 		}
