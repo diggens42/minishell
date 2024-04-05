@@ -83,8 +83,7 @@ typedef enum	e_type
 	OR,
 	PARENTHESIS_L,
 	PARENTHESIS_R,
-	WILDCARD,
-	SYNTAX_ERROR
+	WILDCARD
 }	t_type;
 
 typedef struct	s_env
@@ -124,6 +123,7 @@ typedef struct	s_ast
 	t_cmd			*cmd;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	bool			syntax_error;
 	bool			subshell;
 }	t_ast;
 
@@ -224,6 +224,10 @@ int				builtin_unset(char **argv, t_env **env);
 
 // builtin_utils
 int				env_update(t_env **env, char *key, char *value);
+
+//syntax
+bool			quotes_syntax(char *cmd_line);
+bool			operator_syntax(t_ast *node);
 
 //signals
 void			ctrl_c_handler(int signal);

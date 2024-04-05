@@ -30,12 +30,12 @@ SRCS =	./src/minishell.c \
 		./src/expander/expand_wildcard2.c \
 		./src/expander/expand_utils.c \
 		\
-		./src/parser/ast_parser.c\
-		./src/parser/ast_cmd.c\
-		./src/parser/ast_pipe.c\
-		./src/parser/ast_logical.c\
-		./src/parser/ast_parenthesis.c\
-		./src/parser/ast_utils.c\
+		./src/parser/ast_parser.c \
+		./src/parser/ast_cmd.c \
+		./src/parser/ast_pipe.c \
+		./src/parser/ast_logical.c \
+		./src/parser/ast_parenthesis.c \
+		./src/parser/ast_utils.c \
 		\
 		./src/builtin/cd.c \
 		./src/builtin/echo.c \
@@ -51,6 +51,9 @@ SRCS =	./src/minishell.c \
 		./src/executor/exec_redir.c \
 		./src/executor/exec_utils.c \
 		./src/executor/exec_utils2.c \
+		\
+		./src/syntax/operators.c \
+		./src/syntax/quotes.c \
 		\
 		./src/utils/debug_tokenizer.c \
 		./src/utils/debug_ast.c \

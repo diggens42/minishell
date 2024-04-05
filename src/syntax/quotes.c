@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_pipe.c                                         :+:      :+:    :+:   */
+/*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 14:17:31 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 20:20:58 by fwahl            ###   ########.fr       */
+/*   Created: 2024/04/05 16:54:26 by fwahl             #+#    #+#             */
+/*   Updated: 2024/04/05 17:55:37 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_ast	*ast_pipe(t_token **token, t_ast *left)
+bool	quotes_syntax(char *cmd_line)
 {
-	t_ast	*pipe;
+	bool	in_squote;
+	bool	in_dquote;
+	int		i;
 
-	while (*token != NULL && (*token)->type == PIPE)
+	in_squote = false;
+	in_dquote = false;
+	i = 0;
+	while (cmd_line[i] != '\0')
 	{
-		pipe = new_ast_node(*token);
-		pipe->left = left;
-		advance_and_free_token(token);
-		if (is_logical((*token)->type))
-			pipe->syntax_error = true;
-		pipe->right = ast_cmd(token);
-		if (pipe->left == NULL || pipe->right == NULL)
-			pipe->syntax_error = true;
-		left = pipe;
+		if (cmd_line[i] == '\'')
+		{
+			if (!in_dquote)
+				in_squote = !in_squote;
+		}
+		else if (cmd_line[i] == '"')
+		{
+			if (!in_squote)
+				in_dquote = !in_dquote;
+		}
+		i++;
 	}
-	return (left);
+	return (in_squote || in_dquote);
 }

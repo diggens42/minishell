@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:58:21 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 19:02:09 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/04 20:32:45 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ t_ast	*ast_cmd(t_token **token)
 		{
 			cmd_node->cmd->redir[i]->type = (*token)->type;
 			advance_and_free_token(token);
-			if ((*token) == NULL)
-				ft_printf("syntax error near unexpected token 'newline'\n"); //TODO ft_exit
-			else if (!is_cmd((*token)->type))
-				ft_printf("syntax error near unexpected token '%s'\n", (*token)->content); //TODO ft_exit
+			if ((*token) == NULL || !is_cmd((*token)->type))
+			{
+				cmd_node->syntax_error = true;
+				break ;
+			}
 			cmd_node->cmd->redir[i]->file = ft_strdup((*token)->content);
 			advance_and_free_token(token);
 			i++;
