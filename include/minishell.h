@@ -177,7 +177,6 @@ bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
 bool			is_operator(t_type type);
 bool			is_cmd(t_type	type);
-bool			syntax_check(t_ast *node);
 void			print_ast(t_ast* node, int level);
 
 // EXECUTOR
@@ -223,6 +222,10 @@ int				builtin_unset(char **argv, t_env **env);
 
 // builtin_utils
 int				env_update(t_env **env, char *key, char *value);
+
+//syntax
+bool			quotes_syntax(char *cmd_line);
+bool			operator_syntax(t_ast *node);
 
 //signals
 void			ctrl_c_handler(int signal);

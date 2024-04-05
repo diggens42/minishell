@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/04 20:43:43 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/05 18:32:53 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,18 @@ static int	handle_input(char *cmd_line, t_env *env)
 	t_ast	*ast;
 
 	// int	exit_status;
-
+	if (quotes_syntax(cmd_line) == true)
+	{
+		free(cmd_line);
+		ft_putstr_fd("syntax error unclosed quotes\n", STDERR_FILENO);
+		return (2);//TODO
+	}
 	token = tokenizer(cmd_line); // free here?
 	// check_tokens(token);
 	// free(cmd_line);
 	ast = ast_parser(&token);
-	if (syntax_check(ast) == true)
-		return (env->exit_status);
+	if (operator_syntax(ast) == true)
+		return (2);//TODO
 	// print_ast(ast, 0);
 	init_fd(env);
 	env->exit_status = exec_main(ast, env);
