@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 19:02:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 21:23:09 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,23 @@ static void	process_dqmark_sign(char **content, t_env *env)
 }
 
 // //expands wildcards within a tokens content and creates a token for each match
-// static void process_wildcard(char **content)
-// {
-// 	char	*expanded_content;
-// 	char	*path;
+static void process_wildcard(char **content, t_cmd *cmd, int i)
+{
+	char	*expanded_content;
+	char	**new_argv;
 
-// 	expanded_content = expand_wildcard(token->content);
-// 	path = ft_strtok(expanded_content, " ");
-// 	if (path != NULL)
+	expanded_content = expand_wildcard(*content);
+	new_argv = insert_expanded_wc(cmd->argv, i, expanded_content);
+	free(expanded_content);
+	free_char_array(cmd->argv);
+	cmd->argv = new_argv;
+	// int	j = 0;
+// 	while(cmd->argv[j] != NULL)
 // 	{
-// 		free(token->content);
-// 		token->content = ft_strdup(path);
-// 		token->length = ft_strlen(path);
-// 		token->type = COMMAND;
-// 		path = ft_strtok(NULL, " ");
-// 		wildcard_path_to_token(path, &token);
+// 		ft_printf("argv[%d]: %s\n", j, cmd->argv[j]);
+// 		j++;
 // 	}
-// 	free(expanded_content);
-// }
+}
 
 //expands a token based on its type
 void	expand(t_cmd **cmd, t_env *env)
@@ -99,8 +98,8 @@ void	expand(t_cmd **cmd, t_env *env)
 			process_dollar_sign(&temp->argv[i], env);
 		else if (*temp->type[i] == DQMARK)
 			process_dqmark_sign(&temp->argv[i], env);
-		// else if (*temp->type[i] == WILDCARD)
-		// 	process_wildcard(&temp->argv[i]);
+		else if (*temp->type[i] == WILDCARD)
+			process_wildcard(&temp->argv[i], *cmd, i);
 		// fprintf(stderr, "\x1b[33mExpander after: %s\n\x1b[0m", temp->argv[i]);
 		i++;
 	}

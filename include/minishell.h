@@ -101,7 +101,6 @@ typedef struct	s_token
 	t_type			type;
 	char			*content;
 	int				length;
-	bool			syntax_error;
 	struct s_token	*next;
 }	t_token;
 
@@ -124,7 +123,6 @@ typedef struct	s_ast
 	t_cmd			*cmd;
 	struct s_ast	*left;
 	struct s_ast	*right;
-	bool			syntax_error;
 	bool			subshell;
 }	t_ast;
 
@@ -151,9 +149,7 @@ char			*expand_dollar_sign(const char *content, t_env *env);
 char			*expand_double_quote(const char *content, t_env *env);
 char			*expand_wildcard(char *content);
 int				match_wildcard(char *pattern, char *str);
-void			wildcard_path_to_token(char *path, t_token **current);
-char			*remove_double_quotes(const char *content);
-// char			*remove_single_quotes(const char *content);
+char			**insert_expanded_wc(char **argv, int index, char *expanded_content);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
