@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/05 18:48:37 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 14:41:27 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ static int	handle_input(char *cmd_line, t_env *env)
 	}
 	token = tokenizer(cmd_line); // free here?
 	// check_tokens(token);
-	// free(cmd_line);
+	free(cmd_line);
 	ast = ast_parser(&token);
 	if (operator_syntax(ast) == true)
 		return (2);//TODO
-	// print_ast(ast, 0);
-	init_fd(env);
+	print_ast(ast, 0);
+	set_fd(env);
 	env->exit_status = exec_main(ast, env);
+
 		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", env->exit_status);
+
 	reset_fd(env);
 	return (env->exit_status);
 }
@@ -62,9 +64,7 @@ static int	read_eval_print_loop(t_env *env)
 	while (true)
 	{
 		cmd_line = readline(PROMPT_STD);
-		// fprintf(stderr, "\x1b[33mHere! %s\n\x1b[0m", cmd_line);
 		add_history(cmd_line);
-		// fprintf(stderr, "\x1b[33mHere!\n\x1b[0m");
 		if (cmd_line == NULL)
 			return (EXIT_SUCCESS);
 		if (cmd_line[0] == '\0')

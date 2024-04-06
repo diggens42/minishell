@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 18:30:33 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 15:25:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*extract_var_name(const char *content)
 		var_name_len = ft_strlen(content) - 1;
 	var_name = (char *)ft_calloc(var_name_len + 1, sizeof(char));
 	if (!var_name)
-		ft_exit("malloc");
+		ft_perror("malloc", strerror(errno));
 	if (var_name)
 		ft_strlcpy(var_name, content + 1, var_name_len + 1);
 	return (var_name);
@@ -50,7 +50,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	new_content_len = var_value_len + after_slash_len;
 	new_content = (char *)ft_calloc(new_content_len + 1, sizeof(char));
 	if (!new_content)
-		ft_exit("malloc");
+		ft_perror("malloc", strerror(errno));
 	if (new_content)
 	{
 		ft_memcpy(new_content, var_value, var_value_len);

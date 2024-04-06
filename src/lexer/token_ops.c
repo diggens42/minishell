@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_ops.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/03/27 16:41:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/06 15:25:10 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*token_new(void)
 
 	new_token = (t_token *)ft_calloc(1, sizeof(t_token));
 	if (new_token == NULL)
-		ft_exit("malloc");
+		ft_perror("malloc", strerror(errno));
 	return (new_token);
 }
 

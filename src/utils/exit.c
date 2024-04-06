@@ -6,25 +6,16 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/03/24 14:27:16 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 14:42:47 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_exit(char *command)
+void	ft_exit(int exit_status)
 {
-	if (command != NULL)
-	{
-		perror(command);
-		// system("leaks minishell");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		// system("leaks minishell");
-		exit(EXIT_SUCCESS);
-	}
+	system("leaks minishell");
+	exit(exit_status);
 }
 
 void	ft_perror(char *command, char *error_message)

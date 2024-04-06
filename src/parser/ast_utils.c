@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 19:54:28 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/06 15:25:15 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,35 +48,6 @@ static int n_red(t_token *tokens)
 	return (n_red);
 }
 
-// char	**token_to_str_array(t_token *tokens)
-// {
-// 	char	**argv;
-// 	int		n_tokens;
-// 	int		i;
-
-// 	n_tokens = count_command_group(tokens);
-// 	argv = (char **)ft_calloc(n_tokens + 1, sizeof(char *));
-// 	if (argv == NULL)
-// 		ft_exit("malloc");
-// 	i = 0;
-// 	while (tokens != NULL && i < n_tokens)
-// 	{
-// 		argv[i] = ft_strdup(tokens->content);
-// 		if (argv[i] == NULL)
-// 		{
-// 			while (i-- > 0)
-// 				free(argv[i]);
-// 			free(argv);
-// 			ft_exit("malloc");
-// 		}
-// 		tokens = tokens->next;
-// 		i++;
-// 	}
-// 	argv[i] = NULL;
-// 	// print_char_array(argv);
-// 	return (argv);
-// }
-
 t_ast	*new_ast_node(t_token *token)
 {
 	t_ast	*node;
@@ -84,7 +55,7 @@ t_ast	*new_ast_node(t_token *token)
 
 	node = (t_ast *)ft_calloc(1, sizeof(t_ast));
 	if (!node)
-		ft_exit("malloc");
+		ft_perror("malloc", strerror(errno));
 	node->type = token->type;
 	if (is_cmd(token->type) || is_redirect(token->type))
 	{

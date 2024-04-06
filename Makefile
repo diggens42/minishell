@@ -48,21 +48,19 @@ SRCS =	./src/minishell.c \
 		\
 		./src/executor/exec_main.c \
 		./src/executor/exec_path.c \
+		./src/executor/exec_pipe.c \
 		./src/executor/exec_redir.c \
-		./src/executor/exec_utils.c \
-		./src/executor/exec_utils2.c \
+		./src/executor/exec_utils_1.c \
+		./src/executor/exec_utils_2.c \
 		\
 		./src/syntax/operators.c \
 		./src/syntax/quotes.c \
 		\
-		./src/utils/debug_tokenizer.c \
-		./src/utils/debug_ast.c \
 		./src/utils/debug.c \
-		./src/utils/signals.c \
+		./src/utils/env.c \
 		./src/utils/exit.c \
 		./src/utils/free.c \
-		./src/utils/init_env.c \
-		./src/utils/utils.c
+		./src/utils/signals.c
 
 OBJS = $(SRCS:.c=.o)
 

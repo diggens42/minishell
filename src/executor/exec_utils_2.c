@@ -1,51 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/03/15 15:00:49 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/06 14:53:44 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	**tokens_to_char_array(t_token *tokens)
-{
-	char	**argv;
-	int		n_tokens;
-	int		i;
-
-	n_tokens = tokens_size(tokens);
-	argv = (char **)ft_calloc(n_tokens + 1, sizeof(char *));
-	if (argv == NULL)
-		ft_exit("malloc");
-	i = 0;
-	while (i < n_tokens)
-	{
-		argv[i] = tokens->content;
-		tokens = tokens->next;
-		i++;
-	}
-	argv[i] = NULL;
-	return (argv);
-}
-
 char	**env_to_char_array(t_env *env)
 {
 	char	**envp;
 	char	*temp;
-	int		n_envp;
+	int		n;
 	int		i;
 
-	n_envp = envp_size(env);
-	envp = (char **)ft_calloc(n_envp + 1, sizeof(char *));
+	n = envp_size(env);
+	envp = (char **)ft_calloc(n + 1, sizeof(char *));
 	if (envp == NULL)
-		ft_exit("malloc");
+		ft_perror("malloc", strerror(errno));
 	i = 0;
-	while (i < n_envp)
+	while (i < n)
 	{
 		envp[i] = ft_strdup(env->key);
 		temp = envp[i];

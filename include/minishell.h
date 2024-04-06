@@ -172,7 +172,6 @@ t_ast			*ast_logical(t_token **token, t_ast *left);
 t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
 void			advance_and_free_token(t_token **token);
-char			**token_to_str_array(t_token *tokens);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
 bool			is_operator(t_type type);
@@ -182,36 +181,33 @@ void			print_ast(t_ast* node, int level);
 // EXECUTOR
 // exec_main
 int				exec_main(t_ast *ast, t_env *env);
-int				exec_pipe(t_ast *ast, t_env *env, int lvl);
-int				exec_pipe_next(t_ast *ast, t_env *env);
-int				exec_pipe_last(t_ast *ast, t_env *env);
-// int				exec_children(t_ast *ast_node, t_env *env, t_exec *exec);
-int				exec_pipe_command(t_ast *ast, t_env *env);
-// int				exec_command(char **argv, t_env *env);
-// int				exec_single_command(char **argv, t_env *env);
+int				exec_subshell(t_ast *ast, t_env *env);
 int				exec_single_command(t_ast *ast, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
-// exec_redir
-int				exec_redir_out(char *file);
-int				exec_redir_app(char *file);
-int				exec_redir_in(char *file);
-int				exec_redir_here_doc(char *limiter);
-int				exec_here_doc(char *limiter);
 // exec_path
 char			*create_absolute_path(char *command);
 char			*create_relative_path(char *command, t_env *env);
 char			**split_path(char *command, t_env *env);
 char			*find_pathname(char **path);
-// exec_utils
-char			**tokens_to_char_array(t_token *tokens);
+// exec_pipe
+int				exec_pipe(t_ast *ast, t_env *env, int lvl);
+int				exec_pipe_next(t_ast *ast, t_env *env);
+int				exec_pipe_last(t_ast *ast, t_env *env);
+int				exec_pipe_command(t_ast *ast, t_env *env);
+// exec_redir
+int				exec_set_redir(t_redir **redir, t_env *env);
+int				exec_redir_out(char *file, int out);
+int				exec_redir_in(char *file, t_env *env, int in);
+int				exec_here_doc(char *limiter, t_env *env);
+// exec_utils_1
+int				ft_pipe(int *fd);
+pid_t			ft_fork(void);
+int				set_fd(t_env *env);
+int				reset_fd(t_env *env);
+// exec_utils_2
 char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);
-// exec_utils2
-void			ft_pipe(int *fd);
-pid_t			ft_fork(void);
-void			init_fd(t_env *env);
-void			reset_fd(t_env *env);
 
 // BUILTIN
 int				builtin_cd(char **argv, t_env **env);
@@ -229,20 +225,23 @@ int				env_update(t_env **env, char *key, char *value);
 bool			quotes_syntax(char *cmd_line);
 bool			operator_syntax(t_ast *node);
 
-//signals
-void			ctrl_c_handler(int signal);
-void			ctrl_backslash_handler(int signal);
-void			disable_signal_echo(void);
 // UTILS
+// env
 t_env			*init_env(char **envp);
 char			*ft_getenv(char *key, t_env *env);
+// exit
+void			ft_exit(int exit_status);
+void			ft_perror(char *command, char *error_message);
 // free
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
 void			free_char_array(char **str);
-// exit
-void			ft_exit(char *command);
-void			ft_perror(char *command, char *error_message);
+// signals
+void			ctrl_c_handler(int signal);
+void			ctrl_backslash_handler(int signal);
+void			disable_signal_echo(void);
+
+
 // debug
 void			token_print(t_token *tokens);
 void			print_char_array(char **str);
