@@ -166,11 +166,6 @@ int				tokens_size(t_token *tokens);
 
 // PARSER
 t_ast			*ast_parser(t_token **token);
-t_ast			*ast_cmd(t_token **token);
-t_ast			*ast_redirect(t_token **token, t_ast *cmd_node);
-t_ast			*ast_pipe(t_token **token, t_ast *left);
-t_ast			*ast_logical(t_token **token, t_ast *left);
-t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
 void			advance_and_free_token(t_token **token);
 char			**token_to_str_array(t_token *tokens);
