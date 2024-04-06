@@ -6,49 +6,59 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/05 18:40:08 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/05 20:59:28 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static const char *type_to_str(t_type type)
+bool	operator_syntax(t_token *token)
 {
-	if (type == PIPE)
-		return ("|");
-	else if (type == AND)
-		return ("&&");
-	else if (type == OR)
-		return ("||");
-	else
-		return ("");
-}
+	t_token *check;
+	t_token *prev;
 
-bool	operator_syntax(t_ast *node)
-{
-	const char	*token_str;
-	bool 		left_error;
-	bool		right_error;
-
-	if (node == NULL)
-		return (false);
-	if (node->syntax_error == true)
+	check = token;
+	prev = NULL;
+	while (check != NULL)
 	{
-		token_str = type_to_str(node->type);
-		if (token_str[0] != '\0')
+		if (is_logical(check->type))
 		{
-			ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
-			ft_putstr_fd((char *)token_str, STDERR_FILENO);
-			ft_putstr_fd("'\n", STDERR_FILENO);
+			if (prev == NULL || (!is_cmd(prev->type) && prev->type != PARENTHESIS_R)
+				|| check->next == NULL || (!is_cmd(check->next->type) && check->next->type != PARENTHESIS_L))
+			{
+				ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+				ft_putstr_fd(check->content, STDERR_FILENO);
+				ft_putstr_fd("'\n", STDERR_FILENO);
+				return (true);
+			}
 		}
-		else if (node->cmd->redir[0] != NULL)
-			ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
-		return (true);
+		if (is_redirect(check->type))
+		{
+			if (check->next != NULL && (is_operator(check->next->type) || is_redirect(check->next->type)))
+			{
+				ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+				ft_putstr_fd(check->next->content, STDERR_FILENO);
+				ft_putstr_fd("'\n", STDERR_FILENO);
+				return (true);
+			}
+			else if (check->next == NULL || !is_cmd(check->next->type))
+			{
+				ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
+				return (true);
+			}
+		}
+		if (check->type == PIPE)
+		{
+			if (prev == NULL || check->next == NULL || !is_cmd(check->next->type))
+			{
+				ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+				ft_putstr_fd(check->content, STDERR_FILENO);
+				ft_putstr_fd("'\n", STDERR_FILENO);
+				return (true);
+			}
+		}
+		prev = check;
+		check = check->next;
 	}
-	else
-	{
-		left_error = operator_syntax(node->left);
-		right_error = operator_syntax(node->right);
-	}
-	return (left_error || right_error);
+	return (false);
 }

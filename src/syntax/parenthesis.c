@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_pipe.c                                         :+:      :+:    :+:   */
+/*   parenthesis.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 14:17:31 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 20:20:58 by fwahl            ###   ########.fr       */
+/*   Created: 2024/04/05 18:43:46 by fwahl             #+#    #+#             */
+/*   Updated: 2024/04/05 18:49:30 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_ast	*ast_pipe(t_token **token, t_ast *left)
+bool	parenthesis_syntax(t_token *token)
 {
-	t_ast	*pipe;
+	t_token	*check;
+	int		parenthesis;
 
-	while (*token != NULL && (*token)->type == PIPE)
+	check = token;
+	parenthesis = 0;
+	while (check != NULL)
 	{
-		pipe = new_ast_node(*token);
-		pipe->left = left;
-		advance_and_free_token(token);
-		if (is_logical((*token)->type))
-			pipe->syntax_error = true;
-		pipe->right = ast_cmd(token);
-		if (pipe->left == NULL || pipe->right == NULL)
-			pipe->syntax_error = true;
-		left = pipe;
+		if (token->type == PARENTHESIS_L)
+			parenthesis++;
+		if (token->type == PARENTHESIS_R)
+			parenthesis--;
+		check = check->next;
 	}
-	return (left);
+	if (parenthesis != 0)
+		return (true);
+	return (false);
 }

@@ -101,6 +101,7 @@ typedef struct	s_token
 	t_type			type;
 	char			*content;
 	int				length;
+	bool			syntax_error;
 	struct s_token	*next;
 }	t_token;
 
@@ -165,11 +166,6 @@ int				tokens_size(t_token *tokens);
 
 // PARSER
 t_ast			*ast_parser(t_token **token);
-t_ast			*ast_cmd(t_token **token);
-t_ast			*ast_redirect(t_token **token, t_ast *cmd_node);
-t_ast			*ast_pipe(t_token **token, t_ast *left);
-t_ast			*ast_logical(t_token **token, t_ast *left);
-t_ast			*ast_parenthesis(t_token **token);
 t_ast			*new_ast_node(t_token *token);
 void			advance_and_free_token(t_token **token);
 bool			is_redirect(t_type type);
@@ -223,7 +219,8 @@ int				env_update(t_env **env, char *key, char *value);
 
 //syntax
 bool			quotes_syntax(char *cmd_line);
-bool			operator_syntax(t_ast *node);
+bool			parenthesis_syntax(t_token *token);
+bool			operator_syntax(t_token *token);
 
 // UTILS
 // env

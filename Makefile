@@ -31,10 +31,6 @@ SRCS =	./src/minishell.c \
 		./src/expander/expand_utils.c \
 		\
 		./src/parser/ast_parser.c \
-		./src/parser/ast_cmd.c \
-		./src/parser/ast_pipe.c \
-		./src/parser/ast_logical.c \
-		./src/parser/ast_parenthesis.c \
 		./src/parser/ast_utils.c \
 		\
 		./src/builtin/cd.c \
@@ -54,13 +50,15 @@ SRCS =	./src/minishell.c \
 		./src/executor/exec_utils_2.c \
 		\
 		./src/syntax/operators.c \
+		./src/syntax/parenthesis.c \
 		./src/syntax/quotes.c \
 		\
 		./src/utils/debug.c \
 		./src/utils/env.c \
 		./src/utils/exit.c \
 		./src/utils/free.c \
-		./src/utils/signals.c
+		./src/utils/signals.c \
+		./src/utils/utils.c
 
 OBJS = $(SRCS:.c=.o)
 
