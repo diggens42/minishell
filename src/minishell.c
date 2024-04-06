@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 15:44:09 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 15:50:12 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	handle_input(char *cmd_line, t_env *env)
 		return (2);
 	// check_tokens(token);
 	ast = ast_parser(&token);
-	print_ast(ast, 0);
+	// print_ast(ast, 0);
 	set_fd(env);
 	env->exit_status = exec_main(ast, env);
 
