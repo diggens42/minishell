@@ -215,7 +215,6 @@ int				env_update(t_env **env, char *key, char *value);
 
 //syntax
 bool			quotes_syntax(char *cmd_line);
-bool			parenthesis_syntax(t_token *token);
 bool			operator_syntax(t_token *token);
 
 // UTILS

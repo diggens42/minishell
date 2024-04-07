@@ -50,7 +50,6 @@ SRCS =	./src/minishell.c \
 		./src/executor/exec_utils_2.c \
 		\
 		./src/syntax/operators.c \
-		./src/syntax/parenthesis.c \
 		./src/syntax/quotes.c \
 		\
 		./src/utils/debug.c \
