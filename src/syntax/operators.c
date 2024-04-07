@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/07 20:04:46 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/07 20:26:04 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,23 @@ bool	operator_syntax(t_token *token)
 		if (check->type == PARENTHESIS_L || check->type == PARENTHESIS_R)
 		{
 			if (check->type == PARENTHESIS_L)
+			{
+				if (prev != NULL && !is_logical(prev->type))
+				{
+					ft_putstr_fd("read the subject\n", STDERR_FILENO);
+					return (true);
+				}
 				parenthesis++;
+			}
 			if (check->type == PARENTHESIS_R)
+			{
+				if (check->next != NULL && !is_logical(check->next->type))
+				{
+					ft_putstr_fd("read the subject\n", STDERR_FILENO);
+					return (true);
+				}
 				parenthesis--;
+			}
 			if (parenthesis < 0)
 			{
 				ft_putstr_fd("minishell: ", STDERR_FILENO);
