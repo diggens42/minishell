@@ -148,8 +148,8 @@ char			*expand_dollar_sign(const char *content, t_env *env);
 // char			*expand_dollar_qmark(void);
 char			*expand_double_quote(const char *content, t_env *env);
 char			*expand_wildcard(char *content);
-int				match_wildcard(char *pattern, char *str);
 char			**insert_expanded_wc(char **argv, int index, char *expanded_content);
+t_type			**wc_set_type(char **argv);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
@@ -229,6 +229,7 @@ void			ft_perror(char *command, char *error_message);
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
 void			free_char_array(char **str);
+void			free_type_array(t_type **type);
 // signals
 void			ctrl_c_handler(int signal);
 void			ctrl_backslash_handler(int signal);

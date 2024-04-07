@@ -3,34 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   expand_wildcard.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 16:32:33 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 19:39:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//concatenates directory path and filename into single path
-static char	*conc_paths(char *dir_path, char *filename)
+//checks if a given string matches a wildcard pattern
+static int	match_wildcard(char *pattern, char *str)
 {
-	size_t	dir_len;
-	size_t	file_len;
-	size_t	full_path_len;
-	char	*full_path;
-
-	dir_len = ft_strlen(dir_path);
-	file_len = ft_strlen(filename);
-	full_path_len = dir_len + file_len + 2;
-	full_path = (char *)ft_calloc(1, full_path_len);
-	if (full_path == NULL)
-		return (NULL); //TODO handle malloc error
-	ft_strlcpy(full_path, dir_path, dir_len + 1);
-	full_path[dir_len] = '/';
-	ft_strlcpy(full_path + dir_len + 1, filename, file_len + 1);
-	return (full_path);
+	while (*pattern != '\0' && *str != '\0')
+	{
+		if (*pattern == '*')
+			return (match_wildcard(pattern + 1, str) || match_wildcard(pattern, str + 1));
+		else if (*pattern == *str)
+		{
+			pattern++;
+			str++;
+		}
+		else
+			return (0);
+	}
+	while (*pattern == '*')
+		pattern++;
+	return (*pattern == '\0' && *str == '\0');
 }
+
 
 //appends all wildcard matches paths into one string separated by a space
 static char	*append_res(char *res, char *str)
@@ -61,33 +62,22 @@ static char	*append_res(char *res, char *str)
 	return (new_res);
 }
 
-//checks if directory entry matches a pattern and adds path to result string
-static char	*loop_dir(char *cwd, struct dirent *ent, char *pattern, char *res)
-{
-	char	*filename;
-	char	*path;
-	bool	match;
-
-	filename = ent->d_name;
-	match = match_wildcard(pattern, filename);
-	if (match == true)
-	{
-		path = conc_paths(cwd, filename);
-		res = append_res(res, path);
-		free(path);
-	}
-	return (res);
-}
-
 //iterates over all directory entries and appends matches to result string
-static char	*match_dir_entries(DIR *dir, char *pattern, char *cwd)
+static char	*match_dir_entries(DIR *dir, char *pattern)
 {
 	char			*res;
 	struct dirent	*ent;
+	char			*filename;
 
 	res = NULL;
 	while ((ent = readdir(dir)) != NULL)
-		res = loop_dir(cwd, ent, pattern, res);
+	{
+		filename = ent->d_name;
+		if (filename[0] == '.')
+			continue ;
+		if (match_wildcard(pattern, filename))
+			res = append_res(res, filename);
+	}
 	return (res);
 }
 
@@ -108,8 +98,30 @@ char	*expand_wildcard(char *content)
 		free(cwd);
 		return (NULL); //TODO handle error unable to open cwd
 	}
-	res = match_dir_entries(dir, content, cwd);
+	res = match_dir_entries(dir, content);
 	closedir(dir);
 	free(cwd);
 	return (res);
+}
+
+t_type	**wc_set_type(char **argv)
+{
+	t_type	**type;
+	int		n_argv;
+	int		len;
+
+	len = 0;
+	n_argv = 0;
+	while (argv[n_argv] != NULL)
+		n_argv++;
+	type = (t_type **)ft_calloc(n_argv + 1, sizeof(t_type *));
+	n_argv = 0;
+	while (argv[n_argv] != NULL)
+	{
+		type[n_argv] = (t_type *)ft_calloc(1, sizeof(t_type));
+		len = ft_strlen(argv[n_argv]);
+		*type[n_argv] = set_type(argv[n_argv], len);
+		n_argv++;
+	}
+	return (type);
 }

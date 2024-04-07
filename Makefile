@@ -28,7 +28,6 @@ SRCS =	./src/minishell.c \
 		./src/expander/expand_dollar.c \
 		./src/expander/expand_wildcard.c \
 		./src/expander/expand_wildcard2.c \
-		./src/expander/expand_wildcard3.c \
 		./src/expander/expand_utils.c \
 		\
 		./src/parser/ast_parser.c \

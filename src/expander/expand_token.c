@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 21:23:09 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/07 19:41:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,16 @@ static void process_wildcard(char **content, t_cmd *cmd, int i)
 {
 	char	*expanded_content;
 	char	**new_argv;
+	t_type	**new_type;
 
 	expanded_content = expand_wildcard(*content);
 	new_argv = insert_expanded_wc(cmd->argv, i, expanded_content);
 	free(expanded_content);
 	free_char_array(cmd->argv);
 	cmd->argv = new_argv;
-	// int	j = 0;
-// 	while(cmd->argv[j] != NULL)
-// 	{
-// 		ft_printf("argv[%d]: %s\n", j, cmd->argv[j]);
-// 		j++;
-// 	}
+	new_type = wc_set_type(cmd->argv);
+	free_type_array(cmd->type);
+	cmd->type = new_type;
 }
 
 //expands a token based on its type

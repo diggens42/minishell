@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 21:20:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/07 19:27:39 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static void	copy_after_index(char **argv, char **new_argv, int index)
 		j++;
 	while (argv[i] != NULL)
 	{
-		ft_printf("i: %d  j: %d \n", i, j);
 		new_argv[j] = ft_strdup(argv[i]);
 		j++;
 		i++;
