@@ -6,24 +6,60 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 16:24:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 19:06:41 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	builtin_export_print(t_env **env)
-{
+static t_env *builtin_export_sort(t_env *env) //TODO envp size in while loop
+{ //TODO export export
 	t_env	*current;
+	t_env	*previous;
+	t_env	*temp;
+	int		sorted;
 
-	current = *env;
-	while (current != NULL)
+	sorted = 0;
+	while (sorted == 0)
 	{
-		ft_printf("declare -x %s", current->key);
-		if (current->value != NULL)
-			ft_printf("=\"%s\"", current->value);
-		ft_printf("\n", current->value);
-		current = current->next;
+		sorted = 1;
+		current = env;
+		previous = NULL;
+		while (current != NULL)
+		{
+			if (current->next != NULL && ft_strcmp(current->key, current->next->key) > 0)
+			{
+				temp = current->next;
+				current->next = temp->next;
+				temp->next = current;
+				if (previous == NULL)
+					env = temp;
+				else
+					previous->next = temp;
+				sorted = 0;
+			}
+			previous = current;
+			current = current->next;
+		}
+	}
+	return (env);
+}
+
+static int	builtin_export_print(t_env *env)
+{
+	t_env	*temp;
+
+	if (env == NULL)
+		return (EXIT_SUCCESS);
+	// temp = env;
+	temp = builtin_export_sort(env);
+	while (temp != NULL)
+	{
+		ft_printf("declare -x %s", temp->key);
+		if (temp->value != NULL)
+			ft_printf("=\"%s\"", temp->value);
+		ft_printf("\n", temp->value);
+		temp = temp->next;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -37,7 +73,7 @@ int	builtin_export(char **argv, t_env **env)
 	int		exit_status;
 
 	if (argv[1] == NULL)
-		return (builtin_export_print(env));
+		return (builtin_export_print(*env));
 	exit_status = EXIT_SUCCESS;
 	i = 0;
 	while (argv[++i] != NULL)
@@ -50,6 +86,7 @@ int	builtin_export(char **argv, t_env **env)
 			*equal_sign = '\0';
 			value = equal_sign + 1;
 		}
+		// exit_status = env_update(env, key, value);
 		if (env_update(env, key, value) == EXIT_FAILURE)
 			exit_status = EXIT_FAILURE;
 		free(key);

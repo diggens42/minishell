@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 13:26:42 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 16:20:41 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	exec_set_redir(t_redir **redir, t_env *env)
 	int		i;
 
 	i = 0;
-	while (redir[i] != NULL)
+	exit_status = EXIT_SUCCESS;
+	while (redir[i] != NULL && exit_status == EXIT_SUCCESS)
 	{
 		if (redir[i]->type == REDIR_OUT)
 			exit_status = exec_redir_out(redir[i]->file, O_TRUNC);
@@ -42,7 +43,7 @@ int	exec_redir_out(char *file, int out)
 	fd = open(file, O_WRONLY | O_CREAT | out, 0644);
 	if (fd == -1)
 	{
-		ft_perror("open", strerror(errno));
+		ft_perror(file, strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
@@ -66,7 +67,7 @@ int	exec_redir_in(char *file, t_env *env, int in)
 		fd = exec_here_doc(file, env);
 	if (fd == -1)
 	{
-		ft_perror("open", strerror(errno));
+		ft_perror(file, strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)

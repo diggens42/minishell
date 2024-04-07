@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 14:26:36 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 16:20:29 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int	exec_pipe_command(t_ast *ast, t_env *env)
 	if (ast->cmd->redir[0] != NULL)
 		exit_status = exec_set_redir(ast->cmd->redir, env);
 	if (exit_status == EXIT_FAILURE)
-		return (exit_status);
+		exit (exit_status);
+		// return (exit_status);
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		exit (exit_status);

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 14:20:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 20:26:10 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,26 +80,32 @@ int	exec_builtin(char **argv, t_env *env)
 {
 		// fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
 
-	if (ft_strcmp("echo", argv[0]) == 0)
-		return (builtin_echo(argv));
-	if (ft_strcmp("cd", argv[0]) == 0)
-		return (builtin_cd(argv, &env));
-	if (ft_strcmp("pwd", argv[0]) == 0)
-		return (builtin_pwd());
-	if (ft_strcmp("export", argv[0]) == 0)
-		return (builtin_export(argv, &env));
-	if (ft_strcmp("unset", argv[0]) == 0)
-		return (builtin_unset(argv, &env));
-	if (ft_strcmp("env", argv[0]) == 0)
-		return (builtin_env(env));
-	if (ft_strcmp("exit", argv[0]) == 0)
-		return (builtin_exit(argv));
-	return (-1);
+	char	*temp;
+	int		exit_status;
+
+	temp = ft_tolower_str(argv[0]);
+	exit_status = -1;
+	if (ft_strcmp("echo", temp) == 0)
+		exit_status = (builtin_echo(argv));
+	else if (ft_strcmp("cd", temp) == 0)
+		exit_status = (builtin_cd(argv, &env));
+	else if (ft_strcmp("pwd", temp) == 0)
+		exit_status = (builtin_pwd());
+	else if (ft_strcmp("export", temp) == 0)
+		exit_status = (builtin_export(argv, &env));
+	else if (ft_strcmp("unset", temp) == 0)
+		exit_status = (builtin_unset(argv, &env));
+	else if (ft_strcmp("env", temp) == 0)
+		exit_status = (builtin_env(env));
+	else if (ft_strcmp("exit", temp) == 0)
+		exit_status = (builtin_exit(argv));
+	free(temp);
+	return (exit_status);
 }
 
 void	exec_finish(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mexec_finish: %s\n\x1b[0m", argv[0]);
 
 	char	*pathname;
 	char	**envp;
@@ -110,7 +116,7 @@ void	exec_finish(char **argv, t_env *env)
 		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
 
-		// fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
+		// fprintf(stderr, "\x1b[33mexecve: %s\n\x1b[0m", pathname);
 
 	if (execve(pathname, argv, envp) == -1)
 	{

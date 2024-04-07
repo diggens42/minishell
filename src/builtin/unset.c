@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 14:59:19 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 18:55:34 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	free_env_node(t_env *node)
 	free(node);
 }
 
-int	builtin_unset(char **argv, t_env **env)
+int	builtin_unset(char **argv, t_env **env) //TODO
 {
 	t_env	*current;
 	t_env	*previous;
@@ -30,6 +30,13 @@ int	builtin_unset(char **argv, t_env **env)
 	i = 0;
 	while (argv[++i] != NULL)
 	{
+		if (is_valid_key(argv[i]) == EXIT_FAILURE)
+		{
+			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+			ft_putstr_fd(argv[i], STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			return (EXIT_FAILURE);
+		}
 		current = *env;
 		previous = NULL;
 		while (current != NULL)

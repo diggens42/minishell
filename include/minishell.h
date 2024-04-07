@@ -204,6 +204,7 @@ int				reset_fd(t_env *env);
 // exec_utils_2
 char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);
+char			*ft_tolower_str(char *str);
 
 // BUILTIN
 int				builtin_cd(char **argv, t_env **env);
@@ -216,6 +217,7 @@ int				builtin_unset(char **argv, t_env **env);
 
 // builtin_utils
 int				env_update(t_env **env, char *key, char *value);
+int				is_valid_key(char *key);
 
 //syntax
 bool			quotes_syntax(char *cmd_line);

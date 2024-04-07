@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 15:58:14 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 19:53:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ bool	operator_syntax(t_token *token)
 			}
 			else if (check->next == NULL || !is_cmd(check->next->type))
 			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
 				return (true);
 			}

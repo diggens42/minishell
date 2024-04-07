@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:56:05 by mott              #+#    #+#             */
-/*   Updated: 2024/04/04 15:03:31 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 19:21:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,38 @@ int	builtin_exit(char **argv)
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (argv[1] == NULL)
 		exit(EXIT_SUCCESS);
-	else if (argv[2] == NULL)
+	else if (valid_num(argv[1]) == EXIT_FAILURE)
 	{
-		if (valid_num(argv[1]) == EXIT_FAILURE)
-		{
-			ft_putstr_fd("exit: ", STDERR_FILENO);
-			ft_putstr_fd(argv[1], STDERR_FILENO);
-			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-			exit (255);
-		}
-		else
-			exit(atoexit(argv[1]));
+		ft_putstr_fd("exit: ", STDERR_FILENO);
+		ft_putstr_fd(argv[1], STDERR_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+		exit (255);
 	}
-	else
+	else if (argv[2] != NULL)
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+	else
+		exit(atoexit(argv[1]));
 	return (EXIT_FAILURE);
 }
+
+// int	builtin_exit(char **argv)
+// {
+// 	ft_putstr_fd("exit\n", STDOUT_FILENO);
+// 	if (argv[1] == NULL)
+// 		exit(EXIT_SUCCESS);
+// 	else if (argv[2] == NULL)
+// 	{
+// 		if (valid_num(argv[1]) == EXIT_FAILURE)
+// 		{
+// 			ft_putstr_fd("exit: ", STDERR_FILENO);
+// 			ft_putstr_fd(argv[1], STDERR_FILENO);
+// 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+// 			exit (255);
+// 		}
+// 		else
+// 			exit(atoexit(argv[1]));
+// 	}
+// 	else
+// 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+// 	return (EXIT_FAILURE);
+// }

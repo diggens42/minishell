@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/03/23 16:24:44 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 17:58:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	is_valid_key(char *key)
+int	is_valid_key(char *key)
 {
 	int	i;
 
@@ -29,6 +29,8 @@ static int	is_valid_key(char *key)
 
 static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 {
+	// fprintf(stderr, "\x1b[33mkey: %s\n\x1b[0m", key);
+
 	t_env	*new_env;
 
 	if (is_valid_key(key) == EXIT_FAILURE)
