@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operators.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 14:39:34 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/08 17:37:39 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ bool	operator_syntax(t_token *token)
 			}
 			else if (check->next == NULL || (!is_cmd(check->next->type) && !is_redirect(check->next->type)))
 			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
 				return (true);
 			}

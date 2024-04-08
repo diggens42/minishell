@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 14:29:12 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/08 18:53:02 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static t_ast	*ast_logical(t_token **token, t_ast *left)
 {
 	t_ast	*node;
 	t_ast	*logical;
-	t_ast	*pipe_left;
+	t_ast	*cmd_node;
 
 	node = left;
 	while (*token != NULL && is_logical((*token)->type))
@@ -90,20 +90,13 @@ static t_ast	*ast_logical(t_token **token, t_ast *left)
 		logical = new_ast_node(*token);
 		logical->left = node;
 		advance_and_free_token(token);
+		cmd_node = ast_cmd(token);
 		if (*token != NULL && (*token)->type == PARENTHESIS_L)
 			logical->right = ast_parenthesis(token);
-		else if (*token != NULL && (*token)->next->type == PIPE)
-		{
-			pipe_left = new_ast_node(*token);
-			advance_and_free_token(token);
-			logical->right = ast_pipe(token, pipe_left);
-		}
-		else if (*token != NULL && is_cmd((*token)->type))
-		{
-			logical->right = ast_cmd(token);
-			while (*token != NULL && is_cmd((*token)->type))
-				advance_and_free_token(token);
-		}
+		else if (*token != NULL && (*token)->type == PIPE)
+			logical->right = ast_pipe(token, cmd_node);
+		else
+			logical->right = cmd_node;
 		node = logical;
 		if (*token == NULL || !is_logical((*token)->type))
 			break ;

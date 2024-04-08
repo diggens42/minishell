@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/08 14:07:10 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/08 18:51:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,15 @@ static int	handle_input(char *cmd_line, t_env *env)
 	t_token	*token;
 	t_ast	*ast;
 
-	// int	exit_status;
 	if (quotes_syntax(cmd_line) == true)
 	{
 		ft_putstr_fd("syntax error unclosed quotes\n", STDERR_FILENO);
 		return (2);//TODO
 	}
 	token = tokenizer(cmd_line); // free here?
-	// if (operator_syntax(token))
-	// 	return (2);
-	check_tokens(token);
+	if (operator_syntax(token))
+		return (2);
+	// check_tokens(token);
 	ast = ast_parser(&token);
 	// print_ast(ast, 0);
 	set_fd(env);
@@ -97,7 +96,7 @@ static int	run_script(char *filename, t_env *env)
 			free(line);
 			continue ;
 		}
-		exit_status = handle_input(line, env);
+		env->exit_status = handle_input(line, env);
 	}
 }
 

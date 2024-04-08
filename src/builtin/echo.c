@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:04:09 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/07 20:35:30 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/07 20:39:10 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_echo(char **argv)
 
 	new_line = true;
 	i = 1;
-	if (argv[i] != NULL && ft_strcmp("-n", argv[i]) == 0)
+	while (argv[i] != NULL && ft_strcmp("-n", argv[i]) == 0)
 	{
 		new_line = false;
 		i++;
@@ -31,7 +31,7 @@ int	builtin_echo(char **argv)
 		if (argv[i] != NULL)
 			ft_printf(" ");
 	}
-	// if (new_line == true)
+	if (new_line == true)
 		ft_printf("\n");
 	return (EXIT_SUCCESS);
 }

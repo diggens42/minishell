@@ -6,20 +6,25 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/03/24 18:17:39 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 20:32:41 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*create_absolute_path(char *command)
+char	*create_absolute_path(char *pathname)
 {
-	char	*pathname;
+	struct stat	statbuf;
 
-	pathname = ft_strdup(command);
+	stat(pathname, &statbuf);
+	if (S_ISDIR(statbuf.st_mode) == true)
+	{
+		ft_perror(pathname, "is a directory");
+		exit(126);
+	}
 	if (access(pathname, X_OK) == -1)
 	{
-		ft_perror(command, strerror(errno));
+		ft_perror(pathname, strerror(errno));
 		if (errno == 13)
 			exit(126);
 		else

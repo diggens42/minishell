@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/03/23 16:24:44 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:22:29 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	is_valid_key(char *key)
+int	is_valid_key(char *key)
 {
 	int	i;
 
@@ -29,19 +29,19 @@ static int	is_valid_key(char *key)
 
 static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 {
+	// fprintf(stderr, "\x1b[33mkey: %s\n\x1b[0m", key);
+
 	t_env	*new_env;
 
 	if (is_valid_key(key) == EXIT_FAILURE)
 	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(key, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		ft_perror_2("export", key, "not a valid identifier");
 		return (EXIT_FAILURE);
 	}
 	new_env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (new_env == NULL)
 	{
-		perror("malloc");
+		ft_perror("malloc", "malloc fail");
 		return (EXIT_FAILURE);
 	}
 	new_env->key = ft_strdup(key);

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 14:20:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 15:47:54 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	exec_main(t_ast *ast, t_env *env)
 {
 	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast->cmd->argv[0]);
+	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", ast->cmd->argv[0]);
 	// else
-	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast->type));
+	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", token_type_to_string(ast->type));
 
 	int	exit_status;
 
@@ -47,9 +47,24 @@ int	exec_main(t_ast *ast, t_env *env)
 
 int	exec_subshell(t_ast *ast, t_env *env)
 {
-	(void)ast;
-	(void)env;
-	return (EXIT_SUCCESS);
+	// if (ast->cmd != NULL)
+	// 	fprintf(stderr, "\x1b[33mexec_subshell: %s\n\x1b[0m", ast->cmd->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mexec_subshell: %s\n\x1b[0m", token_type_to_string(ast->type));
+
+	pid_t	pid;
+	int		wstatus;
+	int		exit_status;
+
+	ast->subshell = false;
+	pid = ft_fork();
+	if (pid == 0)
+	{
+		exit_status = exec_main(ast, env);
+		exit(exit_status);
+	}
+	waitpid(pid, &wstatus, 0);
+	return (WEXITSTATUS(wstatus));
 }
 
 int	exec_single_command(t_ast *ast, t_env *env)
@@ -78,28 +93,34 @@ int	exec_single_command(t_ast *ast, t_env *env)
 
 int	exec_builtin(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mexec_builtin: %s\n\x1b[0m", argv[0]);
 
-	if (ft_strcmp("echo", argv[0]) == 0)
-		return (builtin_echo(argv));
-	if (ft_strcmp("cd", argv[0]) == 0)
-		return (builtin_cd(argv, &env));
-	if (ft_strcmp("pwd", argv[0]) == 0)
-		return (builtin_pwd());
-	if (ft_strcmp("export", argv[0]) == 0)
-		return (builtin_export(argv, &env));
-	if (ft_strcmp("unset", argv[0]) == 0)
-		return (builtin_unset(argv, &env));
-	if (ft_strcmp("env", argv[0]) == 0)
-		return (builtin_env(env));
-	if (ft_strcmp("exit", argv[0]) == 0)
-		return (builtin_exit(argv));
-	return (-1);
+	char	*temp;
+	int		exit_status;
+
+	temp = ft_tolower_str(argv[0]);
+	exit_status = -1;
+	if (ft_strcmp("echo", temp) == 0)
+		exit_status = (builtin_echo(argv));
+	else if (ft_strcmp("cd", temp) == 0)
+		exit_status = (builtin_cd(argv, &env));
+	else if (ft_strcmp("pwd", temp) == 0)
+		exit_status = (builtin_pwd());
+	else if (ft_strcmp("export", temp) == 0)
+		exit_status = (builtin_export(argv, &env));
+	else if (ft_strcmp("unset", temp) == 0)
+		exit_status = (builtin_unset(argv, &env));
+	else if (ft_strcmp("env", temp) == 0)
+		exit_status = (builtin_env(env));
+	else if (ft_strcmp("exit", temp) == 0)
+		exit_status = (builtin_exit(argv));
+	free(temp);
+	return (exit_status);
 }
 
 void	exec_finish(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mEnter exec_finish with: %s\n\x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mexec_finish: %s\n\x1b[0m", argv[0]);
 
 	char	*pathname;
 	char	**envp;
@@ -110,13 +131,14 @@ void	exec_finish(char **argv, t_env *env)
 		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
 
-		// fprintf(stderr, "\x1b[33mEnter execve with: %s\n\x1b[0m", pathname);
+		// fprintf(stderr, "\x1b[33mexecve: %s\n\x1b[0m", pathname);
 
 	if (execve(pathname, argv, envp) == -1)
 	{
 		free(pathname);
 		free_char_array(argv);
 		free_char_array(envp);
+		// ft_perror(argv[0], "here");
 		ft_perror(argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}

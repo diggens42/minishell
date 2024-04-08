@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 14:53:44 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 16:29:27 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,24 @@ int	envp_size(t_env *env)
 		i++;
 	}
 	return (i);
+}
+
+char	*ft_tolower_str(char *str)
+{
+	char	*lower;
+	int		i;
+
+	lower = ft_strdup(str);
+	if (lower == NULL)
+	{
+		ft_perror("malloc", strerror(errno));
+		return (NULL);
+	}
+	i = 0;
+	while (lower[i] != '\0')
+	{
+		lower[i] = ft_tolower(str[i]);
+		i++;
+	}
+	return (lower);
 }
