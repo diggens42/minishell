@@ -168,7 +168,8 @@ void			advance_and_free_token(t_token **token);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
 bool			is_operator(t_type type);
-bool			is_cmd(t_type	type);
+bool			is_cmd(t_type type);
+bool			is_parenthesis(t_type type);
 void			print_ast(t_ast* node, int level);
 
 // EXECUTOR
@@ -228,6 +229,7 @@ char			*ft_getenv(char *key, t_env *env);
 void			ft_exit(int exit_status);
 void			ft_perror(char *command, char *error_message);
 void			ft_perror_2(char *command, char *argument, char *error_message);
+void			ft_perror_3(char *content);
 // free
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
