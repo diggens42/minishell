@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_length.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 17:56:36 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:20:52 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static int	get_quote_len(char *user_input)
 		len++;
 	if (user_input[len] == quote_type)
 		len++;
-	while (!ft_isspace(user_input[len]) && user_input[len] != '\0')
+	while (!ft_isspace(user_input[len]) && !get_single_char_len(user_input[len])
+			&& user_input[len] != '\0')
 		len++;
 	return (len);
 }

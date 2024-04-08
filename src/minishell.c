@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/07 20:04:12 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/08 14:07:10 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static int	handle_input(char *cmd_line, t_env *env)
 		return (2);//TODO
 	}
 	token = tokenizer(cmd_line); // free here?
-	if (operator_syntax(token))
-		return (2);
-	// check_tokens(token);
+	// if (operator_syntax(token))
+	// 	return (2);
+	check_tokens(token);
 	ast = ast_parser(&token);
 	// print_ast(ast, 0);
 	set_fd(env);
