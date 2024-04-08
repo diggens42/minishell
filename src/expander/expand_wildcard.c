@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/07 19:39:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/08 20:51:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,20 +87,23 @@ char	*expand_wildcard(char *content)
 	char	*res;
 	char	*cwd;
 	DIR		*dir;
+	char	*temp;
 
+	temp = ft_strdup(content);
 	res = NULL;
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		return (NULL); // TODO handle error unable to get cwd
 	dir = opendir(cwd);
-	if (dir == NULL)
-	{
-		free(cwd);
-		return (NULL); //TODO handle error unable to open cwd
-	}
 	res = match_dir_entries(dir, content);
 	closedir(dir);
 	free(cwd);
+	if (res == NULL)
+	{
+		free(res);
+		return (temp);
+	}
+	free(temp);
 	return (res);
 }
 
