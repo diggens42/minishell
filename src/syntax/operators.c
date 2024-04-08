@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/07 20:40:36 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 17:37:39 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ bool	operator_syntax(t_token *token)
 		}
 		if (is_redirect(check->type))
 		{
+			if (check->next != NULL && check->next->type == WILDCARD)
+			{
+				ft_putstr_fd("minishell: ambiguous redirect\n", STDERR_FILENO);
+				return (true);
+			}
 			if (check->next != NULL && (is_operator(check->next->type) || is_redirect(check->next->type)))
 			{
 				ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -45,7 +50,7 @@ bool	operator_syntax(t_token *token)
 				ft_putstr_fd("'\n", STDERR_FILENO);
 				return (true);
 			}
-			else if (check->next == NULL || !is_cmd(check->next->type))
+			else if (check->next == NULL || (!is_cmd(check->next->type) && !is_redirect(check->next->type)))
 			{
 				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
@@ -54,7 +59,7 @@ bool	operator_syntax(t_token *token)
 		}
 		if (check->type == PIPE)
 		{
-			if (prev == NULL || check->next == NULL || (!is_cmd(check->next->type) && !is_redirect(check->next->type)))
+			if (prev == NULL || check->next == NULL || (!is_cmd(check->next->type) && !is_redirect(check->next->type) && !is_logical(check->next->type)))
 			{
 				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
@@ -78,8 +83,11 @@ bool	operator_syntax(t_token *token)
 			{
 				if (check->next != NULL && !is_logical(check->next->type))
 				{
-					ft_putstr_fd("read the subject\n", STDERR_FILENO);
-					return (true);
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+				ft_putstr_fd(check->content, STDERR_FILENO);
+				ft_putstr_fd("'\n", STDERR_FILENO);
+				return (true);
 				}
 				parenthesis--;
 			}
