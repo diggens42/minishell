@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 18:53:02 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 20:41:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,12 @@ static t_ast	*ast_logical(t_token **token, t_ast *left)
 		logical = new_ast_node(*token);
 		logical->left = node;
 		advance_and_free_token(token);
-		cmd_node = ast_cmd(token);
 		if (*token != NULL && (*token)->type == PARENTHESIS_L)
 			logical->right = ast_parenthesis(token);
-		else if (*token != NULL && (*token)->type == PIPE)
+		cmd_node = ast_cmd(token);
+		// if (*token != NULL && (*token)->type == PARENTHESIS_L)
+		// 	logical->right = ast_parenthesis(token);
+		if (*token != NULL && (*token)->type == PIPE)
 			logical->right = ast_pipe(token, cmd_node);
 		else
 			logical->right = cmd_node;
