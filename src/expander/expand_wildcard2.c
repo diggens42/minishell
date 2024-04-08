@@ -3,47 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   expand_wildcard2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 16:29:24 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 19:27:39 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//checks if a given string matches a wildcard pattern
-int	match_wildcard(char *pattern, char *str)
+static int	n_wc_matches(char *expanded_content)
 {
-	while (*pattern != '\0' && *str != '\0')
+	int		argc;
+	char	*temp;
+	char	*token;
+	char	*delim;
+
+	argc = 1;
+	temp = ft_strdup(expanded_content);
+	delim = " ";
+	token = ft_strtok(temp, delim);
+	while (token != NULL)
 	{
-		if (*pattern == '*')
-			return (match_wildcard(pattern + 1, str) || match_wildcard(pattern, str + 1));
-		else if (*pattern == *str)
-		{
-			pattern++;
-			str++;
-		}
-		else
-			return (0);
+		argc++;
+		token = ft_strtok(NULL, delim);
 	}
-	while (*pattern == '*')
-		pattern++;
-	return (*pattern == '\0' && *str == '\0');
+	free(temp);
+	return (argc);
 }
 
-//converts paths of wildcard matches into tokens
-void	wildcard_path_to_token(char *path, t_token **current)
+static char	**alloc_new_argv(char **argv, int n_wc)
 {
-	t_token	*new_token;
+	int		i;
+	int		new_argc;
+	char	**new_argv;
 
-	while (path != NULL)
+	i = 0;
+	while (argv[i] != NULL)
+		i++;
+	new_argc = i + n_wc + 1;
+	new_argv = (char **)ft_calloc(new_argc, sizeof(char *));
+	return (new_argv);
+}
+
+static void	insert_wc(char **new_argv, int index, char *expanded_content)
+{
+	int		j;
+	char	*temp;
+	char	*token;
+
+	j = index;
+	temp = ft_strdup(expanded_content);
+	token = ft_strtok(temp, " ");
+	while (token != NULL)
 	{
-		new_token = token_new();
-		new_token->content = ft_strdup(path);
-		new_token->length = ft_strlen(path);
-		new_token->type = COMMAND;
-		token_add_back(current, new_token);
-		path = ft_strtok(NULL, " ");
+		new_argv[j++] = ft_strdup(token);
+		token = ft_strtok(NULL, " ");
 	}
+	free(temp);
+}
+
+static void	copy_after_index(char **argv, char **new_argv, int index)
+{
+	int	i;
+	int j;
+
+	i = index + 1;
+	j = 0;
+	while (new_argv[j] != NULL)
+		j++;
+	while (argv[i] != NULL)
+	{
+		new_argv[j] = ft_strdup(argv[i]);
+		j++;
+		i++;
+	}
+}
+
+char	**insert_expanded_wc(char **argv, int index, char *expanded_content)
+{
+	int		n_wc;
+	int		i;
+	char	**new_argv;
+
+	n_wc = n_wc_matches(expanded_content);
+	new_argv = alloc_new_argv(argv, n_wc);
+	i = 0;
+	while (i < index)
+	{
+		new_argv[i] = ft_strdup(argv[i]);
+		i++;
+	}
+	insert_wc(new_argv, index, expanded_content);
+	copy_after_index(argv, new_argv, index);
+	return (new_argv);
 }

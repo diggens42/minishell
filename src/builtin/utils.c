@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/04/07 17:58:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 14:22:29 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,13 @@ static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 
 	if (is_valid_key(key) == EXIT_FAILURE)
 	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(key, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		ft_perror_2("export", key, "not a valid identifier");
 		return (EXIT_FAILURE);
 	}
 	new_env = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (new_env == NULL)
 	{
-		perror("malloc");
+		ft_perror("malloc", "malloc fail");
 		return (EXIT_FAILURE);
 	}
 	new_env->key = ft_strdup(key);

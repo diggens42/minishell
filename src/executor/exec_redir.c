@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/07 16:20:41 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 16:44:58 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	exec_redir_in(char *file, t_env *env, int in)
 
 	int fd;
 
+	if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
+		file = remove_quotes(file);
 	if (in == REDIR_IN)
 		fd = open(file, O_RDONLY);
 	else

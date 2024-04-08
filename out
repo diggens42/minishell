@@ -1,0 +1,84 @@
+total 3320
+drwxr-xr-x   20 mott  2023_heilbronn      680 Apr  8 16:58 .
+drwxr-xr-x   13 mott  2023_heilbronn      442 Mar 27 13:44 ..
+-rw-r--r--@   1 mott  2023_heilbronn     6148 Apr  8 12:43 .DS_Store
+drwxr-xr-x   18 mott  2023_heilbronn      612 Apr  7 20:41 .git
+-rw-r--r--    1 mott  2023_heilbronn      518 Apr  6 15:48 .gitignore
+-rw-r--r--    1 mott  2023_heilbronn      799 Apr  3 19:20 Dockerfile
+drwxr-xr-x  107 mott  2023_heilbronn     3638 Apr  8 15:12 Libft
+-rw-r--r--    1 mott  2023_heilbronn     3043 Apr  7 20:38 Makefile
+-rw-r--r--    1 mott  2023_heilbronn       14 Feb 27 17:34 README.md
+drwxr-xr-x    4 mott  2023_heilbronn      136 Mar 27 13:44 examples
+-rw-r--r--    1 mott  2023_heilbronn       61 Apr  8 15:49 file name with spaces
+drwxr-xr-x    3 mott  2023_heilbronn      102 Apr  7 20:38 include
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:47 infile
+-rwxr-xr-x    1 mott  2023_heilbronn    92664 Apr  8 16:45 minishell
+-rw-r--r--    1 mott  2023_heilbronn        0 Apr  8 16:58 out
+-rw-r--r--    1 mott  2023_heilbronn        0 Apr  8 16:58 out0
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:48 outfile
+drwxr-xr-x   11 mott  2023_heilbronn      374 Apr  8 16:43 src
+-rw-r--r--@   1 mott  2023_heilbronn  1568461 Mar  1 19:32 subject_minishell.pdf
+drwxr-xr-x   38 mott  2023_heilbronn     1292 Apr  8 16:55 tester
+total 3328
+drwxr-xr-x   20 mott  2023_heilbronn      680 Apr  8 16:58 .
+drwxr-xr-x   13 mott  2023_heilbronn      442 Mar 27 13:44 ..
+-rw-r--r--@   1 mott  2023_heilbronn     6148 Apr  8 12:43 .DS_Store
+drwxr-xr-x   18 mott  2023_heilbronn      612 Apr  7 20:41 .git
+-rw-r--r--    1 mott  2023_heilbronn      518 Apr  6 15:48 .gitignore
+-rw-r--r--    1 mott  2023_heilbronn      799 Apr  3 19:20 Dockerfile
+drwxr-xr-x  107 mott  2023_heilbronn     3638 Apr  8 15:12 Libft
+-rw-r--r--    1 mott  2023_heilbronn     3043 Apr  7 20:38 Makefile
+-rw-r--r--    1 mott  2023_heilbronn       14 Feb 27 17:34 README.md
+drwxr-xr-x    4 mott  2023_heilbronn      136 Mar 27 13:44 examples
+-rw-r--r--    1 mott  2023_heilbronn       61 Apr  8 15:49 file name with spaces
+drwxr-xr-x    3 mott  2023_heilbronn      102 Apr  7 20:38 include
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:47 infile
+-rwxr-xr-x    1 mott  2023_heilbronn    92664 Apr  8 16:45 minishell
+-rw-r--r--    1 mott  2023_heilbronn     1364 Apr  8 16:58 out
+-rw-r--r--    1 mott  2023_heilbronn        0 Apr  8 17:00 out0
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:48 outfile
+drwxr-xr-x   11 mott  2023_heilbronn      374 Apr  8 16:43 src
+-rw-r--r--@   1 mott  2023_heilbronn  1568461 Mar  1 19:32 subject_minishell.pdf
+drwxr-xr-x   38 mott  2023_heilbronn     1292 Apr  8 16:55 tester
+total 3328
+drwxr-xr-x   20 mott  2023_heilbronn      680 Apr  8 16:58 .
+drwxr-xr-x   13 mott  2023_heilbronn      442 Mar 27 13:44 ..
+-rw-r--r--@   1 mott  2023_heilbronn     6148 Apr  8 12:43 .DS_Store
+drwxr-xr-x   18 mott  2023_heilbronn      612 Apr  7 20:41 .git
+-rw-r--r--    1 mott  2023_heilbronn      518 Apr  6 15:48 .gitignore
+-rw-r--r--    1 mott  2023_heilbronn      799 Apr  3 19:20 Dockerfile
+drwxr-xr-x  107 mott  2023_heilbronn     3638 Apr  8 15:12 Libft
+-rw-r--r--    1 mott  2023_heilbronn     3043 Apr  7 20:38 Makefile
+-rw-r--r--    1 mott  2023_heilbronn       14 Feb 27 17:34 README.md
+drwxr-xr-x    4 mott  2023_heilbronn      136 Mar 27 13:44 examples
+-rw-r--r--    1 mott  2023_heilbronn       61 Apr  8 15:49 file name with spaces
+drwxr-xr-x    3 mott  2023_heilbronn      102 Apr  7 20:38 include
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:47 infile
+-rwxr-xr-x    1 mott  2023_heilbronn    92664 Apr  8 16:45 minishell
+-rw-r--r--    1 mott  2023_heilbronn     2728 Apr  8 17:00 out
+-rw-r--r--    1 mott  2023_heilbronn        0 Apr  8 17:01 out0
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:48 outfile
+drwxr-xr-x   11 mott  2023_heilbronn      374 Apr  8 16:43 src
+-rw-r--r--@   1 mott  2023_heilbronn  1568461 Mar  1 19:32 subject_minishell.pdf
+drwxr-xr-x   38 mott  2023_heilbronn     1292 Apr  8 17:00 tester
+total 3328
+drwxr-xr-x   20 mott  2023_heilbronn      680 Apr  8 16:58 .
+drwxr-xr-x   13 mott  2023_heilbronn      442 Mar 27 13:44 ..
+-rw-r--r--@   1 mott  2023_heilbronn     6148 Apr  8 12:43 .DS_Store
+drwxr-xr-x   18 mott  2023_heilbronn      612 Apr  7 20:41 .git
+-rw-r--r--    1 mott  2023_heilbronn      518 Apr  6 15:48 .gitignore
+-rw-r--r--    1 mott  2023_heilbronn      799 Apr  3 19:20 Dockerfile
+drwxr-xr-x  107 mott  2023_heilbronn     3638 Apr  8 15:12 Libft
+-rw-r--r--    1 mott  2023_heilbronn     3043 Apr  7 20:38 Makefile
+-rw-r--r--    1 mott  2023_heilbronn       14 Feb 27 17:34 README.md
+drwxr-xr-x    4 mott  2023_heilbronn      136 Mar 27 13:44 examples
+-rw-r--r--    1 mott  2023_heilbronn       61 Apr  8 15:49 file name with spaces
+drwxr-xr-x    3 mott  2023_heilbronn      102 Apr  7 20:38 include
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:47 infile
+-rwxr-xr-x    1 mott  2023_heilbronn    92664 Apr  8 16:45 minishell
+-rw-r--r--    1 mott  2023_heilbronn     4092 Apr  8 17:01 out
+-rw-r--r--    1 mott  2023_heilbronn        0 Apr  8 17:01 out0
+-rw-r--r--    1 mott  2023_heilbronn       18 Apr  8 16:48 outfile
+drwxr-xr-x   11 mott  2023_heilbronn      374 Apr  8 16:43 src
+-rw-r--r--@   1 mott  2023_heilbronn  1568461 Mar  1 19:32 subject_minishell.pdf
+drwxr-xr-x   38 mott  2023_heilbronn     1292 Apr  8 17:00 tester

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/07 20:26:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 15:47:54 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	exec_main(t_ast *ast, t_env *env)
 {
 	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", ast->cmd->argv[0]);
+	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", ast->cmd->argv[0]);
 	// else
-	// 	fprintf(stderr, "\x1b[33mEnter exec_main with: %s\n\x1b[0m", token_type_to_string(ast->type));
+	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", token_type_to_string(ast->type));
 
 	int	exit_status;
 
@@ -47,9 +47,24 @@ int	exec_main(t_ast *ast, t_env *env)
 
 int	exec_subshell(t_ast *ast, t_env *env)
 {
-	(void)ast;
-	(void)env;
-	return (EXIT_SUCCESS);
+	// if (ast->cmd != NULL)
+	// 	fprintf(stderr, "\x1b[33mexec_subshell: %s\n\x1b[0m", ast->cmd->argv[0]);
+	// else
+	// 	fprintf(stderr, "\x1b[33mexec_subshell: %s\n\x1b[0m", token_type_to_string(ast->type));
+
+	pid_t	pid;
+	int		wstatus;
+	int		exit_status;
+
+	ast->subshell = false;
+	pid = ft_fork();
+	if (pid == 0)
+	{
+		exit_status = exec_main(ast, env);
+		exit(exit_status);
+	}
+	waitpid(pid, &wstatus, 0);
+	return (WEXITSTATUS(wstatus));
 }
 
 int	exec_single_command(t_ast *ast, t_env *env)
@@ -78,7 +93,7 @@ int	exec_single_command(t_ast *ast, t_env *env)
 
 int	exec_builtin(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mEnter exec_builtin with: %s\n\x1b[0m", argv[0]);
+		// fprintf(stderr, "\x1b[33mexec_builtin: %s\n\x1b[0m", argv[0]);
 
 	char	*temp;
 	int		exit_status;
@@ -123,6 +138,7 @@ void	exec_finish(char **argv, t_env *env)
 		free(pathname);
 		free_char_array(argv);
 		free_char_array(envp);
+		// ft_perror(argv[0], "here");
 		ft_perror(argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}

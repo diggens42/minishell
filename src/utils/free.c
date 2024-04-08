@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/03/26 20:38:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/07 19:27:19 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,17 @@ void	free_char_array(char **str)
 		i++;
 	}
 	free(str);
+}
+
+void	free_type_array(t_type **type)
+{
+	int	i;
+
+	i = 0;
+	while (type[i] != NULL)
+	{
+		free(type[i]);
+		i++;
+	}
+	free(type);
 }

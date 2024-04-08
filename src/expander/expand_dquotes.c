@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dquotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 14:19:07 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/06 16:44:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*expand_double_quote(const char *content, t_env *env)
 			i += 2;
 			result = exit_status_expand(result, env);
 		}
-		else if (content[i] == '$')
+		else if (content[i] == '$' && content [i + 1] != '?')
 		{
 			i++;
 			if ((ft_isalpha(content[i]) || content[i] == '_'))

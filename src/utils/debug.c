@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:24:11 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 14:48:39 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/07 16:54:07 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,9 @@ char	*token_type_to_string(t_type type)
 		case REDIR_APPEND : return "REDIR_APPEND";
 		case DOLLAR : return "DOLLAR";
 		case DQMARK : return "DQMARK";
+		case DOUBLE_QUOTE : return "DQUOTE";
+		case SINGLE_QUOTE : return "SQUOTE";
+		case WILDCARD:	return "WILDCARD";
         // Add other cases as necessary.
         default: return "UNKNOWN";
     }

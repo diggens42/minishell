@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/07 17:58:11 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 16:43:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@ static int	handle_input(char *cmd_line, t_env *env)
 	t_token	*token;
 	t_ast	*ast;
 
-	// int	exit_status;
 	if (quotes_syntax(cmd_line) == true)
 	{
 		ft_putstr_fd("syntax error unclosed quotes\n", STDERR_FILENO);
 		return (2);//TODO
 	}
 	token = tokenizer(cmd_line); // free here?
-	if (parenthesis_syntax(token) || operator_syntax(token))
+	if (operator_syntax(token))
 		return (2);
 	// check_tokens(token);
 	ast = ast_parser(&token);
@@ -97,7 +96,7 @@ static int	run_script(char *filename, t_env *env)
 			free(line);
 			continue ;
 		}
-		exit_status = handle_input(line, env);
+		env->exit_status = handle_input(line, env);
 	}
 }
 
