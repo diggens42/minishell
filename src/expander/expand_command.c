@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 16:45:23 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/08 19:10:56 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,28 @@ static char	*expand_str_with_dqmark(char *content, t_env *env)
 	char	*pos;
 	char	*before_dqmark;
 	char	*after_dqmark;
-	char	*status_str;
-	char	*expanded_content;
+	char	*newstr;
+	int		quote_state;
 
-	pos = ft_strstr(content, "$?");
-	if (!pos)
-		return (ft_strdup(content));
-	before_dqmark = ft_substr(content, 0, pos - content);
-	status_str = ft_itoa(env->exit_status);
-	after_dqmark = ft_strjoin(status_str, pos + 2);
-	expanded_content = ft_strjoin(before_dqmark, after_dqmark);
-	free(before_dqmark);
-	free(status_str);
-	free(after_dqmark);
-	return (expanded_content);
+	quote_state = 0;
+	newstr = ft_strdup(content);
+	pos = newstr;
+	while (*pos)
+	{
+		quote_state = set_quote_state(quote_state, *pos);
+		if (*pos == '$' && *(pos + 1) == '?' && quote_state == 0)
+		{
+			before_dqmark = ft_substr(newstr, 0, pos - newstr);
+			after_dqmark = ft_strjoin_free(ft_itoa(env->exit_status), pos + 2);
+			free(newstr);
+			newstr = ft_strjoin(before_dqmark, after_dqmark);
+			pos = newstr + (pos - content);
+			free(before_dqmark);
+			free(after_dqmark);
+		}
+		pos++;
+	}
+	return (newstr);
 }
 
 void proccess_commands(char **content, t_env *env)
@@ -109,10 +117,10 @@ void proccess_commands(char **content, t_env *env)
 	char	*temp;
 
 	temp = *content;
-	*content = expand_str_with_quotes(*content, env);
+	*content = expand_str_with_dqmark(*content, env);
 	free(temp);
 	temp = *content;
-	*content = expand_str_with_dqmark(*content, env);
+	*content = expand_str_with_quotes(*content, env);
 	free(temp);
 }
 

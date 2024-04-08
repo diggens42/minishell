@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:24:03 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/04 15:36:29 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 16:02:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,23 @@ char	*remove_quotes(const char *content)
 		return (NULL); //TODO malloc error
 	remove_quotes[ft_strlen(remove_quotes) - 1] = '\0';
 	return (remove_quotes);
+}
+
+int	set_quote_state(int quote_state, char c)
+{
+	if (c == '\'')
+	{
+		if (quote_state == 1)
+			return (0);
+		else
+			return (1);
+	}
+	else if (c == '"')
+	{
+		if (quote_state == 2)
+			return (0);
+		else
+			return (2);
+	}
+	return (quote_state);
 }

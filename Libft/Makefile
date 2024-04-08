@@ -39,6 +39,7 @@ SRCS = ft_atoi.c \
        ft_strndup.c \
        ft_striteri.c \
        ft_strjoin.c \
+       ft_strjoin_free.c \
        ft_strlcat.c \
        ft_strlcpy.c \
        ft_strlen.c \

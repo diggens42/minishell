@@ -153,6 +153,7 @@ t_type			**wc_set_type(char **argv);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
+int				set_quote_state(int quote_state, char c);
 int				get_single_char_len(char c);
 // token_ops
 t_token			*token_new(void);
