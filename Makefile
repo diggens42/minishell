@@ -21,6 +21,8 @@ SRCS =	./src/minishell.c \
 		./src/lexer/token_length.c \
 		./src/lexer/token_length2.c \
 		./src/lexer/token_type.c \
+		./src/lexer/syntax_operators.c \
+		./src/lexer/syntax_unclosed.c \
 		\
 		./src/expander/expand_token.c \
 		./src/expander/expand_command.c \
@@ -48,9 +50,6 @@ SRCS =	./src/minishell.c \
 		./src/executor/exec_redir.c \
 		./src/executor/exec_utils_1.c \
 		./src/executor/exec_utils_2.c \
-		\
-		./src/syntax/operators.c \
-		./src/syntax/quotes.c \
 		\
 		./src/utils/debug.c \
 		./src/utils/env.c \

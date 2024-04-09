@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
+/*   unclosed.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 16:54:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 16:26:06 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 17:10:31 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	quotes_error(bool in_dquote, bool in_squote)
+static void	quotes_error(bool in_dquote, bool in_squote)
 {
 	if (in_squote == true)
 		ft_perror_4('\'');
@@ -45,4 +45,32 @@ bool	quotes_syntax(char *cmd_line)
 	}
 	quotes_error(in_dquote, in_squote);
 	return (in_squote || in_dquote);
+}
+
+int	parenthesis_syntax(t_token *token)
+{
+	t_token	*check;
+	int		parenthesis;
+
+	check = token;
+	parenthesis = 0;
+	while (check != NULL)
+	{
+		if (check->type == PARENTHESIS_L)
+			parenthesis++;
+		if (check->type == PARENTHESIS_R)
+			parenthesis--;
+		if (parenthesis < 0)
+		{
+			ft_perror_3(check->content);
+			return (2);
+		}
+		check = check->next;
+	}
+	if (parenthesis > 0)
+	{
+		ft_putstr_fd("minishell: unclosed parenthesis\n", STDERR_FILENO);
+		return (2);
+	}
+	return (EXIT_SUCCESS);
 }

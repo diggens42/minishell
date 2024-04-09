@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operators.c                                        :+:      :+:    :+:   */
+/*   syntax_operators.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 16:06:00 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 17:14:24 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,32 +104,4 @@ int	operator_syntax(t_token *token)
 		check = check->next;
 	}
 	return (exit_status);
-}
-
-int	parenthesis_syntax(t_token *token)
-{
-	t_token	*check;
-	int		parenthesis;
-
-	check = token;
-	parenthesis = 0;
-	while (check != NULL)
-	{
-		if (check->type == PARENTHESIS_L)
-			parenthesis++;
-		if (check->type == PARENTHESIS_R)
-			parenthesis--;
-		if (parenthesis < 0)
-		{
-			ft_perror_3(check->content);
-			return (2);
-		}
-		check = check->next;
-	}
-	if (parenthesis > 0)
-	{
-		ft_putstr_fd("unclosed parenthesis\n", STDERR_FILENO);
-		return (2);
-	}
-	return (EXIT_SUCCESS);
 }

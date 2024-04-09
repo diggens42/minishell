@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 16:28:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 17:33:27 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,23 @@ static int	handle_input(char *cmd_line, t_env *env)
 {
 	t_token	*token;
 	t_ast	*ast;
+	int		exit_status;
 
 	if (quotes_syntax(cmd_line) == true)
 		return (2);
 	token = tokenizer(cmd_line); // free here?
-	env->exit_status = operator_syntax(token);
-	if (env->exit_status != EXIT_SUCCESS)
-		return (env->exit_status);
+	exit_status = parenthesis_syntax(token);
+	if (exit_status != EXIT_SUCCESS)
+	{
+		env->exit_status = exit_status;
+		return (exit_status);
+	}
+	exit_status = operator_syntax(token);
+	if (exit_status != EXIT_SUCCESS)
+	{
+		env->exit_status = exit_status;
+		return (exit_status);
+	}
 	// check_tokens(token);
 	ast = ast_parser(&token);
 	// print_ast(ast, 0);
