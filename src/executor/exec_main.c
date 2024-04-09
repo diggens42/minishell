@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 20:45:51 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 14:31:28 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,29 @@ int	exec_main(t_ast *ast, t_env *env)
 	// else
 	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", token_type_to_string(ast->type));
 
-	int	exit_status;
-
-	exit_status = EXIT_SUCCESS;
 	if (ast == NULL)
-		return (exit_status);
+		return (env->exit_status);
 	else if (ast->subshell == true)
-		exit_status = exec_subshell(ast, env);
+		env->exit_status = exec_subshell(ast, env);
 	else if (ast->type == AND)
 	{
-		exit_status = exec_main(ast->left, env);
+		env->exit_status = exec_main(ast->left, env);
 		reset_fd(env);
-		if (exit_status == EXIT_SUCCESS)
-			exit_status = exec_main(ast->right, env);
+		if (env->exit_status == EXIT_SUCCESS)
+			env->exit_status = exec_main(ast->right, env);
 	}
 	else if (ast->type == OR)
 	{
-		exit_status = exec_main(ast->left, env);
+		env->exit_status = exec_main(ast->left, env);
 		reset_fd(env);
-		if (exit_status != EXIT_SUCCESS)
-			exit_status = exec_main(ast->right, env);
+		if (env->exit_status != EXIT_SUCCESS)
+			env->exit_status = exec_main(ast->right, env);
 	}
 	else if (ast->type == PIPE)
-		exit_status = exec_pipe(ast, env, 0);
+		env->exit_status = exec_pipe(ast, env, 0);
 	else
-		exit_status = exec_single_command(ast, env);
-	return (exit_status);
+		env->exit_status = exec_single_command(ast, env);
+	return (env->exit_status);
 }
 
 int	exec_subshell(t_ast *ast, t_env *env)

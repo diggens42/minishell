@@ -187,7 +187,7 @@ char			*find_pathname(char **path);
 // exec_pipe
 int				exec_pipe(t_ast *ast, t_env *env, int lvl);
 int				exec_pipe_next(t_ast *ast, t_env *env);
-int				exec_pipe_last(t_ast *ast, t_env *env);
+int				exec_pipe_last(t_ast *ast, t_env *env, int lvl);
 int				exec_pipe_command(t_ast *ast, t_env *env);
 // exec_redir
 int				exec_set_redir(t_redir **redir, t_env *env);
@@ -240,7 +240,9 @@ void			free_type_array(t_type **type);
 void			ctrl_c_handler(int signal);
 void			ctrl_backslash_handler(int signal);
 void			disable_signal_echo(void);
-
+// utils
+t_env			*new_env_node(char *key, char *value);
+void			append_env_node(t_env **head, t_env *new_node);
 
 // debug
 void			token_print(t_token *tokens);

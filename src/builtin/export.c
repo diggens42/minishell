@@ -6,54 +6,86 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 20:16:09 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 16:30:30 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//TODO export export
-static t_env *builtin_export_sort(t_env *env) //TODO envp size in while loop
+static t_env	*builtin_export_copy(t_env *env)
 {
-	t_env	*current;
-	t_env	*previous;
 	t_env	*temp;
-	int		sorted;
 
-	sorted = 0;
-	while (sorted == 0)
+	temp = NULL;
+	while (env != NULL)
 	{
-		sorted = 1;
-		current = env;
+		append_env_node(&temp, new_env_node(env->key, env->value));
+		env = env->next;
+	}
+	return (temp);
+}
+
+static int	builtin_export_size(t_env *env)
+{
+	int		env_size;
+	t_env	*current;
+
+	env_size = 0;
+	current = env;
+	while (current != NULL)
+	{
+		env_size++;
+		current = current->next;
+	}
+	return (env_size);
+}
+
+static void builtin_export_swap(t_env **env, t_env **previous, t_env **current)
+{
+	t_env	*next;
+
+	next = (*current)->next;
+	(*current)->next = next->next;
+	next->next = *current;
+	if (*previous == NULL)
+		*env = next;
+	else
+		(*previous)->next = next;
+	*previous = next;
+}
+
+static void	builtin_export_sort(t_env **env, int env_size)
+{
+	t_env	*previous;
+	t_env	*current;
+
+	while (env_size-- >= 0)
+	{
 		previous = NULL;
-		while (current != NULL)
+		current = *env;
+		while (current != NULL && current->next != NULL)
 		{
-			if (current->next != NULL && ft_strcmp(current->key, current->next->key) > 0)
+			if (ft_strcmp(current->key, current->next->key) > 0)
+				builtin_export_swap(env, &previous, &current);
+			else
 			{
-				temp = current->next;
-				current->next = temp->next;
-				temp->next = current;
-				if (previous == NULL)
-					env = temp;
-				else
-					previous->next = temp;
-				sorted = 0;
+				previous = current;
+				current = current->next;
 			}
-			previous = current;
-			current = current->next;
 		}
 	}
-	return (env);
 }
 
 static int	builtin_export_print(t_env *env)
 {
 	t_env	*temp;
+	int		env_size;
 
 	if (env == NULL)
 		return (EXIT_SUCCESS);
-	// temp = env;
-	temp = builtin_export_sort(env);
+	temp = builtin_export_copy(env);
+	env_size = builtin_export_size(env);
+	builtin_export_sort(&temp, env_size);
 	while (temp != NULL)
 	{
 		ft_printf("declare -x %s", temp->key);

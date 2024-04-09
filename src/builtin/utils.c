@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/04/08 14:22:29 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 17:34:28 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	is_valid_key(char *key)
 		return (EXIT_FAILURE);
 	while (key[++i] != '\0')
 	{
+		if (key[i] == '+' && key[i + 1] == '\0')
+			return (EXIT_SUCCESS);
 		if (ft_isalnum(key[i]) == 0 && key[i] != '_')
 			return (EXIT_FAILURE);
 	}
@@ -44,6 +46,8 @@ static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 		ft_perror("malloc", "malloc fail");
 		return (EXIT_FAILURE);
 	}
+	if (key[ft_strlen(key) - 1] == '+')
+		key[ft_strlen(key) - 1] = '\0';
 	new_env->key = ft_strdup(key);
 	if (value != NULL)
 		new_env->value = ft_strdup(value);
@@ -54,15 +58,32 @@ static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 	return (EXIT_SUCCESS);
 }
 
-int	env_update(t_env **env, char *key, char *value)
+static void	env_appand(t_env **env, char *key, char *value)
 {
 	t_env	*current;
-	t_env	*previous;
 
 	current = *env;
+	if (ft_strncmp(current->key, key, ft_strlen(key) - 1) == 0)
+	{
+		if (value != NULL)
+			current->value = ft_strjoin_free(current->value, value);
+	}
+}
+
+int	env_update(t_env **env, char *key, char *value)
+{
+	t_env	*previous;
+	t_env	*current;
+
 	previous = NULL;
+	current = *env;
 	while (current != NULL)
 	{
+		if (key[ft_strlen(key) - 1] == '+')
+		{
+			env_appand(env, key, value);
+			return (EXIT_SUCCESS);
+		}
 		if (ft_strcmp(current->key, key) == 0)
 		{
 			free(current->value);
