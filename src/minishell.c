@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/08 18:51:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 15:26:40 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ static int	handle_input(char *cmd_line, t_env *env)
 		return (2);//TODO
 	}
 	token = tokenizer(cmd_line); // free here?
-	if (operator_syntax(token))
-		return (2);
+	env->exit_status = operator_syntax(token);
+	if (env->exit_status != EXIT_SUCCESS)
+		return (env->exit_status);
 	// check_tokens(token);
 	ast = ast_parser(&token);
 	// print_ast(ast, 0);

@@ -219,7 +219,8 @@ int				is_valid_key(char *key);
 
 //syntax
 bool			quotes_syntax(char *cmd_line);
-bool			operator_syntax(t_token *token);
+int				operator_syntax(t_token *token);
+int				parenthesis_syntax(t_token *token);
 
 // UTILS
 // env
