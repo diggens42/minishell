@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/04/08 14:18:06 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 21:28:32 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,12 @@ void	ft_perror_2(char *command, char *argument, char *error_message)
 	ft_putstr_fd("': ", STDERR_FILENO);
 	ft_putstr_fd(error_message, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
+void	ft_perror_3(char *content)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+	ft_putstr_fd(content, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
 }

@@ -153,6 +153,7 @@ t_type			**wc_set_type(char **argv);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
+int				set_quote_state(int quote_state, char c);
 int				get_single_char_len(char c);
 // token_ops
 t_token			*token_new(void);
@@ -167,7 +168,8 @@ void			advance_and_free_token(t_token **token);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);
 bool			is_operator(t_type type);
-bool			is_cmd(t_type	type);
+bool			is_cmd(t_type type);
+bool			is_parenthesis(t_type type);
 void			print_ast(t_ast* node, int level);
 
 // EXECUTOR
@@ -228,6 +230,7 @@ char			*ft_getenv(char *key, t_env *env);
 void			ft_exit(int exit_status);
 void			ft_perror(char *command, char *error_message);
 void			ft_perror_2(char *command, char *argument, char *error_message);
+void			ft_perror_3(char *content);
 // free
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
