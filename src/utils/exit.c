@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 13:51:32 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 17:47:46 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,13 @@ void	ft_perror_3(char *content)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
 	ft_putstr_fd(content, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
+}
+
+void	ft_perror_4(char content)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd("unexpected EOF while looking for matching `", STDERR_FILENO);
+	ft_putchar_fd(content, STDERR_FILENO);
 	ft_putstr_fd("'\n", STDERR_FILENO);
 }

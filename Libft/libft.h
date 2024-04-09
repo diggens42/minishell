@@ -42,6 +42,7 @@ void	*ft_memchr(const void *ptr, int c, size_t n);
 void	ft_bzero(void *ptr, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 
+int		ft_intlen(int n);
 size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
