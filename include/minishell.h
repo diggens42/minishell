@@ -232,11 +232,13 @@ void			ft_exit(int exit_status);
 void			ft_perror(char *command, char *error_message);
 void			ft_perror_2(char *command, char *argument, char *error_message);
 void			ft_perror_3(char *content);
+void			ft_perror_4(char content);
 // free
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
 void			free_char_array(char **str);
 void			free_type_array(t_type **type);
+void			free_ast(t_ast *ast);
 // signals
 void			ctrl_c_handler(int signal);
 void			ctrl_backslash_handler(int signal);

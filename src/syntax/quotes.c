@@ -6,11 +6,19 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 16:54:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/05 17:55:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 16:26:06 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	quotes_error(bool in_dquote, bool in_squote)
+{
+	if (in_squote == true)
+		ft_perror_4('\'');
+	if (in_dquote == true)
+		ft_perror_4('"');
+}
 
 bool	quotes_syntax(char *cmd_line)
 {
@@ -35,5 +43,6 @@ bool	quotes_syntax(char *cmd_line)
 		}
 		i++;
 	}
+	quotes_error(in_dquote, in_squote);
 	return (in_squote || in_dquote);
 }

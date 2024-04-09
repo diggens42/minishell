@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 19:10:56 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 16:38:07 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static char	*expand_str_with_dqmark(char *content, t_env *env)
 			after_dqmark = ft_strjoin_free(ft_itoa(env->exit_status), pos + 2);
 			free(newstr);
 			newstr = ft_strjoin(before_dqmark, after_dqmark);
-			pos = newstr + (pos - content);
+			pos++;
 			free(before_dqmark);
 			free(after_dqmark);
 		}

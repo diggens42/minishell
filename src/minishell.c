@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 16:13:11 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 16:28:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ static int	handle_input(char *cmd_line, t_env *env)
 	t_ast	*ast;
 
 	if (quotes_syntax(cmd_line) == true)
-	{
-		ft_putstr_fd("syntax error unclosed quotes\n", STDERR_FILENO);
-		return (2);//TODO
-	}
+		return (2);
 	token = tokenizer(cmd_line); // free here?
 	env->exit_status = operator_syntax(token);
 	if (env->exit_status != EXIT_SUCCESS)
