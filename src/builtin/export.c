@@ -6,14 +6,15 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 14:13:28 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 20:16:09 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+//TODO export export
 static t_env *builtin_export_sort(t_env *env) //TODO envp size in while loop
-{ //TODO export export
+{
 	t_env	*current;
 	t_env	*previous;
 	t_env	*temp;

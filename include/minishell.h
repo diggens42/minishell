@@ -197,6 +197,7 @@ int				ft_pipe(int *fd);
 pid_t			ft_fork(void);
 int				set_fd(t_env *env);
 int				reset_fd(t_env *env);
+int				close_fd(t_env *env);
 // exec_utils_2
 char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);

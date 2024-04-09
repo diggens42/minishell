@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/08 18:51:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 21:15:25 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	handle_input(char *cmd_line, t_env *env)
 
 		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", env->exit_status);
 
-	reset_fd(env);
+	close_fd(env);
 	return (env->exit_status);
 }
 

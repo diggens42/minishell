@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:53:52 by mott              #+#    #+#             */
-/*   Updated: 2024/04/07 20:25:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 20:45:38 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,28 @@ int	reset_fd(t_env *env)
 {
 	if (dup2(env->fd_stdin, STDIN_FILENO) == -1)
 	{
-		ft_perror("dup2", strerror(errno));
+		ft_perror("dup2a", strerror(errno));
+		return (-1);
+	}
+	if (dup2(env->fd_stdout, STDOUT_FILENO) == -1)
+	{
+		ft_perror("dup2b", strerror(errno));
+		return (-1);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	close_fd(t_env *env)
+{
+	if (dup2(env->fd_stdin, STDIN_FILENO) == -1)
+	{
+		ft_perror("dup2a", strerror(errno));
 		return (-1);
 	}
 	close (env->fd_stdin);
 	if (dup2(env->fd_stdout, STDOUT_FILENO) == -1)
 	{
-		ft_perror("dup2", strerror(errno));
+		ft_perror("dup2b", strerror(errno));
 		return (-1);
 	}
 	close (env->fd_stdout);
