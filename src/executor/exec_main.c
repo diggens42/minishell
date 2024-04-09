@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 15:47:54 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/08 20:45:51 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ int	exec_main(t_ast *ast, t_env *env)
 	else if (ast->type == AND)
 	{
 		exit_status = exec_main(ast->left, env);
+		reset_fd(env);
 		if (exit_status == EXIT_SUCCESS)
 			exit_status = exec_main(ast->right, env);
 	}
 	else if (ast->type == OR)
 	{
 		exit_status = exec_main(ast->left, env);
+		reset_fd(env);
 		if (exit_status != EXIT_SUCCESS)
 			exit_status = exec_main(ast->right, env);
 	}
@@ -138,7 +140,6 @@ void	exec_finish(char **argv, t_env *env)
 		free(pathname);
 		free_char_array(argv);
 		free_char_array(envp);
-		// ft_perror(argv[0], "here");
 		ft_perror(argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
