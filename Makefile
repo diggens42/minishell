@@ -12,7 +12,7 @@
 
 CC = cc
 # CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
-CFLAGS = -Wall -Wextra -I include -I /usr/local/include/readline
+CFLAGS = -Wall -Wextra -I include -I /usr/local/include/readline -g -fsanitize=address
 NAME = minishell
 
 SRCS =	./src/minishell.c \
@@ -31,7 +31,6 @@ SRCS =	./src/minishell.c \
 		./src/expander/expand_dquotes.c \
 		./src/expander/expand_dollar.c \
 		./src/expander/expand_wildcard.c \
-		./src/expander/expand_wildcard2.c \
 		./src/expander/expand_utils.c \
 		\
 		./src/parser/ast_parser.c \
@@ -96,6 +95,9 @@ fclean: clean
 	@$(MAKE) fclean -C ./Libft
 
 re: fclean all
+
+run: all
+	./$(NAME)
 
 .PHONY: all clean fclean re
 
