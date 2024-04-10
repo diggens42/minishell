@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:17:16 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:27:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static t_cmd	*new_cmd_node(t_token *token)
 t_ast	*new_ast_node(t_token *token)
 {
 	t_ast	*node;
-	int		i;
 
 	node = (t_ast *)ft_calloc(1, sizeof(t_ast));
 	if (!node)

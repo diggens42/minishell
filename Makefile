@@ -33,6 +33,7 @@ SRCS =	./src/minishell.c \
 		./src/expander/expand_utils.c \
 		\
 		./src/parser/ast_parser.c \
+		./src/parser/ast_parser2.c \
 		./src/parser/ast_utils.c \
 		\
 		./src/builtin/cd.c \
