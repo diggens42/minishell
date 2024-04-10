@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 17:33:27 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 23:32:11 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static int	handle_input(char *cmd_line, t_env *env)
 	if (quotes_syntax(cmd_line) == true)
 		return (2);
 	token = tokenizer(cmd_line); // free here?
-	exit_status = parenthesis_syntax(token);
+	exit_status = operator_syntax(token);
 	if (exit_status != EXIT_SUCCESS)
 	{
 		env->exit_status = exit_status;
 		return (exit_status);
 	}
-	exit_status = operator_syntax(token);
+	exit_status = parenthesis_syntax(token);
 	if (exit_status != EXIT_SUCCESS)
 	{
 		env->exit_status = exit_status;
@@ -68,11 +68,16 @@ static int	read_eval_print_loop(t_env *env)
 
 	while (true)
 	{
+		init_signals();
 		cmd_line = readline(PROMPT_STD);
 		add_history(cmd_line);
 		if (cmd_line == NULL)
+		{
+			ft_putstr_fd("\n", STDOUT_FILENO);
 			return (EXIT_SUCCESS);
-		if (cmd_line[0] == '\0')
+		}
+		if (cmd_line[0] == '\0'
+			|| (cmd_line == NULL && ft_strlen(cmd_line) == 0))
 		{
 			free(cmd_line);
 			continue ;
@@ -115,8 +120,6 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(envp);
 	if (argc > 1)
 		return (run_script(argv[1], env));
-	// signal(SIGINT, ctrl_c_handler);
-	// signal(SIGQUIT, ctrl_backslash_handler);
-	// disable_signal_echo();
+	// init_signals();
 	return (read_eval_print_loop(env));
 }

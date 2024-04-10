@@ -241,8 +241,10 @@ void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
 // signals
 void			ctrl_c_handler(int signal);
+void			ctrl_c_handler_child(int signal);
 void			ctrl_backslash_handler(int signal);
 void			disable_signal_echo(void);
+void			init_signals(void);
 
 
 // debug

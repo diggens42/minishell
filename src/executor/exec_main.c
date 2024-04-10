@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 20:45:51 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 23:41:48 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 int	exec_main(t_ast *ast, t_env *env)
 {
-	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", ast->cmd->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", token_type_to_string(ast->type));
-
 	int	exit_status;
 
 	exit_status = EXIT_SUCCESS;
@@ -49,30 +44,30 @@ int	exec_main(t_ast *ast, t_env *env)
 
 int	exec_subshell(t_ast *ast, t_env *env)
 {
-	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mexec_subshell: %s\n\x1b[0m", ast->cmd->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mexec_subshell: %s\n\x1b[0m", token_type_to_string(ast->type));
-
 	pid_t	pid;
 	int		wstatus;
 	int		exit_status;
 
 	ast->subshell = false;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	pid = ft_fork();
 	if (pid == 0)
 	{
 		exit_status = exec_main(ast, env);
 		exit(exit_status);
 	}
-	waitpid(pid, &wstatus, 0);
+	else
+	{
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(pid, &wstatus, 0);
+		signal(SIGQUIT, SIG_IGN);
+	}
 	return (WEXITSTATUS(wstatus));
 }
 
 int	exec_single_command(t_ast *ast, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mexec_single_command: %s\n\x1b[0m", ast->cmd->argv[0]);
-
 	pid_t	pid;
 	int		wstatus;
 	int		exit_status;
@@ -86,10 +81,18 @@ int	exec_single_command(t_ast *ast, t_env *env)
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
+	signal(SIGINT, SIG_IGN);
 	pid = ft_fork();
 	if (pid == 0)
 		exec_finish(ast->cmd->argv, env);
-	waitpid(pid, &wstatus, 0);
+	else
+	{
+		signal(SIGQUIT, ctrl_backslash_handler);
+		signal(SIGINT, ctrl_c_handler_child);
+		waitpid(pid, &wstatus, 0);
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
+	}
 	return (WEXITSTATUS(wstatus));
 }
 

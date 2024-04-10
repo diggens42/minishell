@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 16:43:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 18:32:23 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,6 @@ static void process_single_quotes(char **content)
 
 	temp = *content;
 	*content = remove_quotes(*content);
-	free(temp);
-}
-
-//removes double quotes and expands content inside
-static void	process_double_quotes(char **content, t_env *env)
-{
-	char	*temp;
-
-	temp = *content;
-	*content = remove_quotes(*content);
-		// fprintf(stderr, "\x1b[33mDQUOTE before: %s\n\x1b[0m", *content);
-	free(temp);
-	temp = *content;
-	*content = expand_double_quote(*content, env);
-		// fprintf(stderr, "\x1b[33mDQUOTE after: %s\n\x1b[0m", *content);
 	free(temp);
 }
 
@@ -90,8 +75,6 @@ void	expand(t_cmd **cmd, t_env *env)
 			proccess_commands(&temp->argv[i], env);
 		else if (*temp->type[i] == SINGLE_QUOTE)
 			process_single_quotes(&temp->argv[i]);
-		else if (*temp->type[i] == DOUBLE_QUOTE)
-			process_double_quotes(&temp->argv[i], env);
 		else if (*temp->type[i] == DOLLAR)
 			process_dollar_sign(&temp->argv[i], env);
 		else if (*temp->type[i] == DQMARK)
