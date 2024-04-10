@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 18:13:24 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 20:25:35 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,9 @@ static t_ast	*ast_cmd(t_token **token)
 	while (*token != NULL && !is_operator((*token)->type))
 	{
 		if (*token != NULL && (*token)->type == PARENTHESIS_R)
-			return(cmd_node);
+			return (cmd_node);
 		if (is_redirect((*token)->type))
-		{
-			cmd_node->cmd->redir[i]->type = (*token)->type;
-			advance_and_free_token(token);
-			cmd_node->cmd->redir[i]->file = ft_strdup((*token)->content);
-			advance_and_free_token(token);
-			i++;
-		}
+			ast_redirect(cmd_node, token, &i);
 		if (*token != NULL && is_cmd((*token)->type))
 		{
 			cmd_node->cmd->argv[j] = ft_strdup((*token)->content);
@@ -57,7 +51,7 @@ static t_ast	*ast_parenthesis(t_token **token)
 	subtree = ast_parser(token);
 	subtree->subshell = true;
 	if (*token == NULL || (*token)->type != PARENTHESIS_R)
-		return (NULL); //TODO handle unclosed parenthesis
+		return (NULL);
 	advance_and_free_token(token);
 	return (subtree);
 }
@@ -92,8 +86,6 @@ static t_ast	*ast_logical(t_token **token, t_ast *left)
 		if (*token != NULL && (*token)->type == PARENTHESIS_L)
 			logical->right = ast_parenthesis(token);
 		cmd_node = ast_cmd(token);
-		// if (*token != NULL && (*token)->type == PARENTHESIS_L)
-		// 	logical->right = ast_parenthesis(token);
 		if (*token != NULL && (*token)->type == PIPE)
 			logical->right = ast_pipe(token, cmd_node);
 		else
@@ -116,14 +108,15 @@ t_ast	*ast_parser(t_token **token)
 	{
 		if ((*token)->type == PARENTHESIS_L)
 			node = ast_parenthesis(token);
-		else if (*token != NULL && (is_cmd((*token)->type) || is_redirect((*token)->type)))
+		else if (*token != NULL && (is_cmd((*token)->type)
+				|| is_redirect((*token)->type)))
 			node = ast_cmd(token);
 		else if (*token != NULL && (*token)->type == PIPE)
 			node = ast_pipe(token, node);
 		else if (*token != NULL && (is_logical((*token)->type)))
 			node = ast_logical(token, node);
 		else if (*token != NULL && (*token)->type == PARENTHESIS_R)
-			return(node);
+			return (node);
 	}
 	return (node);
 }

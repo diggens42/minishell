@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 16:30:30 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 19:25:52 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	builtin_export_size(t_env *env)
 	return (env_size);
 }
 
-static void builtin_export_swap(t_env **env, t_env **previous, t_env **current)
+static void	builtin_export_swap(t_env **env, t_env **previous, t_env **current)
 {
 	t_env	*next;
 

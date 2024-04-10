@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 17:34:28 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 19:39:49 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	is_valid_key(char *key)
 static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 {
 	// fprintf(stderr, "\x1b[33mkey: %s\n\x1b[0m", key);
-
 	t_env	*new_env;
 
 	if (is_valid_key(key) == EXIT_FAILURE)

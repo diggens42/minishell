@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 15:25:15 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 20:17:16 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	n_cmd(t_token *tokens)
 	return (n_cmd);
 }
 
-static int n_red(t_token *tokens)
+static int	n_red(t_token *tokens)
 {
 	t_token	*current;
 	int		n_red;
@@ -48,6 +48,32 @@ static int n_red(t_token *tokens)
 	return (n_red);
 }
 
+static t_cmd	*new_cmd_node(t_token *token)
+{
+	t_cmd	*cmd;
+	int		i;
+
+	cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
+	if (!cmd)
+		ft_perror("malloc", strerror(errno));
+	cmd->argv = (char **)ft_calloc(n_cmd(token) + 1, sizeof(char *));
+	cmd->type = (t_type **)ft_calloc(n_cmd(token) + 1, sizeof(t_type *));
+	i = 0;
+	while (i < n_cmd(token))
+	{
+		cmd->type[i] = (t_type *)ft_calloc(1, sizeof(t_type));
+		i++;
+	}
+	cmd->redir = (t_redir **)ft_calloc(n_red(token) + 1, sizeof(t_redir *));
+	i = 0;
+	while (i < n_red(token))
+	{
+		cmd->redir[i] = (t_redir *)ft_calloc(1, sizeof(t_redir));
+		i++;
+	}
+	return (cmd);
+}
+
 t_ast	*new_ast_node(t_token *token)
 {
 	t_ast	*node;
@@ -60,22 +86,7 @@ t_ast	*new_ast_node(t_token *token)
 	if (is_cmd(token->type) || is_redirect(token->type))
 	{
 		node->type = COMMAND;
-		node->cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
-		node->cmd->argv = (char **)ft_calloc(n_cmd(token) + 1, sizeof(char *));
-		node->cmd->type = (t_type **)ft_calloc(n_cmd(token) + 1, sizeof(t_type *));
-		i = 0;
-		while (i < n_cmd(token))
-		{
-			node->cmd->type[i] = (t_type *)ft_calloc(1, sizeof(t_type));
-			i++;
-		}
-		node->cmd->redir = (t_redir **)ft_calloc(n_red(token) + 1, sizeof(t_redir *));
-		i = 0;
-		while (i < n_red(token))
-		{
-			node->cmd->redir[i] = (t_redir *)ft_calloc(1, sizeof(t_redir));
-			i++;
-		}
+		node->cmd = new_cmd_node(token);
 	}
 	return (node);
 }
@@ -94,4 +105,3 @@ void	advance_and_free_token(t_token **token)
 	}
 	*token = next_token;
 }
-

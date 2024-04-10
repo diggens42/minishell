@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 14:20:52 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 19:35:55 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	get_quote_len(char *user_input)
 	if (user_input[len] == quote_type)
 		len++;
 	while (!ft_isspace(user_input[len]) && !get_single_char_len(user_input[len])
-			&& user_input[len] != '\0')
+		&& user_input[len] != '\0')
 		len++;
 	return (len);
 }
@@ -65,7 +65,7 @@ static int	get_dollar_len(char *user_input)
 	else
 	{
 		while (user_input[len] != '\0' && !ft_isspace(user_input[len])
-				&& !get_single_char_len(user_input[len]))
+			&& !get_single_char_len(user_input[len]))
 		{
 			if (!ft_isalnum(user_input[len]) && user_input[len] != '_'
 				&& user_input[len] != '/' && user_input[len] != '.')
@@ -75,24 +75,6 @@ static int	get_dollar_len(char *user_input)
 	}
 	return (len);
 }
-
-static void handle_command_quotes(bool *quotes, char *quote_type, char current)
-{
-	if (current == '"' || current == '\'')
-	{
-		if (!(*quotes))
-		{
-			*quotes = true;
-			*quote_type = current;
-		}
-		else if (*quote_type == current)
-		{
-			*quotes = false;
-			*quote_type = '\'';
-		}
-	}
-}
-
 
 static int	get_command_len(char *user_input)
 {
@@ -107,7 +89,7 @@ static int	get_command_len(char *user_input)
 	{
 		handle_command_quotes(&quotes, &quote_type, user_input[len]);
 		if (!quotes && (ft_isspace(user_input[len])
-			|| get_single_char_len(user_input[len])))
+				|| get_single_char_len(user_input[len])))
 			break ;
 		len++;
 	}

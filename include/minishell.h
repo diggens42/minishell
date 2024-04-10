@@ -71,19 +71,18 @@ typedef enum	e_type
 	UNKNOWN,
 	COMMAND,
 	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
+	DOLLAR,
+	DQMARK,
+	WILDCARD,
 	REDIR_IN,
 	REDIR_HEREDOC,
 	REDIR_OUT,
 	REDIR_APPEND,
 	PIPE,
-	DOLLAR,
-	DQMARK,
 	AND,
 	OR,
 	PARENTHESIS_L,
-	PARENTHESIS_R,
-	WILDCARD
+	PARENTHESIS_R
 }	t_type;
 
 typedef struct	s_env
@@ -154,6 +153,7 @@ char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
 int				set_quote_state(int quote_state, char c);
+void			handle_command_quotes(bool *quotes, char *quote_type, char current);
 int				get_single_char_len(char c);
 // token_ops
 t_token			*token_new(void);
@@ -163,6 +163,7 @@ int				tokens_size(t_token *tokens);
 
 // PARSER
 t_ast			*ast_parser(t_token **token);
+void			ast_redirect(t_ast *cmd_node, t_token **token, int *i);
 t_ast			*new_ast_node(t_token *token);
 void			advance_and_free_token(t_token **token);
 bool			is_redirect(t_type type);

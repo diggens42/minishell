@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:17:33 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 21:32:50 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 19:29:24 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ bool	is_cmd(t_type type)
 	if (type == COMMAND)
 		return (true);
 	if (type == SINGLE_QUOTE)
-		return (true);
-	if (type == DOUBLE_QUOTE)
 		return (true);
 	if (type == DOLLAR)
 		return (true);

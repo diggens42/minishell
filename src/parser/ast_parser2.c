@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_length2.c                                    :+:      :+:    :+:   */
+/*   ast_parser2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/24 16:39:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 19:34:02 by fwahl            ###   ########.fr       */
+/*   Created: 2024/04/10 20:21:46 by fwahl             #+#    #+#             */
+/*   Updated: 2024/04/10 20:23:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	get_single_char_len(char c)
+void	ast_redirect(t_ast *cmd_node, t_token **token, int *i)
 {
-	return (ft_strchr("|<>()", c) != NULL);
-}
-
-void	handle_command_quotes(bool *quotes, char *quote_type, char current)
-{
-	if (current == '"' || current == '\'')
-	{
-		if (!(*quotes))
-		{
-			*quotes = true;
-			*quote_type = current;
-		}
-		else if (*quote_type == current)
-		{
-			*quotes = false;
-			*quote_type = '\'';
-		}
-	}
+	cmd_node->cmd->redir[*i]->type = (*token)->type;
+	advance_and_free_token(token);
+	cmd_node->cmd->redir[*i]->file = ft_strdup((*token)->content);
+	advance_and_free_token(token);
+	(*i)++;
 }

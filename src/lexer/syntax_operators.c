@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 17:14:24 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 19:38:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	syntax_logical(t_token *prev, t_token *check)
 {
 	if (prev == NULL || (!is_cmd(prev->type) && prev->type != PARENTHESIS_R)
 		|| check->next == NULL
-		||(!is_cmd(check->next->type) && check->next->type != PARENTHESIS_L))
+		|| (!is_cmd(check->next->type) && check->next->type != PARENTHESIS_L))
 	{
 		ft_perror_3(check->content);
 		return (2);
@@ -32,7 +32,7 @@ static int	syntax_redirect(t_token *check)
 		return (EXIT_FAILURE);
 	}
 	if (check->next != NULL && (is_operator(check->next->type)
-		|| is_redirect(check->next->type)))
+			|| is_redirect(check->next->type)))
 	{
 		ft_perror_3(check->next->content);
 		return (2);
@@ -41,7 +41,8 @@ static int	syntax_redirect(t_token *check)
 			&& !is_redirect(check->next->type)))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
+		ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
+		ft_putstr_fd("`newline'\n", STDERR_FILENO);
 		return (2);
 	}
 	return (EXIT_SUCCESS);
@@ -50,7 +51,8 @@ static int	syntax_redirect(t_token *check)
 static int	syntax_pipe(t_token *prev, t_token *check)
 {
 	if (prev == NULL || check->next == NULL || (!is_cmd(check->next->type)
-		&& !is_redirect(check->next->type) && !is_logical(check->next->type)))
+			&& !is_redirect(check->next->type)
+			&& !is_logical(check->next->type)))
 	{
 		ft_perror_3(check->content);
 		return (2);
@@ -81,8 +83,8 @@ static int	syntax_parenthesis(t_token *prev, t_token *check)
 
 int	operator_syntax(t_token *token)
 {
-	t_token *check;
-	t_token *prev;
+	t_token	*check;
+	t_token	*prev;
 	int		exit_status;
 
 	check = token;
