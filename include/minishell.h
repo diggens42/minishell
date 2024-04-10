@@ -196,6 +196,7 @@ char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);
 char			*ft_tolower_str(char *str);
 char			**new_argv(char **old_argv);
+int				waitpid_exit_stat(pid_t pid);
 
 // BUILTIN
 int				builtin_cd(char **argv, t_env **env);
@@ -219,6 +220,8 @@ int				parenthesis_syntax(t_token *token);
 // env
 t_env			*init_env(char **envp);
 char			*ft_getenv(char *key, t_env *env);
+void			append_env_node(t_env **head, t_env *new_node);
+t_env			*new_env_node(char *key, char *value);
 // exit
 void			ft_exit(int exit_status);
 void			ft_perror(char *command, char *error_message);
@@ -235,7 +238,7 @@ void			free_ast(t_ast *ast);
 void			ctrl_c_handler(int signal);
 void			ctrl_c_handler_child(int signal);
 void			ctrl_backslash_handler(int signal);
-void			disable_signal_echo(void);
+void			ctrl_backslash_handler_child(int signal);
 void			init_signals(void);
 
 

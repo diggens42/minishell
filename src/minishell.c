@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 16:18:38 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:33:02 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static int	read_eval_print_loop(t_env *env)
 
 	while (true)
 	{
-		init_signals();
 		cmd_line = readline(PROMPT_STD);
 		add_history(cmd_line);
 		if (cmd_line == NULL)
@@ -117,6 +116,6 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(envp);
 	if (argc > 1)
 		return (run_script(argv[1], env));
-	// init_signals();
+	init_signals();
 	return (read_eval_print_loop(env));
 }

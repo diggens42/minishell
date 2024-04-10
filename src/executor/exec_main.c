@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 16:19:43 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 19:22:46 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static int	exec_subshell(t_ast *ast, t_env *env)
 	int		exit_status;
 
 	ast->subshell = false;
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	pid = ft_fork();
 	if (pid == 0)
 	{
@@ -29,9 +27,7 @@ static int	exec_subshell(t_ast *ast, t_env *env)
 	}
 	else
 	{
-		signal(SIGQUIT, SIG_IGN);
 		waitpid(pid, &wstatus, 0);
-		signal(SIGQUIT, SIG_IGN);
 	}
 	return (WEXITSTATUS(wstatus));
 }
@@ -39,7 +35,6 @@ static int	exec_subshell(t_ast *ast, t_env *env)
 static int	exec_single_command(t_ast *ast, t_env *env)
 {
 	pid_t	pid;
-	int		wstatus;
 	int		exit_status;
 
 	exit_status = EXIT_SUCCESS;
@@ -52,19 +47,18 @@ static int	exec_single_command(t_ast *ast, t_env *env)
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
-	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, ctrl_backslash_handler_child);
+	signal(SIGINT, ctrl_c_handler_child);
 	pid = ft_fork();
 	if (pid == 0)
 		exec_finish(ast->cmd->argv, env);
 	else
 	{
+		exit_status = waitpid_exit_stat(pid);
+		signal(SIGINT, ctrl_c_handler);
 		signal(SIGQUIT, ctrl_backslash_handler);
-		signal(SIGINT, ctrl_c_handler_child);
-		waitpid(pid, &wstatus, 0);
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, SIG_IGN);
 	}
-	return (WEXITSTATUS(wstatus));
+	return (exit_status);
 }
 
 int	exec_main(t_ast *ast, t_env *env)

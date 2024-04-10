@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 14:33:28 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 19:22:39 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,20 @@ char	**new_argv(char **old_argv)
 	}
 	free(old_argv);
 	return (new_argv);
+}
+
+int	waitpid_exit_stat(pid_t pid)
+{
+	int	stat_loc;
+
+	waitpid(pid, &stat_loc, 0);
+	if (WIFSIGNALED(stat_loc))
+	{
+		if (WTERMSIG(stat_loc) == SIGINT)
+			return (130);
+		if (WTERMSIG(stat_loc) == SIGQUIT)
+			return (131);
+		return (WTERMSIG(stat_loc));
+	}
+	return (WEXITSTATUS(stat_loc));
 }
