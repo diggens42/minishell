@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 20:41:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 18:13:24 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static t_ast	*ast_cmd(t_token **token)
 	}
 	return (cmd_node);
 }
-
 
 static t_ast	*ast_parenthesis(t_token **token)
 {

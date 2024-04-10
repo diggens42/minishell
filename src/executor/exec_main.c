@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 14:31:28 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:10:24 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	exec_main(t_ast *ast, t_env *env)
 			env->exit_status = exec_main(ast->right, env);
 	}
 	else if (ast->type == PIPE)
-		env->exit_status = exec_pipe(ast, env, 0);
+			env->exit_status = exec_pipe(ast, env, 0);
 	else
 		env->exit_status = exec_single_command(ast, env);
 	return (env->exit_status);
@@ -66,6 +66,33 @@ int	exec_subshell(t_ast *ast, t_env *env)
 	return (WEXITSTATUS(wstatus));
 }
 
+static char	**new_argv(char **old_argv)
+{
+	char	**new_argv;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (old_argv[i] != NULL && ft_strcmp("", old_argv[i]) == 0)
+		i++;
+	j = 0;
+	while (old_argv[i + j] != NULL)
+		j++;
+	new_argv = (char **)ft_calloc(j + 1, sizeof(char *));
+	if (new_argv == NULL)
+		return (NULL);
+	j = 0;
+	while (old_argv[i] != NULL)
+	{
+		new_argv[j] = ft_strdup(old_argv[i]);
+		free(old_argv[i]);
+		i++;
+		j++;
+	}
+	free(old_argv);
+	return (new_argv);
+}
+
 int	exec_single_command(t_ast *ast, t_env *env)
 {
 		// fprintf(stderr, "\x1b[33mexec_single_command: %s\n\x1b[0m", ast->cmd->argv[0]);
@@ -80,6 +107,7 @@ int	exec_single_command(t_ast *ast, t_env *env)
 		exit_status = exec_set_redir(ast->cmd->redir, env);
 	if (exit_status == EXIT_FAILURE)
 		return (exit_status);
+	ast->cmd->argv = new_argv(ast->cmd->argv);
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
@@ -97,8 +125,10 @@ int	exec_builtin(char **argv, t_env *env)
 	char	*temp;
 	int		exit_status;
 
-	temp = ft_tolower_str(argv[0]);
 	exit_status = -1;
+	if (argv[0] == NULL)
+		return (exit_status);
+	temp = ft_tolower_str(argv[0]);
 	if (ft_strcmp("echo", temp) == 0)
 		exit_status = (builtin_echo(argv));
 	else if (ft_strcmp("cd", temp) == 0)

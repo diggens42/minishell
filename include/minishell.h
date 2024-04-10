@@ -187,7 +187,7 @@ char			*find_pathname(char **path);
 // exec_pipe
 int				exec_pipe(t_ast *ast, t_env *env, int lvl);
 int				exec_pipe_next(t_ast *ast, t_env *env);
-int				exec_pipe_last(t_ast *ast, t_env *env, int lvl);
+int				exec_pipe_last(t_ast *ast, t_env *env);
 int				exec_pipe_command(t_ast *ast, t_env *env);
 // exec_redir
 int				exec_set_redir(t_redir **redir, t_env *env);

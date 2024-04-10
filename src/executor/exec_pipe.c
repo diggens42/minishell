@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 14:31:39 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 13:14:34 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	exec_pipe(t_ast *ast, t_env *env, int lvl)
 	if (lvl > 0)
 		exit_status = exec_pipe_next(ast->right, env);
 	else
-		exit_status = exec_pipe_last(ast->right, env, lvl);
+		exit_status = exec_pipe_last(ast->right, env);
 	return (exit_status);
 }
 
@@ -42,6 +42,7 @@ int	exec_pipe_next(t_ast *ast, t_env *env)
 	int		fd[2];
 	pid_t	pid;
 	int		exit_status;
+	// int		wstatus;
 
 	exit_status = EXIT_SUCCESS;
 	ft_pipe(fd);
@@ -58,10 +59,11 @@ int	exec_pipe_next(t_ast *ast, t_env *env)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		ft_perror("dup2", strerror(errno));
 	close(fd[0]);
+	// waitpid(pid, &wstatus, 0);
 	return (exit_status);
 }
 
-int	exec_pipe_last(t_ast *ast, t_env *env, int lvl)
+int	exec_pipe_last(t_ast *ast, t_env *env)
 {
 	// if (ast->cmd != NULL)
 	// 	fprintf(stderr, "\x1b[33mexec_pipe_last: %s\n\x1b[0m", ast->cmd->argv[0]);
@@ -74,9 +76,10 @@ int	exec_pipe_last(t_ast *ast, t_env *env, int lvl)
 	pid = ft_fork();
 	if (pid == 0)
 		exec_pipe_command(ast, env);
+	reset_fd(env);
 	waitpid(pid, &wstatus, 0);
-	while (lvl-- >= 0)
-		wait(NULL);
+	while (wait(NULL) > 0)
+		continue ;
 	return (WEXITSTATUS(wstatus));
 }
 

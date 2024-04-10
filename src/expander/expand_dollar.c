@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 14:34:57 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 19:03:14 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ char	*expand_dollar_sign(const char *content, t_env *env)
 
 	// fprintf(stderr, "\x1b[33mDollar: %s\n\x1b[0m", content);
 	var_name = extract_var_name(content);
+	// fprintf(stderr, "\x1b[33mDollar: %s\n\x1b[0m", var_name);
 	var_value = ft_getenv(var_name, env);
 	if (!var_value)
-		var_value = "";
+		var_value = ft_strdup("");
 	expanded_content = construct_new_content(var_value, content);
+	// fprintf(stderr, "\x1b[33mDollar: ->%s<-\n\x1b[0m", expanded_content);
 	free(var_name);
 	return (expanded_content);
 }
