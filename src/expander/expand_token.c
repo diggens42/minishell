@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:37:43 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/11 00:48:45 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,14 @@ static void	process_dqmark_sign(char **content, t_env *env)
 }
 
 // //expands wildcards within a tokens content and creates token for each match
-static void	process_wildcard(char **content, t_cmd *cmd, int i)
+static void	process_wildcard(char **content, t_cmd *cmd, int *index)
 {
-	char	*expanded_content;
+	char	**expanded_content;
 	char	**new_argv;
 	t_type	**new_type;
 
 	expanded_content = expand_wildcard(*content);
-	new_argv = insert_expanded_wc(cmd->argv, i, expanded_content);
-	free(expanded_content);
-	free_char_array(cmd->argv);
+	new_argv = insert_expanded_wc(cmd->argv, index, expanded_content);
 	cmd->argv = new_argv;
 	new_type = wc_set_type(cmd->argv);
 	free_type_array(cmd->type);
@@ -78,7 +76,10 @@ void	expand(t_cmd **cmd, t_env *env)
 		else if (*temp->type[i] == DQMARK)
 			process_dqmark_sign(&temp->argv[i], env);
 		else if (*temp->type[i] == WILDCARD)
-			process_wildcard(&temp->argv[i], *cmd, i);
+		{
+			process_wildcard(&temp->argv[i], *cmd, &i);
+			continue ;
+		}
 		i++;
 	}
 }

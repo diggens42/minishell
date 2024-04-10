@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = libft.a
 
 SRCS = ft_atoi.c \
@@ -25,6 +25,8 @@ SRCS = ft_atoi.c \
        ft_isspace.c \
        ft_itoa.c \
        ft_intlen.c \
+       ft_strarray_len.c \
+       ft_strarray_append.c \
        ft_memchr.c \
        ft_memcmp.c \
        ft_memcpy.c \

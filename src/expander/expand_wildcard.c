@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:39:50 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/11 00:59:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,17 @@ static int	match_wc(char *pattern, char *str)
 			str++;
 		}
 		else
-			return (0);
+			return (false);
 	}
 	while (*pattern == '*')
 		pattern++;
 	return (*pattern == '\0' && *str == '\0');
 }
 
-//appends all wildcard matches paths into one string separated by a space
-static char	*append_res(char *res, char *str)
-{
-	size_t	res_len;
-	size_t	str_len;
-	char	*new_res;
-
-	res_len = 0;
-	if (res != NULL)
-		res_len = ft_strlen(res);
-	str_len = ft_strlen(str);
-	new_res = (char *)ft_calloc(1, res_len + str_len + 2);
-	if (new_res == NULL)
-	{
-		free(res);
-		return (NULL);
-	}
-	if (res_len > 0)
-	{
-		ft_strlcpy(new_res, res, res_len + 1);
-		new_res[res_len] = ' ';
-		res_len++;
-	}
-	ft_strlcpy(new_res + res_len, str, str_len + 1);
-	if (res)
-		free(res);
-	return (new_res);
-}
-
 //iterates over all directory entries and appends matches to result string
-static char	*match_dir_entries(DIR *dir, char *pattern)
+static char	**match_dir_entries(DIR *dir, char *pattern)
 {
-	char			*res;
+	char			**res;
 	struct dirent	*ent;
 	char			*filename;
 
@@ -72,24 +43,23 @@ static char	*match_dir_entries(DIR *dir, char *pattern)
 	while ((ent = readdir(dir)) != NULL)
 	{
 		filename = ent->d_name;
-		if (filename[0] == '.')
+		if (filename[0] == '.' && pattern[0] != '.')
 			continue ;
 		if (match_wc(pattern, filename))
-			res = append_res(res, filename);
+			res = ft_strarray_append(res, filename);
 	}
 	return (res);
 }
 
 //expands wildcard patterns by matching against files in cwd
-char	*expand_wildcard(char *content)
+char	**expand_wildcard(char *content)
 {
-	char	*res;
+	char	**res;
 	char	*cwd;
 	DIR		*dir;
 	char	*temp;
 
 	temp = ft_strdup(content);
-	res = NULL;
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		return (NULL); // TODO handle error unable to get cwd
@@ -98,11 +68,26 @@ char	*expand_wildcard(char *content)
 	closedir(dir);
 	free(cwd);
 	if (res == NULL)
-	{
-		free(res);
-		return (temp);
-	}
+		return (ft_strarray_append(res, temp));
 	free(temp);
+	return (res);
+}
+char	**insert_expanded_wc(char **argv, int *index, char **expanded_content)
+{
+	int		argc;
+	int		size;
+	char	**res;
+
+	argc = ft_strarray_len(argv);
+	size = ft_strarray_len(expanded_content);
+	res = malloc((argc + size) * sizeof(char *));
+	ft_memcpy((char *)res, (char *)argv, *index * sizeof(char *));
+	ft_memcpy((char *)(res + *index), (char *)expanded_content, size * sizeof(char *));
+	ft_memcpy((char *)(res + *index + size), (char *)(argv + *index + 1), size * sizeof(char *));
+	free(argv[*index]);
+	free(argv);
+	free(expanded_content);
+	*index += size;
 	return (res);
 }
 
@@ -122,7 +107,7 @@ t_type	**wc_set_type(char **argv)
 	{
 		type[n_argv] = (t_type *)ft_calloc(1, sizeof(t_type));
 		len = ft_strlen(argv[n_argv]);
-		*type[n_argv] = set_type(argv[n_argv], len);
+		*type[n_argv] = COMMAND;
 		n_argv++;
 	}
 	return (type);

@@ -42,6 +42,8 @@ void	*ft_memchr(const void *ptr, int c, size_t n);
 void	ft_bzero(void *ptr, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 
+char	**ft_strarray_append(char **array, char *str);
+int		ft_strarray_len(char **array);
 int		ft_intlen(int n);
 size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
