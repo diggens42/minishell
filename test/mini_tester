@@ -50,8 +50,6 @@ while read teste; do
     BASH_OUTFILES=$(cp ./outfiles/* ./bash_outfiles &>/dev/null)
     BASH_ERROR_MSG=$(trap "" PIPE && echo "$teste" | bash 2>&1 > /dev/null | grep -o '[^:]*$' | head -n1)
 
-    # OUTFILES_DIFF=$(diff --brief ./mini_outfiles ./bash_outfiles)
-    # OUTFILES_DIFF=$(diff ./mini_outfiles ./bash_outfiles)
     OUTFILES_DIFF=$(diff ./bash_outfiles ./mini_outfiles)
 
     printf $YELLOW

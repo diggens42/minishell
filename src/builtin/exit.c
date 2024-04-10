@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:56:05 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 18:21:21 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 23:36:19 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,46 +40,21 @@ static char	atoexit(char *str)
 	return (sign * num);
 }
 
-int	builtin_exit(char **argv)
+int	builtin_exit(char **argv, t_env *env)
 {
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", env->fd_stdout);
 	if (argv[1] == NULL)
-	{
-		system("leaks minishell");
-		exit(EXIT_SUCCESS);
-	}
+		ft_exit(env, env->exit_status);
 	else if (valid_num(argv[1]) == EXIT_FAILURE)
 	{
-		ft_putstr_fd("exit: ", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit", STDERR_FILENO);
 		ft_putstr_fd(argv[1], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-		exit (255);
+		ft_exit (env, 255);
 	}
 	else if (argv[2] != NULL)
-		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 	else
-		exit(atoexit(argv[1]));
+		ft_exit(env, atoexit(argv[1]));
 	return (EXIT_FAILURE);
 }
-
-// int	builtin_exit(char **argv)
-// {
-// 	ft_putstr_fd("exit\n", STDOUT_FILENO);
-// 	if (argv[1] == NULL)
-// 		exit(EXIT_SUCCESS);
-// 	else if (argv[2] == NULL)
-// 	{
-// 		if (valid_num(argv[1]) == EXIT_FAILURE)
-// 		{
-// 			ft_putstr_fd("exit: ", STDERR_FILENO);
-// 			ft_putstr_fd(argv[1], STDERR_FILENO);
-// 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-// 			exit (255);
-// 		}
-// 		else
-// 			exit(atoexit(argv[1]));
-// 	}
-// 	else
-// 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
-// 	return (EXIT_FAILURE);
-// }

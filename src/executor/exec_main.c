@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 21:42:42 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 23:21:51 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,25 @@ int	exec_main(t_ast *ast, t_env *env)
 int	exec_builtin(char **argv, t_env *env)
 {
 	char	*temp;
-	int		exit_status;
 
-	exit_status = -1;
 	if (argv[0] == NULL)
-		return (exit_status);
+		return (EXIT_SUCCESS);
 	temp = ft_tolower_str(argv[0]);
 	if (ft_strcmp("echo", temp) == 0)
-		exit_status = (builtin_echo(argv));
+		return (free(temp), builtin_echo(argv));
 	else if (ft_strcmp("cd", temp) == 0)
-		exit_status = (builtin_cd(argv, &env));
+		return (free(temp), builtin_cd(argv, &env));
 	else if (ft_strcmp("pwd", temp) == 0)
-		exit_status = (builtin_pwd());
+		return (free(temp), builtin_pwd());
 	else if (ft_strcmp("export", temp) == 0)
-		exit_status = (builtin_export(argv, &env));
+		return (free(temp), builtin_export(argv, &env));
 	else if (ft_strcmp("unset", temp) == 0)
-		exit_status = (builtin_unset(argv, &env));
+		return (free(temp), builtin_unset(argv, &env));
 	else if (ft_strcmp("env", temp) == 0)
-		exit_status = (builtin_env(env));
+		return (free(temp), builtin_env(env));
 	else if (ft_strcmp("exit", temp) == 0)
-		exit_status = (builtin_exit(argv));
-	free(temp);
-	return (exit_status);
+		return (free(temp), builtin_exit(argv, env));
+	return (-1);
 }
 
 void	exec_finish(char **argv, t_env *env)

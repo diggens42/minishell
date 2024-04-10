@@ -6,17 +6,18 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 16:39:20 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 23:34:49 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// void	ft_exit(int exit_status)
-// {
-// 	system("leaks minishell");
-// 	exit(exit_status);
-// }
+void	ft_exit(t_env *env, int exit_status)
+{
+	close_fd(env);
+	free_env_list(env);
+	exit(exit_status);
+}
 
 // bash: command: error message
 void	ft_perror(char *command, char *error_message)

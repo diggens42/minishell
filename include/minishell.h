@@ -205,7 +205,7 @@ int				waitpid_exit_stat(pid_t pid);
 int				builtin_cd(char **argv, t_env **env);
 int				builtin_echo(char **argv);
 int				builtin_env(t_env *env);
-int				builtin_exit(char **argv);
+int				builtin_exit(char **argv, t_env *env);
 int				builtin_export(char **argv, t_env **env);
 int				builtin_pwd(void);
 int				builtin_unset(char **argv, t_env **env);
@@ -226,7 +226,7 @@ char			*ft_getenv(char *key, t_env *env);
 void			append_env_node(t_env **head, t_env *new_node);
 t_env			*new_env_node(char *key, char *value);
 // exit
-void			ft_exit(int exit_status);
+void			ft_exit(t_env *env, int exit_status);
 void			ft_perror(char *command, char *error_message);
 void			ft_perror_2(char *command, char *argument, char *error_message);
 void			ft_perror_3(char *content);
