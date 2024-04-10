@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 16:33:02 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 21:38:21 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ static int	handle_input(char *cmd_line, t_env *env)
 	exit_status = operator_syntax(token);
 	if (exit_status != EXIT_SUCCESS)
 	{
+		free_token_list(token);
 		env->exit_status = exit_status;
 		return (exit_status);
 	}
 	exit_status = parenthesis_syntax(token);
 	if (exit_status != EXIT_SUCCESS)
 	{
+		free_token_list(token);
 		env->exit_status = exit_status;
 		return (exit_status);
 	}
@@ -39,6 +41,7 @@ static int	handle_input(char *cmd_line, t_env *env)
 	set_fd(env);
 	env->exit_status = exec_main(ast, env);
 	close_fd(env);
+	free_ast(ast);
 	return (env->exit_status);
 }
 

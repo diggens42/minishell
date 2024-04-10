@@ -6,39 +6,11 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 14:48:32 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:38:49 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static int	exec_here_doc(char *limiter, t_env *env)
-{
-	// fprintf(stderr, "\x1b[33mexec_here_doc: %s\n\x1b[0m", limiter);
-
-	int		fd[2];
-	char	*line;
-	char	*temp;
-
-	temp = limiter;
-	limiter = ft_strjoin(limiter, "\n");
-	free(temp);
-	ft_pipe(fd);
-	while (true)
-	{
-		ft_putstr_fd(PROMPT_MULTI_LINE, env->fd_stdout);
-		line = get_next_line(env->fd_stdin);
-		if (ft_strcmp(line, limiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		ft_putstr_fd(line, fd[1]);
-		free(line);
-	}
-	close(fd[1]);
-	return (fd[0]);
-}
 
 static int	exec_redir_in(char *file, t_env *env, int in)
 {
@@ -46,8 +18,8 @@ static int	exec_redir_in(char *file, t_env *env, int in)
 
 	int fd;
 
-	if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
-		file = remove_quotes(file);
+	// if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
+	// 	file = remove_quotes(file);
 	if (in == REDIR_IN)
 		fd = open(file, O_RDONLY);
 	else
@@ -72,8 +44,8 @@ static int	exec_redir_out(char *file, int out)
 
 	int fd;
 
-	if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
-		file = remove_quotes(file);
+	// if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
+	// 	file = remove_quotes(file);
 	fd = open(file, O_WRONLY | O_CREAT | out, 0644);
 	if (fd == -1)
 	{

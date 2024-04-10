@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
+# CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
+CFLAGS = -Wall -Wextra -I include -I /usr/local/include/readline
 NAME = minishell
 
 SRCS =	./src/minishell.c \

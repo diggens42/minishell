@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 19:22:46 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 21:42:42 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ static int	exec_subshell(t_ast *ast, t_env *env)
 		exit_status = exec_main(ast, env);
 		exit(exit_status);
 	}
-	else
-	{
-		waitpid(pid, &wstatus, 0);
-	}
+	waitpid(pid, &wstatus, 0);
 	return (WEXITSTATUS(wstatus));
 }
 
@@ -63,11 +60,6 @@ static int	exec_single_command(t_ast *ast, t_env *env)
 
 int	exec_main(t_ast *ast, t_env *env)
 {
-	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", ast->cmd->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mexec_main: %s\n\x1b[0m", token_type_to_string(ast->type));
-
 	if (ast == NULL)
 		return (env->exit_status);
 	else if (ast->subshell == true)
@@ -95,8 +87,6 @@ int	exec_main(t_ast *ast, t_env *env)
 
 int	exec_builtin(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mexec_builtin: %s\n\x1b[0m", argv[0]);
-
 	char	*temp;
 	int		exit_status;
 
@@ -124,8 +114,6 @@ int	exec_builtin(char **argv, t_env *env)
 
 void	exec_finish(char **argv, t_env *env)
 {
-		// fprintf(stderr, "\x1b[33mexec_finish: %s\n\x1b[0m", argv[0]);
-
 	char	*pathname;
 	char	**envp;
 
@@ -134,9 +122,6 @@ void	exec_finish(char **argv, t_env *env)
 	else
 		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
-
-		// fprintf(stderr, "\x1b[33mexecve: %s\n\x1b[0m", pathname);
-
 	if (execve(pathname, argv, envp) == -1)
 	{
 		free(pathname);

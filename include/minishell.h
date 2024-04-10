@@ -175,6 +175,8 @@ void			print_ast(t_ast* node, int level);
 
 // EXECUTOR
 // exec_heredoc
+int				exec_here_doc(char *limiter, t_env *env);
+int				count_heredoc(t_ast *ast);
 // exec_main
 int				exec_main(t_ast *ast, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
