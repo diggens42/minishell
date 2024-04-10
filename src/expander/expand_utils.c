@@ -6,20 +6,20 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:24:03 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 16:02:21 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:38:19 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char *get_quote_start(char *str)
+char	*get_quote_start(char *str)
 {
 	while (*str != '\'' && *str != '"' && *str != '\0')
 		str++;
 	return (str);
 }
 
-char *get_quote_end(char *str, char quote_type)
+char	*get_quote_end(char *str, char quote_type)
 {
 	char	*end;
 

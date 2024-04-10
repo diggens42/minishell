@@ -6,19 +6,19 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/08 20:51:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:39:50 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 //checks if a given string matches a wildcard pattern
-static int	match_wildcard(char *pattern, char *str)
+static int	match_wc(char *pattern, char *str)
 {
 	while (*pattern != '\0' && *str != '\0')
 	{
 		if (*pattern == '*')
-			return (match_wildcard(pattern + 1, str) || match_wildcard(pattern, str + 1));
+			return (match_wc(pattern + 1, str) || match_wc(pattern, str + 1));
 		else if (*pattern == *str)
 		{
 			pattern++;
@@ -31,7 +31,6 @@ static int	match_wildcard(char *pattern, char *str)
 		pattern++;
 	return (*pattern == '\0' && *str == '\0');
 }
-
 
 //appends all wildcard matches paths into one string separated by a space
 static char	*append_res(char *res, char *str)
@@ -75,7 +74,7 @@ static char	*match_dir_entries(DIR *dir, char *pattern)
 		filename = ent->d_name;
 		if (filename[0] == '.')
 			continue ;
-		if (match_wildcard(pattern, filename))
+		if (match_wc(pattern, filename))
 			res = append_res(res, filename);
 	}
 	return (res);

@@ -26,6 +26,7 @@ SRCS =	./src/minishell.c \
 		\
 		./src/expander/expand_token.c \
 		./src/expander/expand_command.c \
+		./src/expander/expand_command2.c \
 		./src/expander/expand_dquotes.c \
 		./src/expander/expand_dollar.c \
 		./src/expander/expand_wildcard.c \

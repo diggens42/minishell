@@ -6,14 +6,14 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 18:32:23 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:37:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 //removes single quotes from tokens content
-static void process_single_quotes(char **content)
+static void	process_single_quotes(char **content)
 {
 	char	*temp;
 
@@ -42,8 +42,8 @@ static void	process_dqmark_sign(char **content, t_env *env)
 	free(temp);
 }
 
-// //expands wildcards within a tokens content and creates a token for each match
-static void process_wildcard(char **content, t_cmd *cmd, int i)
+// //expands wildcards within a tokens content and creates token for each match
+static void	process_wildcard(char **content, t_cmd *cmd, int i)
 {
 	char	*expanded_content;
 	char	**new_argv;
@@ -69,8 +69,6 @@ void	expand(t_cmd **cmd, t_env *env)
 	i = 0;
 	while (temp->argv[i] != NULL)
 	{
-		// fprintf(stderr, "\x1b[33mExpander before: %s\n\x1b[0m", temp->argv[i]);
-		// fprintf(stderr, "\x1b[33mExpander before: %s\n\x1b[0m", token_type_to_string(*temp->type[i]));
 		if (*temp->type[i] == COMMAND)
 			proccess_commands(&temp->argv[i], env);
 		else if (*temp->type[i] == SINGLE_QUOTE)
@@ -81,7 +79,6 @@ void	expand(t_cmd **cmd, t_env *env)
 			process_dqmark_sign(&temp->argv[i], env);
 		else if (*temp->type[i] == WILDCARD)
 			process_wildcard(&temp->argv[i], *cmd, i);
-		// fprintf(stderr, "\x1b[33mExpander after: %s\n\x1b[0m", temp->argv[i]);
 		i++;
 	}
 }

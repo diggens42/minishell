@@ -144,7 +144,7 @@ t_type			set_type(char	*content, int token_length);
 void			expand(t_cmd **cmd, t_env *env);
 void			proccess_commands(char **content, t_env *env);
 char			*expand_dollar_sign(const char *content, t_env *env);
-// char			*expand_dollar_qmark(void);
+char			*expand_str_with_dqmark(char *content, t_env *env);
 char			*expand_double_quote(const char *content, t_env *env);
 char			*expand_wildcard(char *content);
 char			**insert_expanded_wc(char **argv, int index, char *expanded_content);

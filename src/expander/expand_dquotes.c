@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/06 16:44:08 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:40:28 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ char	*expand_double_quote(const char *content, t_env *env)
 	int		i;
 
 	result = (char *)ft_calloc(1, sizeof(char));
-	if (!result)
-		return (NULL); //TODO handle malloc error or maybe just don't handle it so this shit is 25lines?????
 	i = 0;
 	while (content[i])
 	{

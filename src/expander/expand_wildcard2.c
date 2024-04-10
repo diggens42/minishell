@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 17:06:45 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/07 19:27:39 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:40:56 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	insert_wc(char **new_argv, int index, char *expanded_content)
 static void	copy_after_index(char **argv, char **new_argv, int index)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = index + 1;
 	j = 0;

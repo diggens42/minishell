@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 19:03:14 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 20:35:18 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,19 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	return (new_content);
 }
 
-//replaces variables prefixed with $ (e.g. $HOME) with their corresponding environment values
+//replaces variables prefixed with $ (e.g. $HOME)
+// with their corresponding environment values
 char	*expand_dollar_sign(const char *content, t_env *env)
 {
 	char	*var_name;
 	char	*var_value;
 	char	*expanded_content;
 
-	// fprintf(stderr, "\x1b[33mDollar: %s\n\x1b[0m", content);
 	var_name = extract_var_name(content);
-	// fprintf(stderr, "\x1b[33mDollar: %s\n\x1b[0m", var_name);
 	var_value = ft_getenv(var_name, env);
 	if (!var_value)
 		var_value = ft_strdup("");
 	expanded_content = construct_new_content(var_value, content);
-	// fprintf(stderr, "\x1b[33mDollar: ->%s<-\n\x1b[0m", expanded_content);
 	free(var_name);
 	return (expanded_content);
 }

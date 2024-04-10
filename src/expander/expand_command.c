@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 16:38:07 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:34:29 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char *expand_quoted(char *start, char *end, t_env *env)
+static char	*expand_quoted(char *start, char *end, t_env *env)
 {
 	char	*quoted_part;
 	char	*result;
@@ -27,7 +27,7 @@ static char *expand_quoted(char *start, char *end, t_env *env)
 	return (result);
 }
 
-static char *unquoted_handler(char **new_str, char *current, char *quote_next)
+static char	*unquoted_handler(char **new_str, char *current, char *quote_next)
 {
 	char	*part;
 	char	*temp_str;
@@ -40,7 +40,7 @@ static char *unquoted_handler(char **new_str, char *current, char *quote_next)
 	return (*new_str);
 }
 
-static char *quoted_handler(char **new_str, char *quote_next, t_env *env)
+static char	*quoted_handler(char **new_str, char *quote_next, t_env *env)
 {
 	char	*quote_end;
 	char	*part;
@@ -52,7 +52,7 @@ static char *quoted_handler(char **new_str, char *quote_next, t_env *env)
 	if (*quote_end == '\0')
 	{
 		free(new_str);
-		return (NULL); //TODO handle unclosed quotes
+		return (NULL);
 	}
 	part = expand_quoted(quote_next, quote_end + 1, env);
 	temp_str = ft_strjoin(*new_str, part);
@@ -62,7 +62,7 @@ static char *quoted_handler(char **new_str, char *quote_next, t_env *env)
 	return (*new_str);
 }
 
-static char *expand_str_with_quotes(char *str, t_env *env)
+static char	*expand_str_with_quotes(char *str, t_env *env)
 {
 	char	*new_str;
 	char	*current;
@@ -83,36 +83,7 @@ static char *expand_str_with_quotes(char *str, t_env *env)
 	return (new_str);
 }
 
-static char	*expand_str_with_dqmark(char *content, t_env *env)
-{
-	char	*pos;
-	char	*before_dqmark;
-	char	*after_dqmark;
-	char	*newstr;
-	int		quote_state;
-
-	quote_state = 0;
-	newstr = ft_strdup(content);
-	pos = newstr;
-	while (*pos)
-	{
-		quote_state = set_quote_state(quote_state, *pos);
-		if (*pos == '$' && *(pos + 1) == '?' && quote_state == 0)
-		{
-			before_dqmark = ft_substr(newstr, 0, pos - newstr);
-			after_dqmark = ft_strjoin_free(ft_itoa(env->exit_status), pos + 2);
-			free(newstr);
-			newstr = ft_strjoin(before_dqmark, after_dqmark);
-			pos++;
-			free(before_dqmark);
-			free(after_dqmark);
-		}
-		pos++;
-	}
-	return (newstr);
-}
-
-void proccess_commands(char **content, t_env *env)
+void	proccess_commands(char **content, t_env *env)
 {
 	char	*temp;
 
@@ -123,4 +94,3 @@ void proccess_commands(char **content, t_env *env)
 	*content = expand_str_with_quotes(*content, env);
 	free(temp);
 }
-
