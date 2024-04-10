@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 14:46:45 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/09 15:44:14 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	append_env_node(t_env **head, t_env *new_node)
+void	append_env_node(t_env **head, t_env *new_node)
 {
 	t_env	*current;
 
@@ -27,7 +27,7 @@ static void	append_env_node(t_env **head, t_env *new_node)
 	}
 }
 
-static t_env	*new_env_node(char *key, char *value)
+t_env	*new_env_node(char *key, char *value)
 {
 	t_env	*node;
 

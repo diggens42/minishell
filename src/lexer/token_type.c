@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 18:31:30 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:20:07 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_type	set_type(char *content, int token_length)
 		type = token_type_one_symbol(content);
 	else if (token_length == 2)
 		type = token_type_two_symbols(content);
-	else if (token_length > 1)
+	if (token_length > 1)
 	{
 		if (content[0] == '$' && content[1] != '?')
 			type = DOLLAR;

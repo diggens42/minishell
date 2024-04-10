@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 23:32:11 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:18:38 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ static int	handle_input(char *cmd_line, t_env *env)
 	// print_ast(ast, 0);
 	set_fd(env);
 	env->exit_status = exec_main(ast, env);
-
-		// fprintf(stderr, "\x1b[33mExit status: %d\n\x1b[0m", env->exit_status);
-
 	close_fd(env);
 	return (env->exit_status);
 }

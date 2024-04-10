@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/04/06 16:29:27 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 14:33:28 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,31 @@ char	*ft_tolower_str(char *str)
 		i++;
 	}
 	return (lower);
+}
+
+char	**new_argv(char **old_argv)
+{
+	char	**new_argv;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (old_argv[i] != NULL && ft_strcmp("", old_argv[i]) == 0)
+		i++;
+	j = 0;
+	while (old_argv[i + j] != NULL)
+		j++;
+	new_argv = (char **)ft_calloc(j + 1, sizeof(char *));
+	if (new_argv == NULL)
+		return (NULL);
+	j = 0;
+	while (old_argv[i] != NULL)
+	{
+		new_argv[j] = ft_strdup(old_argv[i]);
+		free(old_argv[i]);
+		i++;
+		j++;
+	}
+	free(old_argv);
+	return (new_argv);
 }

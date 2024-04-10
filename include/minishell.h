@@ -63,7 +63,7 @@
 #include <stdbool.h>
 #include <errno.h>
 
-# define PROMPT_STD "$ "
+# define PROMPT_STD "minishell$ "
 # define PROMPT_MULTI_LINE "> "
 
 typedef enum	e_type
@@ -173,27 +173,18 @@ bool			is_parenthesis(t_type type);
 void			print_ast(t_ast* node, int level);
 
 // EXECUTOR
+// exec_heredoc
 // exec_main
 int				exec_main(t_ast *ast, t_env *env);
-int				exec_subshell(t_ast *ast, t_env *env);
-int				exec_single_command(t_ast *ast, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
 // exec_path
 char			*create_absolute_path(char *command);
 char			*create_relative_path(char *command, t_env *env);
-char			**split_path(char *command, t_env *env);
-char			*find_pathname(char **path);
 // exec_pipe
 int				exec_pipe(t_ast *ast, t_env *env, int lvl);
-int				exec_pipe_next(t_ast *ast, t_env *env);
-int				exec_pipe_last(t_ast *ast, t_env *env);
-int				exec_pipe_command(t_ast *ast, t_env *env);
 // exec_redir
 int				exec_set_redir(t_redir **redir, t_env *env);
-int				exec_redir_out(char *file, int out);
-int				exec_redir_in(char *file, t_env *env, int in);
-int				exec_here_doc(char *limiter, t_env *env);
 // exec_utils_1
 int				ft_pipe(int *fd);
 pid_t			ft_fork(void);
@@ -204,6 +195,7 @@ int				close_fd(t_env *env);
 char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);
 char			*ft_tolower_str(char *str);
+char			**new_argv(char **old_argv);
 
 // BUILTIN
 int				builtin_cd(char **argv, t_env **env);

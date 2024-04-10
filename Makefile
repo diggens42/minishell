@@ -44,6 +44,7 @@ SRCS =	./src/minishell.c \
 		./src/builtin/unset.c \
 		./src/builtin/utils.c \
 		\
+		./src/executor/exec_heredoc.c \
 		./src/executor/exec_main.c \
 		./src/executor/exec_path.c \
 		./src/executor/exec_pipe.c \

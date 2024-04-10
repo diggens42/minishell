@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 16:27:44 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/09 17:47:46 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_perror_2(char *command, char *argument, char *error_message)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
+// bash: syntax error near unexpected token `content'
 void	ft_perror_3(char *content)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
