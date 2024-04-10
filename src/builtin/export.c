@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 16:30:30 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:26:17 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,15 @@ static void	builtin_export_sort(t_env **env, int env_size)
 static int	builtin_export_print(t_env *env)
 {
 	t_env	*temp;
+	t_env	*temp2;
 	int		env_size;
 
 	if (env == NULL)
 		return (EXIT_SUCCESS);
 	temp = builtin_export_copy(env);
-	env_size = builtin_export_size(env);
+	env_size = builtin_export_size(temp);
 	builtin_export_sort(&temp, env_size);
+	temp2 = temp;
 	while (temp != NULL)
 	{
 		ft_printf("declare -x %s", temp->key);
@@ -94,6 +96,7 @@ static int	builtin_export_print(t_env *env)
 		ft_printf("\n", temp->value);
 		temp = temp->next;
 	}
+	free_env_list(temp2);
 	return (EXIT_SUCCESS);
 }
 

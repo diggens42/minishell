@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 16:49:27 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/10 20:19:11 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,23 @@ void	free_type_array(t_type **type)
 	free(type);
 }
 
-void	free_ast(t_ast *ast)
+void	free_redir_array(t_redir **redir)
 {
 	int	i;
+
+	i = 0;
+	while (redir[i] != NULL)
+	{
+		free(redir[i]->file);
+		free(redir[i]);
+		i++;
+	}
+	free(redir);
+}
+
+void	free_ast(t_ast *ast)
+{
+	// int	i;
 
 	if (ast == NULL)
 		return ;
@@ -75,33 +89,37 @@ void	free_ast(t_ast *ast)
 	{
 		if (ast->cmd->argv != NULL)
 		{
-			i = 0;
-			while (ast->cmd->argv[i] != NULL)
-			{
-				free(ast->cmd->argv[i]);
-				i++;
-			}
-			free(ast->cmd->argv);
+			free_char_array(ast->cmd->argv);
+			// i = 0;
+			// while (ast->cmd->argv[i] != NULL)
+			// {
+			// 	free(ast->cmd->argv[i]);
+			// 	i++;
+			// }
+			// free(ast->cmd->argv);
 		}
 		if (ast->cmd->type != NULL)
 		{
-			i = 0;
-			while (ast->cmd->type[i] != NULL)
-			{
-				free(ast->cmd->type[i]);
-				i++;
-			}
-			free(ast->cmd->type);
+			free_type_array(ast->cmd->type);
+			// i = 0;
+			// while (ast->cmd->type[i] != NULL)
+			// {
+			// 	free(ast->cmd->type[i]);
+			// 	i++;
+			// }
+			// free(ast->cmd->type);
 		}
 		if (ast->cmd->redir != NULL)
 		{
-			i = 0;
-			while (ast->cmd->redir[i] != NULL)
-			{
-				free(ast->cmd->redir[i]->file);
-				free(ast->cmd->redir[i]);
-			}
-			free(ast->cmd->redir);
+			free_redir_array(ast->cmd->redir);
+			// i = 0;
+			// while (ast->cmd->redir[i] != NULL)
+			// {
+			// 	free(ast->cmd->redir[i]->file);
+			// 	free(ast->cmd->redir[i]);
+			// 	i++;
+			// }
+			// free(ast->cmd->redir);
 		}
 		free(ast->cmd);
 	}

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:56:05 by mott              #+#    #+#             */
-/*   Updated: 2024/04/07 19:21:23 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/10 18:21:21 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ int	builtin_exit(char **argv)
 {
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (argv[1] == NULL)
+	{
+		system("leaks minishell");
 		exit(EXIT_SUCCESS);
+	}
 	else if (valid_num(argv[1]) == EXIT_FAILURE)
 	{
 		ft_putstr_fd("exit: ", STDERR_FILENO);
