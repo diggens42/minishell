@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 19:52:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/23 16:19:04 by mott             ###   ########.fr       */
+/*   Created: 2024/03/01 19:15:17 by fwahl             #+#    #+#             */
+/*   Updated: 2024/04/11 23:16:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
-int	builtin_env(t_env *env)
+int	builtin_pwd(void)
 {
-	while (env != NULL)
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
 	{
-		if (env->value != NULL)
-			printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		perror("getcwd");
+		return (EXIT_FAILURE);
 	}
+	ft_printf("%s\n", cwd);
+	free(cwd);
 	return (EXIT_SUCCESS);
 }

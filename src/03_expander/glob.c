@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 00:59:54 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/11 02:08:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,40 +75,53 @@ char	**expand_wildcard(char *content)
 char	**insert_expanded_wc(char **argv, int *index, char **expanded_content)
 {
 	int		argc;
-	int		size;
+	int		n;
 	char	**res;
 
 	argc = ft_strarray_len(argv);
-	size = ft_strarray_len(expanded_content);
-	res = malloc((argc + size) * sizeof(char *));
+	n = ft_strarray_len(expanded_content);
+	res = malloc((argc + n) * sizeof(char *));
 	ft_memcpy((char *)res, (char *)argv, *index * sizeof(char *));
-	ft_memcpy((char *)(res + *index), (char *)expanded_content, size * sizeof(char *));
-	ft_memcpy((char *)(res + *index + size), (char *)(argv + *index + 1), size * sizeof(char *));
+	ft_memcpy(
+		(char *)(res + *index),
+		(char *)expanded_content,
+		n * sizeof(char *));
+	ft_memcpy(
+		(char *)(res + *index + n),
+		(char *)(argv + *index + 1),
+		(argc - *index - 1) * sizeof(char *));
 	free(argv[*index]);
 	free(argv);
 	free(expanded_content);
-	*index += size;
+	res[argc + n - 1] = NULL;
+	*index += n;
 	return (res);
 }
 
-t_type	**wc_set_type(char **argv)
+t_type	**wc_set_type(char **argv, int index)
 {
 	t_type	**type;
-	int		n_argv;
+	int		argc;
 	int		len;
 
 	len = 0;
-	n_argv = 0;
-	while (argv[n_argv] != NULL)
-		n_argv++;
-	type = (t_type **)ft_calloc(n_argv + 1, sizeof(t_type *));
-	n_argv = 0;
-	while (argv[n_argv] != NULL)
+	argc = ft_strarray_len(argv);
+	type = (t_type **)ft_calloc(argc + 1, sizeof(t_type *));
+	argc = 0;
+	while (argc < index)
 	{
-		type[n_argv] = (t_type *)ft_calloc(1, sizeof(t_type));
-		len = ft_strlen(argv[n_argv]);
-		*type[n_argv] = COMMAND;
-		n_argv++;
+		type[argc] = (t_type *)ft_calloc(1, sizeof(t_type));
+		len = ft_strlen(argv[argc]);
+		*type[argc] = COMMAND;
+		argc++;
 	}
+	while (argv[argc] != NULL)
+	{
+		type[argc] = (t_type *)ft_calloc(1, sizeof(t_type));
+		len = ft_strlen(argv[argc]);
+		*type[argc] = set_type(argv[argc], len);
+		argc++;
+	}
+
 	return (type);
 }

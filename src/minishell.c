@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 22:23:34 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/11 21:57:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	main(int argc, char **argv, char **envp)
 	env = init_env(envp);
 	if (argc > 1)
 		return (run_script(argv[1], env));
-	init_signals();
+	init_parent_signals();
+	init_readline_signal_flags();
 	return (read_eval_print_loop(env));
 }

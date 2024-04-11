@@ -148,7 +148,7 @@ char			*expand_str_with_dqmark(char *content, t_env *env);
 char			*expand_double_quote(const char *content, t_env *env);
 char			**expand_wildcard(char *content);
 char			**insert_expanded_wc(char **argv, int *index, char **expanded_content);
-t_type			**wc_set_type(char **argv);
+t_type			**wc_set_type(char **argv, int index);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
@@ -238,12 +238,9 @@ void			free_char_array(char **str);
 void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
 // signals
-void			ctrl_c_handler(int signal);
-void			ctrl_c_handler_child(int signal);
-void			ctrl_backslash_handler(int signal);
-void			ctrl_backslash_handler_child(int signal);
-void			init_signals(void);
-
+void			init_parent_signals(void);
+void			init_child_signals(void);
+void			init_readline_signal_flags(void);
 
 // debug
 void			token_print(t_token *tokens);

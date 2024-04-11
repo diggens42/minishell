@@ -17,49 +17,50 @@ NAME = minishell
 
 SRCS =	./src/minishell.c \
 		\
-		./src/lexer/tokenizer.c \
-		./src/lexer/token_ops.c \
-		./src/lexer/token_length.c \
-		./src/lexer/token_length2.c \
-		./src/lexer/token_type.c \
-		./src/lexer/syntax_operators.c \
-		./src/lexer/syntax_unclosed.c \
+		./src/01_lexer/_lexer.c \
+		./src/01_lexer/token_ops.c \
+		./src/01_lexer/token_length.c \
+		./src/01_lexer/token_length2.c \
+		./src/01_lexer/token_type.c \
+		./src/01_lexer/syntax_operators.c \
+		./src/01_lexer/syntax_unclosed.c \
 		\
-		./src/expander/expand_token.c \
-		./src/expander/expand_command.c \
-		./src/expander/expand_command2.c \
-		./src/expander/expand_dquotes.c \
-		./src/expander/expand_dollar.c \
-		./src/expander/expand_wildcard.c \
-		./src/expander/expand_utils.c \
+		./src/02_parser/_parser.c \
+		./src/02_parser/ast_redirect.c \
+		./src/02_parser/utils.c \
 		\
-		./src/parser/ast_parser.c \
-		./src/parser/ast_parser2.c \
-		./src/parser/ast_utils.c \
+		./src/03_expander/_expander.c \
+		./src/03_expander/cmd.c \
+		./src/03_expander/cmd2.c \
+		./src/03_expander/dquotes.c \
+		./src/03_expander/dollar.c \
+		./src/03_expander/glob.c \
+		./src/03_expander/utils.c \
 		\
-		./src/builtin/cd.c \
-		./src/builtin/echo.c \
-		./src/builtin/env.c \
-		./src/builtin/exit.c \
-		./src/builtin/export.c \
-		./src/builtin/pwd.c \
-		./src/builtin/unset.c \
-		./src/builtin/utils.c \
-		\
-		./src/executor/exec_heredoc.c \
-		./src/executor/exec_main.c \
-		./src/executor/exec_path.c \
-		./src/executor/exec_pipe.c \
-		./src/executor/exec_redir.c \
-		./src/executor/exec_utils_1.c \
-		./src/executor/exec_utils_2.c \
+		./src/04_executor/_executor.c \
+		./src/04_executor/heredoc.c \
+		./src/04_executor/path.c \
+		./src/04_executor/pipe.c \
+		./src/04_executor/redir.c \
+		./src/04_executor/utils_1.c \
+		./src/04_executor/utils_2.c \
+		./src/04_executor/builtin/cd.c \
+		./src/04_executor/builtin/echo.c \
+		./src/04_executor/builtin/env.c \
+		./src/04_executor/builtin/env2.c \
+		./src/04_executor/builtin/exit.c \
+		./src/04_executor/builtin/export.c \
+		./src/04_executor/builtin/pwd.c \
+		./src/04_executor/builtin/unset.c \
 		\
 		./src/utils/debug.c \
 		./src/utils/env.c \
 		./src/utils/exit.c \
 		./src/utils/free.c \
-		./src/utils/signals.c \
-		./src/utils/utils.c
+		./src/utils/utils.c \
+		\
+		./src/utils/signals/child.c \
+		./src/utils/signals/parent.c
 
 OBJS = $(SRCS:.c=.o)
 
