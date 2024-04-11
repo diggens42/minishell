@@ -148,7 +148,7 @@ char			*expand_str_with_dqmark(char *content, t_env *env);
 char			*expand_double_quote(const char *content, t_env *env);
 char			**expand_wildcard(char *content);
 char			**insert_expanded_wc(char **argv, int *index, char **expanded_content);
-t_type			**wc_set_type(char **argv);
+t_type			**wc_set_type(char **argv, int index);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
