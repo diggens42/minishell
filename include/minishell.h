@@ -238,12 +238,9 @@ void			free_char_array(char **str);
 void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
 // signals
-void			ctrl_c_handler(int signal);
-void			ctrl_c_handler_child(int signal);
-void			ctrl_backslash_handler(int signal);
-void			ctrl_backslash_handler_child(int signal);
-void			init_signals(void);
-
+void			init_parent_signals(void);
+void			init_child_signals(void);
+void			init_readline_signal_flags(void);
 
 // debug
 void			token_print(t_token *tokens);

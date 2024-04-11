@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/04/09 15:44:14 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/11 23:10:35 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ t_env	*new_env_node(char *key, char *value)
 
 	node = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (node == NULL)
-		return (NULL);
-	//TODO ADD MALLOC ERROR
+		return (NULL);//TODO ADD MALLOC ERROR
 	if (key != NULL)
 	{
 		node->key = ft_strdup(key);

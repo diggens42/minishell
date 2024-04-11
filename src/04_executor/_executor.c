@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 23:21:51 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/11 21:56:52 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,14 @@ static int	exec_single_command(t_ast *ast, t_env *env)
 	exit_status = exec_builtin(ast->cmd->argv, env);
 	if (exit_status != -1)
 		return (exit_status);
-	signal(SIGQUIT, ctrl_backslash_handler_child);
-	signal(SIGINT, ctrl_c_handler_child);
+	init_child_signals();
 	pid = ft_fork();
 	if (pid == 0)
 		exec_finish(ast->cmd->argv, env);
 	else
 	{
 		exit_status = waitpid_exit_stat(pid);
-		signal(SIGINT, ctrl_c_handler);
-		signal(SIGQUIT, ctrl_backslash_handler);
+		init_parent_signals();
 	}
 	return (exit_status);
 }
