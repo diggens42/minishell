@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 00:20:51 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 02:37:15 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	syntax_redirect(t_token *check)
 		return (EXIT_FAILURE);
 	}
 	if (check->next != NULL && (is_operator(check->next->type)
-			|| is_redirect(check->next->type)))
+			|| is_redirect(check->next->type) || is_parenthesis(check->next->type)))
 	{
 		ft_perror_3(check->next->content);
 		return (SYNTAX_ERROR);
@@ -64,7 +64,7 @@ static int	syntax_parenthesis(t_token *prev, t_token *check)
 {
 	if (check->type == PARENTHESIS_L)
 	{
-		if (prev != NULL && !is_logical(prev->type))
+		if (prev != NULL && (!is_logical(prev->type) && prev->type != PARENTHESIS_L))
 		{
 			ft_putstr_fd("read the subject\n", STDERR_FILENO);
 			return (SYNTAX_ERROR);
@@ -72,7 +72,7 @@ static int	syntax_parenthesis(t_token *prev, t_token *check)
 	}
 	if (check->type == PARENTHESIS_R)
 	{
-		if (check->next != NULL && !is_logical(check->next->type))
+		if (check->next != NULL && (!is_logical(check->next->type) && check->next->type != PARENTHESIS_R))
 		{
 			ft_perror_3(check->content);
 			return (SYNTAX_ERROR);

@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 01:14:53 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 02:27:41 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ t_type	set_type(char *content, int token_length)
 			type = DOLLAR;
 		else if (content[0] == '\'' && content[token_length - 1] == '\'')
 			type = SINGLE_QUOTE;
+		else if (content[0] == '"' && content[token_length - 1] == '"')
+			type = COMMAND;
 		else if (ft_strchr(content, '*') != NULL)
 			type = WILDCARD;
 	}

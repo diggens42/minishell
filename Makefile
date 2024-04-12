@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
-CFLAGS = -Wall -Wextra -I include -I /usr/local/include/readline -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
+# CFLAGS = -Wall -Wextra -I include -I /usr/local/include/readline -g -fsanitize=address
 NAME = minishell
 
 SRCS =	./src/minishell.c \
