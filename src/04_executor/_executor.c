@@ -6,11 +6,12 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 21:39:19 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 00:43:19 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 
 static int	exec_subshell(t_mini *mini, t_ast *ast)
 {

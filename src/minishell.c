@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 21:40:42 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 00:41:36 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 		mini->exit_status = exit_status;
 		return (exit_status);
 	}
-	// check_tokens(token);
-	mini->ast = ast_parser(&mini->token);
-	// print_ast(ast, 0);
+	// check_tokens(mini->token);
+	mini->ast = ast_parser(mini, &mini->token);
+	// print_ast(mini->ast, 0);
 	set_fd(mini);
 	mini->exit_status = exec_main(mini, mini->ast);
 	close_fd(mini);

@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:24:11 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 19:28:54 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 00:29:50 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ char	*token_type_to_string(t_type type)
         default: return "UNKNOWN";
     }
 }
-
 void print_ast(t_ast* node, int level)
 {
 	int j = 0;
@@ -127,19 +126,19 @@ void print_ast(t_ast* node, int level)
         fprintf(stderr, "  "); // Two spaces per level of depth.
     }
 
-	fprintf(stderr, "\x1b[34m%s:\x1b[0m", token_type_to_string(node->type));
+	fprintf(stderr, "\x1b[34m(SUBLVL %d) %s:\x1b[0m", node->subshell_lvl, token_type_to_string2(node->type));
     if (node->type == COMMAND)
 	{
 		while (node->cmd->argv[j] != NULL)
 		{
-			fprintf(stderr, "\x1b[34m argv[%d]: %s\x1b[0m", j, node->cmd->argv[j]);
+			fprintf(stderr, "\x1b[34m (SUBLVL %d), argv[%d]: %s\x1b[0m", node->cmd->subshell_lvl, j, node->cmd->argv[j]);
 			j++;
 		}
 		if (node->cmd->redir != NULL)
 		{
 			while (node->cmd->redir[k] != NULL)
 			{
-				fprintf(stderr, "\x1b[34m    %s:\x1b[0m", token_type_to_string(node->cmd->redir[k]->type));
+				fprintf(stderr, "\x1b[34m    %s:\x1b[0m", token_type_to_string2(node->cmd->redir[k]->type));
 				fprintf(stderr, "\x1b[34m    %s\x1b[0m", node->cmd->redir[k]->file);
 				k++;
 			}

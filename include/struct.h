@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:41:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 20:20:23 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 00:05:14 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ typedef enum	e_type
 	AND,
 	OR,
 	PARENTHESIS_L,
-	PARENTHESIS_R
+	PARENTHESIS_R,
+	SUBSHELL
 }	t_type;
 
 typedef struct	s_env
@@ -61,6 +62,7 @@ typedef struct	s_cmd
 	char			**argv;
 	t_type			**type;
 	t_redir			**redir;
+	int				subshell_lvl;
 }	t_cmd;
 
 typedef struct	s_ast
@@ -70,6 +72,7 @@ typedef struct	s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	bool			subshell;
+	int				subshell_lvl;
 }	t_ast;
 
 typedef struct	s_mini

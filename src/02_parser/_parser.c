@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 18:13:38 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 00:08:08 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static t_ast	*ast_cmd(t_token **token)
+static t_ast	*ast_cmd(t_mini *mini, t_token **token)
 {
 	t_ast	*cmd_node;
 	int		i;
@@ -20,7 +20,7 @@ static t_ast	*ast_cmd(t_token **token)
 
 	if (token == NULL || (*token) == NULL)
 		return (NULL);
-	cmd_node = new_ast_node(*token);
+	cmd_node = new_ast_node(mini, *token);
 	i = 0;
 	j = 0;
 	while (*token != NULL && !is_operator((*token)->type))
@@ -40,62 +40,67 @@ static t_ast	*ast_cmd(t_token **token)
 	return (cmd_node);
 }
 
-static t_ast	*ast_parenthesis(t_token **token)
+static t_ast	*ast_parenthesis(t_mini *mini, t_token **token)
 {
 	t_ast	*subtree;
 
 	subtree = NULL;
-	// if (*token == NULL || (*token)->type != PARENTHESIS_L)
-	// 	return (NULL);
+	if (*token == NULL || (*token)->type != PARENTHESIS_L)
+		return (NULL);
 	advance_and_free_token(token);
-	subtree = ast_parser(token);
+	mini->subshell_lvl++;
+	subtree = ast_parser(mini, token);
 	subtree->subshell = true;
-	// if (*token == NULL || (*token)->type != PARENTHESIS_R)
-	// 	return (NULL);
+	if (*token == NULL || (*token)->type != PARENTHESIS_R)
+		return (NULL);
 	advance_and_free_token(token);
+	mini->subshell_lvl--;
 	return (subtree);
 }
 
-static t_ast	*ast_pipe(t_token **token, t_ast *left)
+static t_ast	*ast_pipe(t_mini *mini, t_token **token, t_ast *left)
 {
 	t_ast	*pipe;
 
 	while (*token != NULL && (*token)->type == PIPE)
 	{
-		pipe = new_ast_node(*token);
+		pipe = new_ast_node(mini, *token);
 		pipe->left = left;
 		advance_and_free_token(token);
-		pipe->right = ast_cmd(token);
+		pipe->right = ast_cmd(mini, token);
 		left = pipe;
 	}
 	return (left);
 }
 
-static t_ast	*ast_logical(t_token **token, t_ast *left)
+static t_ast *ast_logical(t_mini *mini, t_token **token, t_ast *left)
 {
-	t_ast	*node;
-	t_ast	*logical;
-	t_ast	*cmd_node;
+	t_ast *node;
+	t_ast *logical;
+	t_ast *right;
 
 	node = left;
 	while (*token != NULL && is_logical((*token)->type))
 	{
-		logical = new_ast_node(*token);
+		logical = new_ast_node(mini, *token);
 		logical->left = node;
 		advance_and_free_token(token);
 		if (*token != NULL && (*token)->type == PARENTHESIS_L)
-			logical->right = ast_parenthesis(token);
-		cmd_node = ast_cmd(token);
-		if (*token != NULL && (*token)->type == PIPE)
-			logical->right = ast_pipe(token, cmd_node);
+			right = ast_parenthesis(mini, token);
 		else
-			logical->right = cmd_node;
+			right = ast_cmd(mini, token);
+		if (*token != NULL && (*token)->type == PIPE)
+			right = ast_pipe(mini, token, right);
+		if (*token != NULL && is_logical((*token)->type))
+			right = ast_logical(mini, token, right);
+		logical->right = right;
 		node = logical;
 	}
 	return (node);
 }
 
-t_ast	*ast_parser(t_token **token)
+
+t_ast	*ast_parser(t_mini *mini, t_token **token)
 {
 	t_ast	*node;
 
@@ -105,14 +110,14 @@ t_ast	*ast_parser(t_token **token)
 	while (*token != NULL)
 	{
 		if ((*token)->type == PARENTHESIS_L)
-			node = ast_parenthesis(token);
+			node = ast_parenthesis(mini, token);
 		else if (*token != NULL && (is_cmd((*token)->type)
 				|| is_redirect((*token)->type)))
-			node = ast_cmd(token);
+			node = ast_cmd(mini, token);
 		else if (*token != NULL && (*token)->type == PIPE)
-			node = ast_pipe(token, node);
+			node = ast_pipe(mini, token, node);
 		else if (*token != NULL && (is_logical((*token)->type)))
-			node = ast_logical(token, node);
+			node = ast_logical(mini, token, node);
 		else if (*token != NULL && (*token)->type == PARENTHESIS_R)
 			return (node);
 	}

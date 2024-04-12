@@ -36,10 +36,10 @@ int				get_single_char_len(char c);
 //------------------------------------------PARSER-----------------------------------------//
 //-----------------------------------------------------------------------------------------//
 //--------------expander_main------//
-t_ast			*ast_parser(t_token **token);
+t_ast			*ast_parser(t_mini *mini, t_token **token);
 void			ast_redirect(t_ast *cmd_node, t_token **token, int *i);
 //--------------utils--------------//
-t_ast			*new_ast_node(t_token *token);
+t_ast			*new_ast_node(t_mini *mini, t_token *token);
 void			advance_and_free_token(t_token **token);
 bool			is_redirect(t_type type);
 bool			is_logical(t_type type);

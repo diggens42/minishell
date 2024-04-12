@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_utils.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:27:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 22:32:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,44 +48,46 @@ static int	n_red(t_token *tokens)
 	return (n_red);
 }
 
-static t_cmd	*new_cmd_node(t_token *token)
+static t_cmd	*new_cmd_node(t_mini *mini, t_token *token)
 {
 	t_cmd	*cmd;
 	int		i;
 
-	cmd = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
+	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		ft_perror("malloc", strerror(errno));
-	cmd->argv = (char **)ft_calloc(n_cmd(token) + 1, sizeof(char *));
-	cmd->type = (t_type **)ft_calloc(n_cmd(token) + 1, sizeof(t_type *));
+	cmd->subshell_lvl = mini->subshell_lvl;
+	cmd->argv = ft_calloc(n_cmd(token) + 1, sizeof(char *));
+	cmd->type = ft_calloc(n_cmd(token) + 1, sizeof(t_type *));
 	i = 0;
 	while (i < n_cmd(token))
 	{
-		cmd->type[i] = (t_type *)ft_calloc(1, sizeof(t_type));
+		cmd->type[i] = ft_calloc(1, sizeof(t_type));
 		i++;
 	}
-	cmd->redir = (t_redir **)ft_calloc(n_red(token) + 1, sizeof(t_redir *));
+	cmd->redir = ft_calloc(n_red(token) + 1, sizeof(t_redir *));
 	i = 0;
 	while (i < n_red(token))
 	{
-		cmd->redir[i] = (t_redir *)ft_calloc(1, sizeof(t_redir));
+		cmd->redir[i] = ft_calloc(1, sizeof(t_redir));
 		i++;
 	}
 	return (cmd);
 }
 
-t_ast	*new_ast_node(t_token *token)
+t_ast	*new_ast_node(t_mini *mini, t_token *token)
 {
 	t_ast	*node;
 
-	node = (t_ast *)ft_calloc(1, sizeof(t_ast));
+	node = ft_calloc(1, sizeof(t_ast));
 	if (!node)
 		ft_perror("malloc", strerror(errno));
 	node->type = token->type;
+	node->subshell_lvl = mini->subshell_lvl;
 	if (is_cmd(token->type) || is_redirect(token->type))
 	{
 		node->type = COMMAND;
-		node->cmd = new_cmd_node(token);
+		node->cmd = new_cmd_node(mini, token);
 	}
 	return (node);
 }
