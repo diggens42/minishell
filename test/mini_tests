@@ -1,0 +1,523 @@
+
+env | sort | grep -v SHLVL | grep -v ^_
+
+echo ----------echo--------------------
+echo
+eCHo Hello World!
+EchO Hello World!
+ECHO Hello World!
+echo 'Hello World!'
+echo "Hello World!"
+echo Hello 'World!'
+echo Hello "World!"
+echo Hello '' World!
+echo Hello "" World!
+echo ''
+echo ""
+echo """"
+echo $
+echo '$'
+echo "$"
+echo $?
+echo '$?'
+echo "$?"
+echo $?hello
+echo '$?'hello
+echo "$?"hello
+echo $? hello
+echo '$?' hello
+echo "$?" hello
+echo hello$?
+echo hello'$?'
+echo hello"$?"
+echo hello $?
+echo hello '$?'
+echo hello "$?"
+echo hello $? World!
+echo hello '$?' World!
+echo hello "$?" World!
+echo $PWD
+echo '$PWD'
+echo "$PWD"
+echo "My home directory is: $HOME"
+echo "The current directory is: $PWD"
+echo 'exit_code ->$? user -> $USER home -> $HOME'
+echo "exit_code -> $? user -> $USER home -> $HOME"
+echo "Hello, World!" > output_file.txt
+echo "New content" >> existing_file.txt
+echo "New content" >> existing_file.txt
+echo $PATH | grep "/bin"
+echo "search" | grep -q "search" && echo "found" || echo "not found"
+echo "test case for pipes" | tr ' ' '\n' | sort | uniq
+echo *
+echo '*'
+echo "*"
+echo "*file"
+echo *.c
+echo *.txt
+echo < 123 < 456 hi | echo 42
+echo < < | < ok
+echo < < | > echo
+echo < < | echo ok
+echo hello > file
+echo hello > file bye
+echo hello > a > b > c >d
+echo hello > a > b > c >d bye bye
+echo hi <
+echo hi < Makefile
+echo hi < Makefile bye bye
+echo hi >outfile01 | echo bye
+echo hi > outfile01 | echo bye
+echo hi >outfile01 >outfile02 | echo bye
+echo hi > outfile01 > outfile02 | echo bye
+echo hi | > outfile01 echo > outfile02
+echo hi > outfile01 | > outfile02 echo
+echo hi | > outfile01 echo > outfile02 | echo bye
+echo hi > outfile01 | > outfile02 echo | echo bye
+echo hi && echo bye
+echo hi || echo bye
+echo hi < > echo hi
+echo hi > < echo bye
+echo hi < < > echo bye
+	echo hi < > > echo bye
+echo test | cat -e
+echo test | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e
+echo hi | |
+echo hi | <
+echo hi | <<
+echo hi | >
+echo hi | >>
+echo hi | &&
+echo hi | ||
+
+echo ----------cd----------------------
+cd
+cd ..
+cd 42
+cd /Users/mott
+cd nodir
+cd -
+cd ~
+cd ~/42
+cd $HOME
+cd $PWD
+cd $PWD hello
+
+echo ----------pwd---------------------
+pwd
+Pwd
+pWd
+pwD
+PWd
+PwD
+pWD
+PWD
+pwd hello
+
+echo ----------export------------------
+export MINI=42
+export MINI=
+export MINI
+export MINI-
+export MINI-=
+export MINI+=
+export MINI-=42
+export MINI+=42
+export MINI1=42
+export MINI2==43
+export MINI11=42 MINI12=43
+export ZZZ=new1 YYY=new2 XXX==new3
+export TEST=123 | cat -e | cat -e
+export MINI100=42 && export MINI200=43 && echo $MINI100 || echo $MINI200
+export MINI100=42 || export MINI200=43 && echo $MINI100 && echo $MINI200
+export MINI100=42 || export MINI200=43 || echo $MINI100 && echo $MINI200
+export GHOST=123 | env | grep GHOST
+export UNO-1 DOS=2 TRES=3
+export UNO=11 DOS-22 TRES=33
+export UNO=111 DOS=222 TRES-333
+export UNO=1111 DOS-2222 TRES=3333 || env | grep TRES
+
+echo ----------unset-------------------
+unset
+unset MINI
+unset MINI-
+unset MINI MINI-
+unset MINI MINI- MINI
+unset MIINI1 MINI2
+unset MINI12=
+unset HOME
+unset HOME && cd
+unset OLDPWD
+unset OLDPWD && cd -
+unset PATH
+unset PATH && echo $PATH
+
+echo ----------env---------------------
+env | grep HOME
+env | grep 'USER'
+env | grep "USER"
+env | grep USER || grep mott
+env | sort | grep -v SHLVL | grep -v ^_
+
+echo ----------exit--------------------
+exit
+exit 0
+exit 1
+exit 42
+exit 42 world
+exit world 42
+exit 420
+exit 420 42
+exit +100
+exit "+100"
+exit +"100"
+exit -100
+exit "-100"
+exit -"100"
+exit hello
+exit exit exit exit exit exit
+
+echo ----------single_command----------
+ls
+Ls
+lS
+LS
+ls $HOME
+ls $HOME/42
+ls *
+ls -l
+ls -l -a
+ls -la
+/bin/ls
+non_existent_binary
+./test_files
+./test_files/invalid_permission
+./.
+../.
+
+echo ----------expansion---------------
+$?
+echo $?
+echo $HOME
+echo $PATH
+echo $USER
+$EMPTY
+$EMPTY echo hi
+$PWD
+
+echo ----------pipe--------------------
+echo test | cat -e
+echo test | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e
+echo test | cat -e | cat -e | cat -e | cat -e
+ls | grep "file"
+ls | grep file
+ls | grep foo
+ls | grepp foo
+ls | sort -r
+ls | sort -r > file
+ls | sort -r | grep file
+ls | sort -r | grep foo
+ls | sort -r | wc -l
+ls | sortx -r
+lsx | sort -r
+echo "Hello World!" | wc -w
+echo "Hello World!" | wc -c
+exit | exit
+cat <missing | cat
+cat <missing | cat <"./test_files/infile"
+cat <missing | echo oi
+cat | cat | ls
+cat | cat | ls && echo $?
+cat | cat << HERE | ls
+printenv | grep PATH | cut -d= -f2 | tr ':' '\n'
+
+echo ----------redir-------------------
+echo hello world <file1 >file2
+echo hello world >file1 >file2
+echo hello world >file1 >file2 >>file3 Hello World!
+echo hello world >file1 >file2 Hello World!
+> file echo hello
+cat < Makefile
+cat < "Makefile"
+cat < ./Makefile
+cat <"./test_files/file name with spaces"
+cat <"./test_files/infile"
+cat <"./test_files/infile" >"./outfiles/outfile"
+cat <"./test_files/infile" >./test_files/invalid_permission
+cat <./test_files/infile_big ./test_files/infile
+echo hello world >>./outfiles/outfile01 >./outfiles/outfile01
+echo hello world >>./outfiles/outfile01 >>./test_files/invalid_permission
+echo hello world >>./test_files/invalid_permission
+echo hello world >>./test_files/invalid_permission >>./outfiles/outfile01
+echo hello world >>./test_files/invalid_permission >>./outfiles/outfile02 <missing
+echo hello world > ./outfiles/outfile01
+echo hello world >"./outfiles/outfile01" >./test_files/invalid_permission >"./outfiles/outfile02"
+echo hello world >"./outfiles/outfile with spaces"
+echo hello world >./outfiles/outfile01 >./outfiles/outfile02
+echo hello world >./outfiles/outfile01 >./test_files/invalid_permission
+echo hello world >./outfiles/outfile01 >>./outfiles/outfile01
+echo hello world >./outfiles/outfile01 >>./outfiles/outfile01 >./outfiles/outfile02
+echo hello world >./outfiles/outfile01 >>./test_files/invalid_permission >>./outfiles/outfile02
+echo hello world >./test_files/invalid_permission >"./outfiles/outfile01" >./test_files/invalid_permission
+echo hello world >outfile01 && cat outfile01
+echo hello world non_existent_directory
+cat <missing
+cat <missing >./outfiles/outfile01
+cat <missing >./test_files/invalid_permission
+cat <minishell.h>./outfiles/outfile
+cat infile.txt > out1 > out2 > out3
+cat >./outfiles/outfile01 <missing
+cat >./outfiles/outfile01 <missing >./test_files/invalid_permission
+cat >./test_files/invalid_permission <"./test_files/infile"
+cat >./test_files/invalid_permission <missing
+ls <missing >>./test_files/invalid_permission >>./outfiles/outfile02
+grep hi "<infile" <         ./test_files/infile
+grep hi <./test_files/infile
+grep hi <./test_files/infile_big <./test_files/infile
+echo Hello User > file_$USER
+
+echo ----------pipe+redir--------------
+ls | sort -r | cat -e > file01
+ls | sort -r | cat -e > file01 > file02
+ls | sort -r | cat -e > file01 > file02 >> file03
+ls | sort -r | cat -e >> file01
+ls | sort -r | cat -e >> file01 >> file02
+ls | sort -r | cat -e >> file01 >> file02 > file03
+ls | > file sort -r
+ls | cat << stop0 | cat << stop1 | cat << stop2
+ls | cat << stop0 | ls -la > out0 | cat << stop1 | ls | cat << stop2 | ls -la >> out | cat << stop3
+ls | cat << stop0 | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > out | cat << 'stop3'
+cat <"./test_files/infile" | echo hi
+cat <"./test_files/infile" | grep hello
+cat < Makefile > out >> out1 | wc -l out1 > out2
+cat <minishell.h|ls
+cat    <| ls
+
+echo ----------and+or------------------
+true && echo hello
+true || echo hello
+false && echo hello
+false || echo hello
+cd .. && cd -
+cd .. && cd - && pwd
+cd .. && pwd
+cd .. || pwd
+pwd && cd ..
+echo 1 && echo 2 && echo 3
+echo 1 && echo 2 | echo 3
+echo 1 && echo 2 | cat file_does_not_exist
+echo 1 && cat file_does_not_exist | echo 3
+echo 1 | echo 2 && echo 3
+echo 1 | echo 2 && echo 3 | echo 4
+echo 1 | echo 2 && cat file_does_not_exist
+echo 1 | echo 2 | echo 3 && echo 4 | echo 5
+echo 1 | echo 2 | echo 3 || echo 4 | echo 5
+echo 1 | echo 2 || echo 3
+echo 1 | echo 2 || echo 3 | echo 4
+echo 1 | echo 2 || cat file_does_not_exist
+echo 1 | cat file_does_not_exist && echo 3
+echo 1 | cat file_does_not_exist || echo 3
+echo 1 || echo 2 | echo 3
+echo 1 || echo 2 | cat file_does_not_exist
+echo 1 || echo 2 || echo 3
+echo 1 || cat file_does_not_exist | echo 3
+cat file_does_not_exist && /bin/echo 2 | /bin/echo 3
+cat file_does_not_exist | /bin/echo 2 && /bin/echo 3
+cat file_does_not_exist | /bin/echo 2 || /bin/echo 3
+cat file_does_not_exist || /bin/echo 2 | /bin/echo 3
+ls -l && echo "Files in current directory: " && ls *
+ls -l && echo "Success" || echo "Failure"
+touch existent_file && echo "exit status: $?"
+rm non_existent_file || echo "exit status: $?"
+rm non_existent_file || echo "exit status: $?" && echo "exit status: $?
+rm non_existent_file || echo "exit status: $?" && echo "exit status: $?"
+
+echo ----------subshell----------------
+(cd .. && pwd) && pwd
+(cd .. && pwd) || pwd
+(echo 1 && echo 2) || echo 3
+(echo 1 || echo 2) && echo 3
+echo 1 && echo 2 && (echo 3)
+echo 1 && (echo 2 && echo 3 || (echo 4 && echo 5))
+(echo 1 && (echo 2 || echo 3)) || echo 4
+echo 1 || (echo 2 && (echo 3 || echo 4))
+(echo 1 || echo 2) && (echo 3 && echo 4)
+((echo 1 || echo 2) && echo 3) || (echo 4 && echo 5)
+(echo 1 && echo 2) || (echo 3 && (echo 4 || echo 5))
+echo 1 && (echo 2 || (echo 3 && echo 4)) && echo 5
+(echo 1 || (echo 2 && echo 3)) && echo 4
+echo 1 && ((echo 2 || echo 3) && echo 4)
+(echo 1 && (echo 2 || echo 3)) || (echo 4 && echo 5)
+echo 1 || (echo 2 && (echo 3 || (echo 4 && echo 5)))
+((echo 1 || echo 2) && echo 3) || (echo 4 && (echo 5 || echo 6))
+(echo 1 && echo 2) || (echo 3 && (echo 4 && echo 5))
+echo 1 && ((echo 2 || echo 3) && (echo 4 || echo 5))
+(echo 1 || (echo 2 && echo 3)) && (echo 4 && echo 5)
+((echo 1 || echo 2) && (echo 3 || echo 4)) && echo 5
+(echo 1 && (echo 2 || (echo 3 && echo 4))) || echo 5
+echo 1 || ((echo 2 && echo 3) || (echo 4 && echo 5))
+(echo 1 || echo 2) && ((echo 3 || echo 4) && echo 5)
+((echo 1 && echo 2) || echo 3) && (echo 4 || echo 5)
+(echo 1 && (echo 2 && echo 3)) || (echo 4 || echo 5)
+echo 1 && ((echo 2 || echo 3) && (echo 4 && (echo 5 || echo 6)))
+(echo 1 || (echo 2 && (echo 3 || echo 4))) && echo 5
+((echo 1 || echo 2) && echo 3) || ((echo 4 || echo 5) && echo 6)
+(echo 1 && echo 2) || ((echo 3 && echo 4) || echo 5)
+echo 1 && (echo 2 || (echo 3 && (echo 4 || echo 5)))
+((echo 1 || echo 2) && (echo 3 && echo 4)) || echo 5
+(echo 1 && (echo 2 || (echo 3 && echo 4))) || (echo 5 && echo 6)
+echo 1 || ((echo 2 && echo 3) || (echo 4 && (echo 5 || echo 6)))
+(echo 1 || echo 2) && ((echo 3 || echo 4) && (echo 5 || echo 6))
+((echo 1 && echo 2) || echo 3) && ((echo 4 || echo 5) && echo 6)
+(echo 1 && (echo 2 && (echo 3 || echo 4))) || echo 5
+echo 1 && ((echo 2 || echo 3) && ((echo 4 || echo 5) && echo 6))
+(echo 1 || (echo 2 && (echo 3 || (echo 4 && echo 5)))) && echo 6
+echo 1 && (echo 2 && echo 3 || (echo 4 && echo 5))
+(echo 1 && (echo 2 || echo 3)) || echo 4
+echo 1 || (echo 2 && (echo 3 || echo 4))
+(echo 1 || echo 2) && (echo 3 && echo 4)
+((echo 1 || echo 2) && echo 3) || (echo 4 && echo 5)
+(echo 1 && echo 2) || (echo 3 && (echo 4 || echo 5))
+echo 1 && (echo 2 || (echo 3 && echo 4)) && echo 5
+(echo 1 || (echo 2 && echo 3)) && echo 4
+echo 1 && ((echo 2 || echo 3) && echo 4)
+(echo 1 && (echo 2 || echo 3)) || (echo 4 && echo 5)
+echo 1 || (echo 2 && (echo 3 || (echo 4 && echo 5)))
+((echo 1 || echo 2) && echo 3) || (echo 4 && (echo 5 || echo 6))
+(echo 1 && echo 2) || (echo 3 && (echo 4 && echo 5))
+echo 1 && ((echo 2 || echo 3) && (echo 4 || echo 5))
+(echo 1 || (echo 2 && echo 3)) && (echo 4 && echo 5)
+((echo 1 || echo 2) && (echo 3 || echo 4)) && echo 5
+(echo 1 && (echo 2 || (echo 3 && echo 4))) || echo 5
+echo 1 || ((echo 2 && echo 3) || (echo 4 && echo 5))
+(echo 1 || echo 2) && ((echo 3 || echo 4) && echo 5)
+((echo 1 && echo 2) || echo 3) && (echo 4 || echo 5)
+(echo 1 && (echo 2 && echo 3)) || (echo 4 || echo 5)
+echo 1 && ((echo 2 || echo 3) && (echo 4 && (echo 5 || echo 6)))
+(echo 1 || (echo 2 && (echo 3 || echo 4))) && echo 5
+((echo 1 || echo 2) && echo 3) || ((echo 4 || echo 5) && echo 6)
+(echo 1 && echo 2) || ((echo 3 && echo 4) || echo 5)
+echo 1 && (echo 2 || (echo 3 && (echo 4 || echo 5)))
+((echo 1 || echo 2) && (echo 3 && echo 4)) || echo 5
+(echo 1 && (echo 2 || (echo 3 && echo 4))) || (echo 5 && echo 6)
+echo 1 || ((echo 2 && echo 3) || (echo 4 && (echo 5 || echo 6)))
+(echo 1 || echo 2) && ((echo 3 || echo 4) && (echo 5 || echo 6))
+((echo 1 && echo 2) || echo 3) && ((echo 4 || echo 5) && echo 6)
+(echo 1 && (echo 2 && (echo 3 || echo 4))) || echo 5
+echo 1 && ((echo 2 || echo 3) && ((echo 4 || echo 5) && echo 6))
+(echo 1 || (echo 2 && (echo 3 || (echo 4 && echo 5)))) && echo 6
+echo 1 && (echo 2 || echo 3 && echo 4) || echo 5 && echo 6
+((echo 1) || (echo 2) && (echo 3 || (echo 4)))
+((echo 1) || (echo 2) && (echo 3 || echo 4))
+(export TEST=123 && echo $TEST && echo $?) && echo $TEST && echo $?
+(ls -l && echo "Listed files") || (echo "Error listing files" && exit 1)
+
+
+echo ----------wildcard----------------
+*
+'*'
+"*"
+< *
+> *
+>> *
+< * *
+> * *
+>> * *
+< *.txt
+> *.txt
+>> *.txt
+cat file*
+cat *file
+echo .*
+echo *.
+echo *c*
+echo *a*e*i*e*
+echo *
+echo a*
+echo *b
+echo a*b
+echo *a*b*
+echo a*b*c
+echo *a*b*c*
+echo **
+echo a**b
+echo *****
+echo *a*b**c*
+echo a* > testfile_a_star.txt
+echo *b >> testfile_b_star.txt
+echo *c* | sort > testfile_c_star_sorted.txt
+cat file* | grep a*b > testfile_file_a_star_b.txt
+ls *.txt | wc -l > testfile_txt_count.txt
+echo "hello*world" | sed 's/*/.*/g' > testfile_hello_dot_star_world.txt
+cat *log* | awk '{print $1}' | sort | uniq > testfile_unique_log_fields.txt
+echo */*py > testfile_py_files.txt
+echo */*/*.js >> testfile_js_files.txt
+
+echo ----------syntax------------------
+&&
+&& ) a
+&& < a
+&& > a
+&& >> a
+&& || a
+||
+|| && a
+|| ( a
+|| ) a
+|| < a
+|| > a
+|| >> a
+|| echo oi
+( ) a
+() a
+) && a
+) ( a
+) < a
+) > a
+) >> a
+) a
+) || a
+<
+< && a
+< ) a
+< > >>
+< >> >
+< file cat
+< | a
+< || a
+<<
+>
+> &&
+> && a
+> ) a
+> < >>
+> >> <
+> | a
+> ||
+> || a
+>>
+>> && a
+>> ) a
+>> < >
+>> > <
+>> | a
+>> || a
+>>>
+|
+| $
+| < a
+| >
+| > a
+| >> a
+| echo oi
+| |
+|&
+
+sleep 3 | sleep 3
+sleep 3 | sleep 3 | sleep 3
