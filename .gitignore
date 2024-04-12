@@ -86,3 +86,8 @@ testfile_js_files.txt
 testfile_py_files.txt
 testfile_unique_log_fields.txt
 existent_file
+testfile_a_star.txt
+testfile_b_star.txt
+testfile_c_star_sorted.txt
+testfile_file_a_star_b.txt
+testfile_txt_count.txt
