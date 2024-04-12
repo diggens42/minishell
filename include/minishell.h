@@ -21,7 +21,7 @@
 //--------------lexer_main---------//
 t_token			*tokenizer(char *user_input);
 int				set_token_length(char *user_input);
-t_type			set_type(char	*content, int token_length);
+t_type			set_type(char *content, int token_length);
 //--------------syntax-------------//
 bool			quotes_syntax(char *cmd_line);
 int				operator_syntax(t_token *token);

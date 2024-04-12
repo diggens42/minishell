@@ -31,7 +31,7 @@ SRCS =	./src/minishell.c \
 		\
 		./src/03_expander/_expander.c \
 		./src/03_expander/cmd.c \
-		./src/03_expander/cmd2.c \
+		./src/03_expander/dqmark.c \
 		./src/03_expander/dquotes.c \
 		./src/03_expander/dollar.c \
 		./src/03_expander/glob.c \

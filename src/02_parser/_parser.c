@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_parser.c                                       :+:      :+:    :+:   */
+/*   _parser.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:25:35 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 18:13:38 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static t_ast	*ast_parenthesis(t_token **token)
 	t_ast	*subtree;
 
 	subtree = NULL;
-	if (*token == NULL || (*token)->type != PARENTHESIS_L)
-		return (NULL);
+	// if (*token == NULL || (*token)->type != PARENTHESIS_L)
+	// 	return (NULL);
 	advance_and_free_token(token);
 	subtree = ast_parser(token);
 	subtree->subshell = true;
-	if (*token == NULL || (*token)->type != PARENTHESIS_R)
-		return (NULL);
+	// if (*token == NULL || (*token)->type != PARENTHESIS_R)
+	// 	return (NULL);
 	advance_and_free_token(token);
 	return (subtree);
 }
@@ -91,8 +91,6 @@ static t_ast	*ast_logical(t_token **token, t_ast *left)
 		else
 			logical->right = cmd_node;
 		node = logical;
-		if (*token == NULL || !is_logical((*token)->type))
-			break ;
 	}
 	return (node);
 }

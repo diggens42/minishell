@@ -343,8 +343,8 @@ rm non_existent_file || echo "exit status: $?" && echo "exit status: $?"
 echo ----------subshell----------------
 (cd .. && pwd) && pwd
 (cd .. && pwd) || pwd
-((echo 1) | (echo 2) | (echo 3 | (echo 4)))
-echo 1 | (echo 2 || echo 3 && echo 4) || echo 5 | echo 6
+((echo 1) || (echo 2) && (echo 3 || (echo 4)))
+echo 1 && (echo 2 || echo 3 && echo 4) || echo 5 && echo 6
 (export TEST=123 && echo $TEST && echo $?) && echo $TEST && echo $?
 (ls -l && echo "Listed files") || (echo "Error listing files" && exit 1)
 
@@ -363,6 +363,10 @@ echo ----------wildcard----------------
 >> *.txt
 cat file*
 cat *file
+echo .*
+echo *.
+echo *c*
+echo *a*e*i*e*
 
 echo ----------syntax------------------
 &&
