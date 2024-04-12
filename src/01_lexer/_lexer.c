@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   _lexer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 14:20:32 by mott              #+#    #+#             */
-/*   Updated: 2024/03/27 16:59:56 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 01:13:03 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token	*tokenizer(char *user_input)
 			user_input++;
 		if (*user_input == '\0')
 			break ;
-		token = token_new();
+		token = new_token();
 		token->length = set_token_length(user_input);
 		token->content = ft_substr(user_input, 0, token->length);
 		token->type = set_type(token->content, token->length);

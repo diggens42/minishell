@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_redir.c                                       :+:      :+:    :+:   */
+/*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 18:38:49 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 00:32:48 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static int	exec_redir_in(char *file, t_env *env, int in)
 		fd = open(file, O_RDONLY);
 	else
 		fd = exec_here_doc(file, env);
-	if (fd == -1)
+	if (fd == ERROR)
 	{
 		ft_perror(file, strerror(errno));
 		return (EXIT_FAILURE);
 	}
-	if (dup2(fd, STDIN_FILENO) == -1)
+	if (dup2(fd, STDIN_FILENO) == ERROR)
 	{
 		ft_perror("dup2", strerror(errno));
 		return (EXIT_FAILURE);
@@ -47,12 +47,12 @@ static int	exec_redir_out(char *file, int out)
 	// if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
 	// 	file = remove_quotes(file);
 	fd = open(file, O_WRONLY | O_CREAT | out, 0644);
-	if (fd == -1)
+	if (fd == ERROR)
 	{
 		ft_perror(file, strerror(errno));
 		return (EXIT_FAILURE);
 	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	if (dup2(fd, STDOUT_FILENO) == ERROR)
 	{
 		ft_perror("dup2", strerror(errno));
 		return (EXIT_FAILURE);

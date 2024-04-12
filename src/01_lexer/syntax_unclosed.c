@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unclosed.c                                         :+:      :+:    :+:   */
+/*   syntax_unclosed.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 16:54:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/09 17:10:31 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 00:21:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ int	parenthesis_syntax(t_token *token)
 		if (parenthesis < 0)
 		{
 			ft_perror_3(check->content);
-			return (2);
+			return (SYNTAX_ERROR);
 		}
 		check = check->next;
 	}
 	if (parenthesis > 0)
 	{
 		ft_putstr_fd("minishell: unclosed parenthesis\n", STDERR_FILENO);
-		return (2);
+		return (SYNTAX_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }

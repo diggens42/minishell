@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/04/11 23:11:07 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 01:13:03 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_token	*token_new(void)
+t_token	*new_token(void)
 {
 	t_token	*new_token;
 

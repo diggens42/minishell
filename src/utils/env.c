@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/04/11 23:10:35 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 01:34:15 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ t_env	*init_env(char **envp)
 	char	*value;
 	int		i;
 
+	if (envp == NULL)
+		return(NULL);
 	env = NULL;
 	i = 0;
 	while (envp[i] != NULL)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_command.c                                   :+:      :+:    :+:   */
+/*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:34:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 01:10:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	proccess_commands(char **content, t_env *env)
 	char	*temp;
 
 	temp = *content;
-	*content = expand_str_with_dqmark(*content, env);
+	*content = expand_dollar_qmark(*content, env);
 	free(temp);
 	temp = *content;
 	*content = expand_str_with_quotes(*content, env);

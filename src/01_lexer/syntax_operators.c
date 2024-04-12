@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 19:53:59 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 19:38:54 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 00:20:51 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	syntax_logical(t_token *prev, t_token *check)
 		|| (!is_cmd(check->next->type) && check->next->type != PARENTHESIS_L))
 	{
 		ft_perror_3(check->content);
-		return (2);
+		return (SYNTAX_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -35,7 +35,7 @@ static int	syntax_redirect(t_token *check)
 			|| is_redirect(check->next->type)))
 	{
 		ft_perror_3(check->next->content);
-		return (2);
+		return (SYNTAX_ERROR);
 	}
 	else if (check->next == NULL || (!is_cmd(check->next->type)
 			&& !is_redirect(check->next->type)))
@@ -43,7 +43,7 @@ static int	syntax_redirect(t_token *check)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
 		ft_putstr_fd("`newline'\n", STDERR_FILENO);
-		return (2);
+		return (SYNTAX_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -55,7 +55,7 @@ static int	syntax_pipe(t_token *prev, t_token *check)
 			&& !is_logical(check->next->type)))
 	{
 		ft_perror_3(check->content);
-		return (2);
+		return (SYNTAX_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -67,7 +67,7 @@ static int	syntax_parenthesis(t_token *prev, t_token *check)
 		if (prev != NULL && !is_logical(prev->type))
 		{
 			ft_putstr_fd("read the subject\n", STDERR_FILENO);
-			return (2);
+			return (SYNTAX_ERROR);
 		}
 	}
 	if (check->type == PARENTHESIS_R)
@@ -75,7 +75,7 @@ static int	syntax_parenthesis(t_token *prev, t_token *check)
 		if (check->next != NULL && !is_logical(check->next->type))
 		{
 			ft_perror_3(check->content);
-			return (2);
+			return (SYNTAX_ERROR);
 		}
 	}
 	return (EXIT_SUCCESS);

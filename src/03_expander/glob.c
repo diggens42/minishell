@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_wildcard.c                                  :+:      :+:    :+:   */
+/*   glob.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 02:08:08 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 01:08:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	**expand_wildcard(char *content)
 	free(temp);
 	return (res);
 }
-char	**insert_expanded_wc(char **argv, int *index, char **expanded_content)
+char	**insert_wildcard(char **argv, int *index, char **expanded_content)
 {
 	int		argc;
 	int		n;
@@ -98,7 +98,7 @@ char	**insert_expanded_wc(char **argv, int *index, char **expanded_content)
 	return (res);
 }
 
-t_type	**wc_set_type(char **argv, int index)
+t_type	**set_type_wildcard(char **argv, int index)
 {
 	t_type	**type;
 	int		argc;

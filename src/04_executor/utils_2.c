@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils_2.c                                     :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 23:10:49 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 00:36:24 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ int	waitpid_exit_stat(pid_t pid)
 	if (WIFSIGNALED(stat_loc))
 	{
 		if (WTERMSIG(stat_loc) == SIGINT)
-			return (130);
+			return (SIGINT_EXITCODE);
 		if (WTERMSIG(stat_loc) == SIGQUIT)
-			return (131);
+			return (SIGQUIT_EXITCODE);
 		return (WTERMSIG(stat_loc));
 	}
 	return (WEXITSTATUS(stat_loc));

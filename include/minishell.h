@@ -13,157 +13,32 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../Libft/libft.h"
-// # include "builtin.h"
+# include "include.h"
 
-// printf, perror
-#include <stdio.h>
-
-// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
-#include <readline/readline.h>
-
-// add_history
-#include <readline/history.h>
-
-// malloc, free, exit, getenv
-#include <stdlib.h>
-
-// write, access, read, close, fork, getcwd, chdir, unlink, execve, dup, dup2,
-// pipe, isatty, ttyname, ttyslot
-#include <unistd.h>
-
-// open
-#include <fcntl.h>
-
-// wait, waitpid, wait3, wait4
-#include <sys/wait.h>
-
-// signal, sigaction, sigemptyset, sigaddset, kill
-#include <signal.h>
-
-// stat, lstat, fstat
-#include <sys/stat.h>
-
-// opendir, readdir, closedir
-#include <dirent.h>
-
-// strerror
-#include <string.h>
-
-// ioctl
-#include <sys/ioctl.h>
-
-// tcsetattr, tcgetattr
-#include <termios.h>
-
-// tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-#include <curses.h>
-#include <term.h>
-
-#include <stdbool.h>
-#include <errno.h>
-
-# define PROMPT_STD "minishell$ "
-# define PROMPT_MULTI_LINE "> "
-
-typedef enum	e_type
-{
-	UNKNOWN,
-	COMMAND,
-	SINGLE_QUOTE,
-	DOLLAR,
-	DQMARK,
-	WILDCARD,
-	REDIR_IN,
-	REDIR_HEREDOC,
-	REDIR_OUT,
-	REDIR_APPEND,
-	PIPE,
-	AND,
-	OR,
-	PARENTHESIS_L,
-	PARENTHESIS_R
-}	t_type;
-
-typedef struct	s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-	int				fd_stdin; //TODO
-	int				fd_stdout; //TODO
-	int				exit_status; //TODO
-}	t_env;
-
-typedef struct	s_token
-{
-	t_type			type;
-	char			*content;
-	int				length;
-	struct s_token	*next;
-}	t_token;
-
-typedef struct	s_redir
-{
-	t_type			type;
-	char			*file;
-}	t_redir;
-
-typedef struct	s_cmd
-{
-	char			**argv;
-	t_type			**type;
-	t_redir			**redir;
-}	t_cmd;
-
-typedef struct	s_ast
-{
-	t_type			type;
-	t_cmd			*cmd;
-	struct s_ast	*left;
-	struct s_ast	*right;
-	bool			subshell;
-}	t_ast;
-
-// typedef struct	s_mini
-// {
-// 	t_ast	*ast;
-// 	t_env	*env;
-// 	int		fd_stdin;
-// 	int		fd_stdout;
-// }	t_mini;
-
-// minishell.c
+//------------------------------------------MAIN-------------------------------------------//
 int				main(int argc, char **argv, char **envp);
 
-// LEXER
+//------------------------------------------LEXER------------------------------------------//
+//--------------lexer_main---------//
 t_token			*tokenizer(char *user_input);
 int				set_token_length(char *user_input);
 t_type			set_type(char	*content, int token_length);
-
-void			expand(t_cmd **cmd, t_env *env);
-void			proccess_commands(char **content, t_env *env);
-char			*expand_dollar_sign(const char *content, t_env *env);
-char			*expand_str_with_dqmark(char *content, t_env *env);
-char			*expand_double_quote(const char *content, t_env *env);
-char			**expand_wildcard(char *content);
-char			**insert_expanded_wc(char **argv, int *index, char **expanded_content);
-t_type			**wc_set_type(char **argv, int index);
-char			*remove_quotes(const char *content);
-char			*get_quote_start(char *str);
-char 			*get_quote_end(char *str, char quote_type);
-int				set_quote_state(int quote_state, char c);
-void			handle_command_quotes(bool *quotes, char *quote_type, char current);
-int				get_single_char_len(char c);
-// token_ops
-t_token			*token_new(void);
+//--------------syntax-------------//
+bool			quotes_syntax(char *cmd_line);
+int				operator_syntax(t_token *token);
+int				parenthesis_syntax(t_token *token);
+//--------------utils--------------//
+t_token			*new_token(void);
 t_token			*token_last(t_token *token);
 void			token_add_back(t_token **token, t_token *new_token);
 int				tokens_size(t_token *tokens);
+int				get_single_char_len(char c);
 
-// PARSER
+//------------------------------------------PARSER-----------------------------------------//
+//--------------expander_main------//
 t_ast			*ast_parser(t_token **token);
 void			ast_redirect(t_ast *cmd_node, t_token **token, int *i);
+//--------------utils--------------//
 t_ast			*new_ast_node(t_token *token);
 void			advance_and_free_token(t_token **token);
 bool			is_redirect(t_type type);
@@ -171,37 +46,57 @@ bool			is_logical(t_type type);
 bool			is_operator(t_type type);
 bool			is_cmd(t_type type);
 bool			is_parenthesis(t_type type);
-void			print_ast(t_ast* node, int level);
 
-// EXECUTOR
-// exec_heredoc
-int				exec_here_doc(char *limiter, t_env *env);
-int				count_heredoc(t_ast *ast);
-// exec_main
+//------------------------------------------EXPANDER---------------------------------------//
+//--------------expander_main------//
+void			expand(t_cmd **cmd, t_env *env);
+//--------------cmd----------------//
+void			proccess_commands(char **content, t_env *env);
+void			handle_command_quotes(bool *quotes, char *quote_type, char current);
+//--------------special_params-----//
+char			*expand_dollar_sign(const char *content, t_env *env);
+char			*expand_dollar_qmark(char *content, t_env *env);
+//--------------glob---------------//
+char			**expand_wildcard(char *content);
+char			**insert_wildcard(char **argv, int *index, char **expanded_content);
+t_type			**set_type_wildcard(char **argv, int index);
+//--------------quotes-------------//
+char			*expand_double_quote(const char *content, t_env *env);
+char			*remove_quotes(const char *content);
+char			*get_quote_start(char *str);
+char 			*get_quote_end(char *str, char quote_type);
+int				set_quote_state(int quote_state, char c);
+//-----------------------------------------------------//
+//------------------------------------------EXECUTOR---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+//--------------exec_main----------//
 int				exec_main(t_ast *ast, t_env *env);
 int				exec_builtin(char **argv, t_env *env);
 void			exec_finish(char **argv, t_env *env);
-// exec_path
+//--------------heredoc------------//
+int				exec_here_doc(char *limiter, t_env *env);
+int				count_heredoc(t_ast *ast);
+//--------------path---------------//
 char			*create_absolute_path(char *command);
 char			*create_relative_path(char *command, t_env *env);
-// exec_pipe
+//--------------pipe---------------//
 int				exec_pipe(t_ast *ast, t_env *env, int lvl);
-// exec_redir
+//--------------redir--------------//
 int				exec_set_redir(t_redir **redir, t_env *env);
-// exec_utils_1
+//--------------utils_1------------//
 int				ft_pipe(int *fd);
 pid_t			ft_fork(void);
 int				set_fd(t_env *env);
 int				reset_fd(t_env *env);
 int				close_fd(t_env *env);
-// exec_utils_2
+//--------------utils_2------------//
 char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);
 char			*ft_tolower_str(char *str);
 char			**new_argv(char **old_argv);
 int				waitpid_exit_stat(pid_t pid);
 
-// BUILTIN
+//-----------------------------------------BUILTINS---------------------------------------//
 int				builtin_cd(char **argv, t_env **env);
 int				builtin_echo(char **argv);
 int				builtin_env(t_env *env);
@@ -210,39 +105,34 @@ int				builtin_export(char **argv, t_env **env);
 int				builtin_pwd(void);
 int				builtin_unset(char **argv, t_env **env);
 
-// builtin_utils
+//--------------utils-------------//
 int				env_update(t_env **env, char *key, char *value);
 int				is_valid_key(char *key);
 
-//syntax
-bool			quotes_syntax(char *cmd_line);
-int				operator_syntax(t_token *token);
-int				parenthesis_syntax(t_token *token);
-
-// UTILS
-// env
+//------------------------UTILS-----------------------//
+//--------------env---------------//
 t_env			*init_env(char **envp);
 char			*ft_getenv(char *key, t_env *env);
 void			append_env_node(t_env **head, t_env *new_node);
 t_env			*new_env_node(char *key, char *value);
-// exit
+//--------------exit--------------//
 void			ft_exit(t_env *env, int exit_status);
 void			ft_perror(char *command, char *error_message);
 void			ft_perror_2(char *command, char *argument, char *error_message);
 void			ft_perror_3(char *content);
 void			ft_perror_4(char content);
-// free
+//--------------free--------------//
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
 void			free_char_array(char **str);
 void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
-// signals
+//--------------signal-s----------//
 void			init_parent_signals(void);
 void			init_child_signals(void);
 void			init_readline_signal_flags(void);
 
-// debug
+//--------------debug-------------//
 void			token_print(t_token *tokens);
 void			print_char_array(char **str);
 void			check_tokens(t_token *tokens);

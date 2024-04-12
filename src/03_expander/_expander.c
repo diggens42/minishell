@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_token.c                                     :+:      :+:    :+:   */
+/*   _expander.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 01:30:05 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 01:08:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static void	process_wildcard(char **content, t_cmd *cmd, int *index)
 	t_type	**new_type;
 
 	expanded_content = expand_wildcard(*content);
-	new_argv = insert_expanded_wc(cmd->argv, index, expanded_content);
+	new_argv = insert_wildcard(cmd->argv, index, expanded_content);
 	cmd->argv = new_argv;
-	new_type = wc_set_type(cmd->argv, *index);
+	new_type = set_type_wildcard(cmd->argv, *index);
 	free_type_array(cmd->type);
 	cmd->type = new_type;
 }

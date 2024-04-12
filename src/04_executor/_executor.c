@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_main.c                                        :+:      :+:    :+:   */
+/*   _executor.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 21:56:52 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 00:24:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	exec_builtin(char **argv, t_env *env)
 		return (free(temp), builtin_env(env));
 	else if (ft_strcmp("exit", temp) == 0)
 		return (free(temp), builtin_exit(argv, env));
-	return (-1);
+	return (ERROR);
 }
 
 void	exec_finish(char **argv, t_env *env)
@@ -117,7 +117,7 @@ void	exec_finish(char **argv, t_env *env)
 	else
 		pathname = create_relative_path(argv[0], env);
 	envp = env_to_char_array(env);
-	if (execve(pathname, argv, envp) == -1)
+	if (execve(pathname, argv, envp) == ERROR)
 	{
 		free(pathname);
 		free_char_array(argv);

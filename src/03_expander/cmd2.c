@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_command2.c                                  :+:      :+:    :+:   */
+/*   cmd2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 20:30:46 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:31:08 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 01:10:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*expand_str_with_dqmark(char *content, t_env *env)
+char	*expand_dollar_qmark(char *content, t_env *env)
 {
 	char	*pos;
 	char	*before_dqmark;

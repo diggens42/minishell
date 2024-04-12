@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_path.c                                        :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 14:46:11 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 00:31:02 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ char	*create_absolute_path(char *pathname)
 	if (S_ISDIR(statbuf.st_mode) == true)
 	{
 		ft_perror(pathname, "is a directory");
-		exit(126);
+		exit(PERMISSION_ERROR);
 	}
-	if (access(pathname, X_OK) == -1)
+	if (access(pathname, X_OK) == ERROR)
 	{
 		ft_perror(pathname, strerror(errno));
 		if (errno == 13)
-			exit(126);
+			exit(PERMISSION_ERROR);
 		else
-			exit(127);
+			exit(PATH_ERROR);
 	}
 	return (pathname);
 }
@@ -85,7 +85,7 @@ char	*create_relative_path(char *command, t_env *env)
 	if (pathname == NULL)
 	{
 		ft_perror(command, "command not found");
-		exit(127);
+		exit(PATH_ERROR);
 	}
 	return (pathname);
 }
