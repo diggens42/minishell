@@ -50,19 +50,19 @@ bool			is_parenthesis(t_type type);
 //------------------------------------------EXPANDER---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 //--------------expander_main------//
-void			expand(t_cmd **cmd, t_env *env);
+void			expand(t_mini *mini, t_cmd **cmd);
 //--------------cmd----------------//
-void			proccess_commands(char **content, t_env *env);
+void			proccess_commands(t_mini *mini, char **content);
 void			handle_command_quotes(bool *quotes, char *quote_type, char current);
 //--------------special_params-----//
-char			*expand_dollar_sign(const char *content, t_env *env);
-char			*expand_dollar_qmark(char *content, t_env *env);
+char			*expand_dollar_sign(t_mini *mini, const char *content);
+char			*expand_dollar_qmark(t_mini *mini, char *content);
 //--------------glob---------------//
 char			**expand_wildcard(char *content);
 char			**insert_wildcard(char **argv, int *index, char **expanded_content);
 t_type			**set_type_wildcard(char **argv, int index);
 //--------------quotes-------------//
-char			*expand_double_quote(const char *content, t_env *env);
+char			*expand_double_quote(t_mini *mini, const char *content);
 char			*remove_quotes(const char *content);
 char			*get_quote_start(char *str);
 char 			*get_quote_end(char *str, char quote_type);
@@ -71,25 +71,25 @@ int				set_quote_state(int quote_state, char c);
 //------------------------------------------EXECUTOR---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 //--------------exec_main----------//
-int				exec_main(t_ast *ast, t_env *env);
-int				exec_builtin(char **argv, t_env *env);
-void			exec_finish(char **argv, t_env *env);
+int				exec_main(t_mini *mini, t_ast *ast);
+int				exec_builtin(t_mini *mini, char **argv);
+void			exec_finish(t_mini *mini, char **argv);
 //--------------heredoc------------//
-int				exec_here_doc(char *limiter, t_env *env);
+int				exec_here_doc(t_mini *mini, char *limiter);
 int				count_heredoc(t_ast *ast);
 //--------------path---------------//
 char			*create_absolute_path(char *command);
 char			*create_relative_path(char *command, t_env *env);
 //--------------pipe---------------//
-int				exec_pipe(t_ast *ast, t_env *env, int lvl);
+int				exec_pipe(t_mini *mini, t_ast *ast, int lvl);
 //--------------redir--------------//
-int				exec_set_redir(t_redir **redir, t_env *env);
+int				exec_set_redir(t_mini *mini, t_redir **redir);
 //--------------utils_1------------//
 int				ft_pipe(int *fd);
 pid_t			ft_fork(void);
-int				set_fd(t_env *env);
-int				reset_fd(t_env *env);
-int				close_fd(t_env *env);
+int				set_fd(t_mini *mini);
+int				reset_fd(t_mini *mini);
+int				close_fd(t_mini *mini);
 //--------------utils_2------------//
 char			**env_to_char_array(t_env *env);
 int				envp_size(t_env *env);
@@ -102,7 +102,7 @@ int				waitpid_exit_stat(pid_t pid);
 int				builtin_cd(char **argv, t_env **env);
 int				builtin_echo(char **argv);
 int				builtin_env(t_env *env);
-int				builtin_exit(char **argv, t_env *env);
+int				builtin_exit(char **argv, t_mini *mini);
 int				builtin_export(char **argv, t_env **env);
 int				builtin_pwd(void);
 int				builtin_unset(char **argv, t_env **env);
@@ -119,7 +119,7 @@ char			*ft_getenv(char *key, t_env *env);
 void			append_env_node(t_env **head, t_env *new_node);
 t_env			*new_env_node(char *key, char *value);
 //--------------exit--------------//
-void			ft_exit(t_env *env, int exit_status);
+void			ft_exit(t_mini *mini, int exit_status);
 void			ft_perror(char *command, char *error_message);
 void			ft_perror_2(char *command, char *argument, char *error_message);
 void			ft_perror_3(char *content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 20:19:11 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 21:28:40 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,39 +88,11 @@ void	free_ast(t_ast *ast)
 	if (ast->cmd != NULL)
 	{
 		if (ast->cmd->argv != NULL)
-		{
 			free_char_array(ast->cmd->argv);
-			// i = 0;
-			// while (ast->cmd->argv[i] != NULL)
-			// {
-			// 	free(ast->cmd->argv[i]);
-			// 	i++;
-			// }
-			// free(ast->cmd->argv);
-		}
 		if (ast->cmd->type != NULL)
-		{
 			free_type_array(ast->cmd->type);
-			// i = 0;
-			// while (ast->cmd->type[i] != NULL)
-			// {
-			// 	free(ast->cmd->type[i]);
-			// 	i++;
-			// }
-			// free(ast->cmd->type);
-		}
 		if (ast->cmd->redir != NULL)
-		{
 			free_redir_array(ast->cmd->redir);
-			// i = 0;
-			// while (ast->cmd->redir[i] != NULL)
-			// {
-			// 	free(ast->cmd->redir[i]->file);
-			// 	free(ast->cmd->redir[i]);
-			// 	i++;
-			// }
-			// free(ast->cmd->redir);
-		}
 		free(ast->cmd);
 	}
 	free_ast(ast->left);

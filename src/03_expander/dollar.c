@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_dollar.c                                    :+:      :+:    :+:   */
+/*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:35:18 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:15:00 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ static char	*construct_new_content(const char *var_value, const char *content)
 
 //replaces variables prefixed with $ (e.g. $HOME)
 // with their corresponding environment values
-char	*expand_dollar_sign(const char *content, t_env *env)
+char	*expand_dollar_sign(t_mini *mini, const char *content)
 {
 	char	*var_name;
 	char	*var_value;
 	char	*expanded_content;
 
 	var_name = extract_var_name(content);
-	var_value = ft_getenv(var_name, env);
+	var_value = ft_getenv(var_name, mini->env);
 	if (!var_value)
 		var_value = ft_strdup("");
 	expanded_content = construct_new_content(var_value, content);

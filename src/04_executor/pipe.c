@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pipe.c                                        :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 17:51:26 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 21:21:17 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	exec_pipe_command(t_ast *ast, t_env *env)
+static int	exec_pipe_command(t_mini *mini, t_ast *ast)
 {
 		// fprintf(stderr, "\x1b[33mexec_pipe_command: %s\n\x1b[0m", ast->cmd->argv[0]);
 
 	int	exit_status;
 
 	exit_status = EXIT_SUCCESS;
-	expand(&ast->cmd, env);
+	expand(mini, &ast->cmd);
 	if (ast->cmd->redir[0] != NULL)
-		exit_status = exec_set_redir(ast->cmd->redir, env);
+		exit_status = exec_set_redir(mini, ast->cmd->redir);
 	if (exit_status == EXIT_FAILURE)
 		exit (exit_status);
 	ast->cmd->argv = new_argv(ast->cmd->argv);
-	exit_status = exec_builtin(ast->cmd->argv, env);
-	if (exit_status != -1)
+	exit_status = exec_builtin(mini, ast->cmd->argv);
+	if (exit_status != ERROR)
 		exit (exit_status);
-	exec_finish(ast->cmd->argv, env);
+	exec_finish(mini, ast->cmd->argv);
 	return (exit_status);
 }
 
-static int	exec_pipe_next(t_ast *ast, t_env *env)
+static int	exec_pipe_next(t_mini *mini, t_ast *ast)
 {
 	// if (ast->cmd != NULL)
 	// 	fprintf(stderr, "\x1b[33mexec_pipe_next: %s\n\x1b[0m", ast->cmd->argv[0]);
@@ -53,7 +53,7 @@ static int	exec_pipe_next(t_ast *ast, t_env *env)
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 			ft_perror("dup2", strerror(errno));
 		close(fd[1]);
-		exit_status = exec_pipe_command(ast, env);
+		exit_status = exec_pipe_command(mini, ast);
 	}
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -64,7 +64,7 @@ static int	exec_pipe_next(t_ast *ast, t_env *env)
 	return (exit_status);
 }
 
-static int	exec_pipe_last(t_ast *ast, t_env *env)
+static int	exec_pipe_last(t_mini *mini, t_ast *ast)
 {
 	// if (ast->cmd != NULL)
 	// 	fprintf(stderr, "\x1b[33mexec_pipe_last: %s\n\x1b[0m", ast->cmd->argv[0]);
@@ -76,15 +76,15 @@ static int	exec_pipe_last(t_ast *ast, t_env *env)
 
 	pid = ft_fork();
 	if (pid == 0)
-		exec_pipe_command(ast, env);
-	reset_fd(env);
+		exec_pipe_command(mini, ast);
+	reset_fd(mini);
 	waitpid(pid, &wstatus, 0);
 	while (wait(NULL) > 0)
 		continue ;
 	return (WEXITSTATUS(wstatus));
 }
 
-int	exec_pipe(t_ast *ast, t_env *env, int lvl)
+int	exec_pipe(t_mini *mini, t_ast *ast, int lvl)
 {
 	// if (ast->cmd != NULL)
 	// 	fprintf(stderr, "\x1b[33mexec_pipe: %s\n\x1b[0m", ast->cmd->argv[0]);
@@ -94,12 +94,12 @@ int	exec_pipe(t_ast *ast, t_env *env, int lvl)
 	int	exit_status;
 
 	if (ast->left->type == PIPE)
-		exit_status = exec_pipe(ast->left, env, lvl + 1);
+		exit_status = exec_pipe(mini, ast->left, lvl + 1);
 	else
-		exit_status = exec_pipe_next(ast->left, env);
+		exit_status = exec_pipe_next(mini, ast->left);
 	if (lvl > 0)
-		exit_status = exec_pipe_next(ast->right, env);
+		exit_status = exec_pipe_next(mini, ast->right);
 	else
-		exit_status = exec_pipe_last(ast->right, env);
+		exit_status = exec_pipe_last(mini, ast->right);
 	return (exit_status);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_dquotes.c                                   :+:      :+:    :+:   */
+/*   dquotes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:40:28 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:14:18 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ static char	*var_extract(const char *content, int *start)
 	return (var_path);
 }
 
-static char	*var_expand(const char *content, int *i, char *result, t_env *env)
+static char	*var_expand(t_mini *mini, const char *content, int *i, char *result)
 {
 	char	*var;
 	char	*expanded;
 	char	*new_result;
 
 	var = var_extract(content, i);
-	expanded = expand_dollar_sign(var, env);
+	expanded = expand_dollar_sign(mini, var);
 	new_result = ft_strjoin(result, expanded);
 	free(result);
 	free(expanded);
@@ -47,13 +47,13 @@ static char	*var_expand(const char *content, int *i, char *result, t_env *env)
 	return (new_result);
 }
 
-static char	*exit_status_expand(char *result, t_env *env)
+static char	*exit_status_expand(t_mini *mini, char *result)
 {
 	char	*temp;
 	char	*exit_status;
 
 	temp = result;
-	exit_status = ft_itoa(env->exit_status);
+	exit_status = ft_itoa(mini->exit_status);
 	result = ft_strjoin(result, exit_status);
 	free(temp);
 	free(exit_status);
@@ -76,7 +76,7 @@ static char	*char_join(char *result, char c)
 	return (new_result);
 }
 
-char	*expand_double_quote(const char *content, t_env *env)
+char	*expand_double_quote(t_mini *mini, const char *content)
 {
 	char	*result;
 	int		i;
@@ -88,13 +88,13 @@ char	*expand_double_quote(const char *content, t_env *env)
 		if (content[i] == '$' && content [i + 1] == '?')
 		{
 			i += 2;
-			result = exit_status_expand(result, env);
+			result = exit_status_expand(mini, result);
 		}
 		else if (content[i] == '$' && content [i + 1] != '?')
 		{
 			i++;
 			if ((ft_isalpha(content[i]) || content[i] == '_'))
-				result = var_expand(content, &i, result, env);
+				result = var_expand(mini, content, &i, result);
 			else
 				result = char_join(result, '$');
 		}

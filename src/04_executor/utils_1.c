@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 16:53:52 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 00:34:09 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 20:20:11 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ pid_t	ft_fork(void)
 	return (pid);
 }
 
-int	set_fd(t_env *env)
+int	set_fd(t_mini *mini)
 {
-	env->fd_stdin = dup(STDIN_FILENO);
-	if (env->fd_stdin == ERROR)
+	mini->fd_stdin = dup(STDIN_FILENO);
+	if (mini->fd_stdin == ERROR)
 	{
 		ft_perror("dup", strerror(errno));
 		return (ERROR);
 	}
-	env->fd_stdout = dup(STDOUT_FILENO);
-	if (env->fd_stdout == ERROR)
+	mini->fd_stdout = dup(STDOUT_FILENO);
+	if (mini->fd_stdout == ERROR)
 	{
 		ft_perror("dup", strerror(errno));
 		return (ERROR);
@@ -49,14 +49,14 @@ int	set_fd(t_env *env)
 	return (EXIT_SUCCESS);
 }
 
-int	reset_fd(t_env *env)
+int	reset_fd(t_mini *mini)
 {
-	if (dup2(env->fd_stdin, STDIN_FILENO) == ERROR)
+	if (dup2(mini->fd_stdin, STDIN_FILENO) == ERROR)
 	{
 		ft_perror("dup2", strerror(errno));
 		return (ERROR);
 	}
-	if (dup2(env->fd_stdout, STDOUT_FILENO) == ERROR)
+	if (dup2(mini->fd_stdout, STDOUT_FILENO) == ERROR)
 	{
 		ft_perror("dup2", strerror(errno));
 		return (ERROR);
@@ -64,19 +64,19 @@ int	reset_fd(t_env *env)
 	return (EXIT_SUCCESS);
 }
 
-int	close_fd(t_env *env)
+int	close_fd(t_mini *mini)
 {
-	if (dup2(env->fd_stdin, STDIN_FILENO) == ERROR)
+	if (dup2(mini->fd_stdin, STDIN_FILENO) == ERROR)
 	{
 		ft_perror("dup2", strerror(errno));
 		return (ERROR);
 	}
-	close (env->fd_stdin);
-	if (dup2(env->fd_stdout, STDOUT_FILENO) == ERROR)
+	close (mini->fd_stdin);
+	if (dup2(mini->fd_stdout, STDOUT_FILENO) == ERROR)
 	{
 		ft_perror("dup2", strerror(errno));
 		return (ERROR);
 	}
-	close (env->fd_stdout);
+	close (mini->fd_stdout);
 	return (EXIT_SUCCESS);
 }

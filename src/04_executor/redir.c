@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 00:32:48 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:19:28 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	exec_redir_in(char *file, t_env *env, int in)
+static int	exec_redir_in(t_mini *mini, char *file, int in)
 {
 	// fprintf(stderr, "\x1b[33mexec_redir_in: %s\n\x1b[0m", file);
 
@@ -23,7 +23,7 @@ static int	exec_redir_in(char *file, t_env *env, int in)
 	if (in == REDIR_IN)
 		fd = open(file, O_RDONLY);
 	else
-		fd = exec_here_doc(file, env);
+		fd = exec_here_doc(mini, file);
 	if (fd == ERROR)
 	{
 		ft_perror(file, strerror(errno));
@@ -61,7 +61,7 @@ static int	exec_redir_out(char *file, int out)
 	return (EXIT_SUCCESS);
 }
 
-int	exec_set_redir(t_redir **redir, t_env *env)
+int	exec_set_redir(t_mini *mini, t_redir **redir)
 {
 	int		exit_status;
 	int		i;
@@ -75,9 +75,9 @@ int	exec_set_redir(t_redir **redir, t_env *env)
 		else if (redir[i]->type == REDIR_APPEND)
 			exit_status = exec_redir_out(redir[i]->file, O_APPEND);
 		else if (redir[i]->type == REDIR_IN)
-			exit_status = exec_redir_in(redir[i]->file, env, REDIR_IN);
+			exit_status = exec_redir_in(mini, redir[i]->file, REDIR_IN);
 		else if (redir[i]->type == REDIR_HEREDOC)
-			exit_status = exec_redir_in(redir[i]->file, env, REDIR_HEREDOC);
+			exit_status = exec_redir_in(mini, redir[i]->file, REDIR_HEREDOC);
 		i++;
 	}
 	return (exit_status);

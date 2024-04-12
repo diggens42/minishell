@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 01:08:43 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:15:57 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,22 @@ static void	process_single_quotes(char **content)
 }
 
 //expands a variable within a tokens content
-static void	process_dollar_sign(char **content, t_env *env)
+static void	process_dollar_sign(t_mini *mini, char **content)
 {
 	char	*temp;
 
 	temp = *content;
-	*content = expand_dollar_sign(*content, env);
+	*content = expand_dollar_sign(mini, *content);
 	free(temp);
 }
 
 //expands a variable within a tokens content
-static void	process_dqmark_sign(char **content, t_env *env)
+static void	process_dqmark_sign(t_mini *mini, char **content)
 {
 	char	*temp;
 
 	temp = *content;
-	*content = ft_itoa(env->exit_status);
+	*content = ft_itoa(mini->exit_status);
 	free(temp);
 }
 
@@ -58,7 +58,7 @@ static void	process_wildcard(char **content, t_cmd *cmd, int *index)
 }
 
 //expands a token based on its type
-void	expand(t_cmd **cmd, t_env *env)
+void	expand(t_mini *mini, t_cmd **cmd)
 {
 	t_cmd	*temp;
 	int		i;
@@ -68,13 +68,13 @@ void	expand(t_cmd **cmd, t_env *env)
 	while (temp->argv[i] != NULL)
 	{
 		if (*temp->type[i] == COMMAND)
-			proccess_commands(&temp->argv[i], env);
+			proccess_commands(mini, &temp->argv[i]);
 		else if (*temp->type[i] == SINGLE_QUOTE)
 			process_single_quotes(&temp->argv[i]);
 		else if (*temp->type[i] == DOLLAR)
-			process_dollar_sign(&temp->argv[i], env);
+			process_dollar_sign(mini, &temp->argv[i]);
 		else if (*temp->type[i] == DQMARK)
-			process_dqmark_sign(&temp->argv[i], env);
+			process_dqmark_sign(mini, &temp->argv[i]);
 		else if (*temp->type[i] == WILDCARD)
 		{
 			process_wildcard(&temp->argv[i], *cmd, &i);

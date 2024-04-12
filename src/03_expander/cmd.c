@@ -6,20 +6,20 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 01:10:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:12:48 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char	*expand_quoted(char *start, char *end, t_env *env)
+static char	*expand_quoted(t_mini *mini, char *start, char *end)
 {
 	char	*quoted_part;
 	char	*result;
 
 	quoted_part = ft_substr(start, 1, end - start - 2);
 	if (*start == '"')
-		result = expand_double_quote(quoted_part, env);
+		result = expand_double_quote(mini, quoted_part);
 	else
 		result = quoted_part;
 	if (quoted_part != result)
@@ -40,7 +40,7 @@ static char	*unquoted_handler(char **new_str, char *current, char *quote_next)
 	return (*new_str);
 }
 
-static char	*quoted_handler(char **new_str, char *quote_next, t_env *env)
+static char	*quoted_handler(t_mini *mini, char **new_str, char *quote_next)
 {
 	char	*quote_end;
 	char	*part;
@@ -54,7 +54,7 @@ static char	*quoted_handler(char **new_str, char *quote_next, t_env *env)
 		free(new_str);
 		return (NULL);
 	}
-	part = expand_quoted(quote_next, quote_end + 1, env);
+	part = expand_quoted(mini, quote_next, quote_end + 1);
 	temp_str = ft_strjoin(*new_str, part);
 	free(part);
 	free(*new_str);
@@ -62,7 +62,7 @@ static char	*quoted_handler(char **new_str, char *quote_next, t_env *env)
 	return (*new_str);
 }
 
-static char	*expand_str_with_quotes(char *str, t_env *env)
+static char	*expand_str_with_quotes(t_mini *mini, char *str)
 {
 	char	*new_str;
 	char	*current;
@@ -77,20 +77,20 @@ static char	*expand_str_with_quotes(char *str, t_env *env)
 			unquoted_handler(&new_str, current, quote_next);
 		if (*quote_next == '\0')
 			break ;
-		quoted_handler(&new_str, quote_next, env);
+		quoted_handler(mini, &new_str, quote_next);
 		current = get_quote_end(quote_next, *quote_next) + 1;
 	}
 	return (new_str);
 }
 
-void	proccess_commands(char **content, t_env *env)
+void	proccess_commands(t_mini *mini, char **content)
 {
 	char	*temp;
 
 	temp = *content;
-	*content = expand_dollar_qmark(*content, env);
+	*content = expand_dollar_qmark(mini, *content);
 	free(temp);
 	temp = *content;
-	*content = expand_str_with_quotes(*content, env);
+	*content = expand_str_with_quotes(mini, *content);
 	free(temp);
 }

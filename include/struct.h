@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:41:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 00:44:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 20:20:23 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ typedef struct	s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
-	int				fd_stdin; //TODO
-	int				fd_stdout; //TODO
-	int				exit_status; //TODO
+	// int				fd_stdin; //TODO
+	// int				fd_stdout; //TODO
+	// int				exit_status; //TODO
 }	t_env;
 
 typedef struct	s_token
@@ -72,12 +72,16 @@ typedef struct	s_ast
 	bool			subshell;
 }	t_ast;
 
-// typedef struct	s_mini
-// {
-// 	t_ast	*ast;
-// 	t_env	*env;
-// 	int		fd_stdin;
-// 	int		fd_stdout;
-// }	t_mini;
+typedef struct	s_mini
+{
+	t_env	*env;
+	t_token	*token;
+	t_ast	*ast;
+	int		fd_stdin;
+	int		fd_stdout;
+	int		exit_status;
+	int		subshell_lvl;
+}	t_mini;
+
 
 #endif

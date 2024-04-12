@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 01:34:15 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:15:28 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ t_env	*init_env(char **envp)
 			append_env_node(&env, new_env_node(key, value));
 		i++;
 	}
-	env->exit_status = 0;
 	return (env);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 21:56:05 by mott              #+#    #+#             */
-/*   Updated: 2024/04/11 23:16:18 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:38:57 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,21 @@ static char	atoexit(char *str)
 	return (sign * num);
 }
 
-int	builtin_exit(char **argv, t_env *env)
+int	builtin_exit(char **argv, t_mini *mini)
 {
-	ft_putstr_fd("exit\n", env->fd_stdout);
+	ft_putstr_fd("exit\n", mini->fd_stdout);
 	if (argv[1] == NULL)
-		ft_exit(env, env->exit_status);
+		ft_exit(mini, mini->exit_status);
 	else if (valid_num(argv[1]) == EXIT_FAILURE)
 	{
 		ft_putstr_fd("minishell: exit", STDERR_FILENO);
 		ft_putstr_fd(argv[1], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-		ft_exit (env, 255);
+		ft_exit (mini, 255);
 	}
 	else if (argv[2] != NULL)
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 	else
-		ft_exit(env, atoexit(argv[1]));
+		ft_exit(mini, atoexit(argv[1]));
 	return (EXIT_FAILURE);
 }

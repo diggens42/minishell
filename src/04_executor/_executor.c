@@ -6,13 +6,13 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 00:24:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:39:19 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	exec_subshell(t_ast *ast, t_env *env)
+static int	exec_subshell(t_mini *mini, t_ast *ast)
 {
 	pid_t	pid;
 	int		wstatus;
@@ -22,32 +22,32 @@ static int	exec_subshell(t_ast *ast, t_env *env)
 	pid = ft_fork();
 	if (pid == 0)
 	{
-		exit_status = exec_main(ast, env);
+		exit_status = exec_main(mini, ast);
 		exit(exit_status);
 	}
 	waitpid(pid, &wstatus, 0);
 	return (WEXITSTATUS(wstatus));
 }
 
-static int	exec_single_command(t_ast *ast, t_env *env)
+static int	exec_single_command(t_mini *mini, t_ast *ast)
 {
 	pid_t	pid;
 	int		exit_status;
 
 	exit_status = EXIT_SUCCESS;
-	expand(&ast->cmd, env);
+	expand(mini, &ast->cmd);
 	if (ast->cmd->redir[0] != NULL)
-		exit_status = exec_set_redir(ast->cmd->redir, env);
+		exit_status = exec_set_redir(mini, ast->cmd->redir);
 	if (exit_status == EXIT_FAILURE)
 		return (exit_status);
 	ast->cmd->argv = new_argv(ast->cmd->argv);
-	exit_status = exec_builtin(ast->cmd->argv, env);
-	if (exit_status != -1)
+	exit_status = exec_builtin(mini, ast->cmd->argv);
+	if (exit_status != ERROR)
 		return (exit_status);
 	init_child_signals();
 	pid = ft_fork();
 	if (pid == 0)
-		exec_finish(ast->cmd->argv, env);
+		exec_finish(mini, ast->cmd->argv);
 	else
 	{
 		exit_status = waitpid_exit_stat(pid);
@@ -56,34 +56,34 @@ static int	exec_single_command(t_ast *ast, t_env *env)
 	return (exit_status);
 }
 
-int	exec_main(t_ast *ast, t_env *env)
+int	exec_main(t_mini *mini, t_ast *ast)
 {
 	if (ast == NULL)
-		return (env->exit_status);
+		return (mini->exit_status);
 	else if (ast->subshell == true)
-		env->exit_status = exec_subshell(ast, env);
+		mini->exit_status = exec_subshell(mini, ast);
 	else if (ast->type == AND)
 	{
-		env->exit_status = exec_main(ast->left, env);
-		reset_fd(env);
-		if (env->exit_status == EXIT_SUCCESS)
-			env->exit_status = exec_main(ast->right, env);
+		mini->exit_status = exec_main(mini, ast->left);
+		reset_fd(mini);
+		if (mini->exit_status == EXIT_SUCCESS)
+			mini->exit_status = exec_main(mini, ast->right);
 	}
 	else if (ast->type == OR)
 	{
-		env->exit_status = exec_main(ast->left, env);
-		reset_fd(env);
-		if (env->exit_status != EXIT_SUCCESS)
-			env->exit_status = exec_main(ast->right, env);
+		mini->exit_status = exec_main(mini, ast->left);
+		reset_fd(mini);
+		if (mini->exit_status != EXIT_SUCCESS)
+			mini->exit_status = exec_main(mini, ast->right);
 	}
 	else if (ast->type == PIPE)
-			env->exit_status = exec_pipe(ast, env, 0);
+			mini->exit_status = exec_pipe(mini, ast, 0);
 	else
-		env->exit_status = exec_single_command(ast, env);
-	return (env->exit_status);
+		mini->exit_status = exec_single_command(mini, ast);
+	return (mini->exit_status);
 }
 
-int	exec_builtin(char **argv, t_env *env)
+int	exec_builtin(t_mini *mini, char **argv)
 {
 	char	*temp;
 
@@ -93,21 +93,21 @@ int	exec_builtin(char **argv, t_env *env)
 	if (ft_strcmp("echo", temp) == 0)
 		return (free(temp), builtin_echo(argv));
 	else if (ft_strcmp("cd", temp) == 0)
-		return (free(temp), builtin_cd(argv, &env));
+		return (free(temp), builtin_cd(argv, &mini->env));
 	else if (ft_strcmp("pwd", temp) == 0)
 		return (free(temp), builtin_pwd());
 	else if (ft_strcmp("export", temp) == 0)
-		return (free(temp), builtin_export(argv, &env));
+		return (free(temp), builtin_export(argv, &mini->env));
 	else if (ft_strcmp("unset", temp) == 0)
-		return (free(temp), builtin_unset(argv, &env));
+		return (free(temp), builtin_unset(argv, &mini->env));
 	else if (ft_strcmp("env", temp) == 0)
-		return (free(temp), builtin_env(env));
+		return (free(temp), builtin_env(mini->env));
 	else if (ft_strcmp("exit", temp) == 0)
-		return (free(temp), builtin_exit(argv, env));
+		return (free(temp), builtin_exit(argv, mini));
 	return (ERROR);
 }
 
-void	exec_finish(char **argv, t_env *env)
+void	exec_finish(t_mini *mini, char **argv)
 {
 	char	*pathname;
 	char	**envp;
@@ -115,8 +115,8 @@ void	exec_finish(char **argv, t_env *env)
 	if (ft_strchr(argv[0], '/') != NULL)
 		pathname = create_absolute_path(argv[0]);
 	else
-		pathname = create_relative_path(argv[0], env);
-	envp = env_to_char_array(env);
+		pathname = create_relative_path(argv[0], mini->env);
+	envp = env_to_char_array(mini->env);
 	if (execve(pathname, argv, envp) == ERROR)
 	{
 		free(pathname);

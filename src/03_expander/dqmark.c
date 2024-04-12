@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd2.c                                             :+:      :+:    :+:   */
+/*   dqmark.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 20:30:46 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 01:10:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:32:12 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*expand_dollar_qmark(char *content, t_env *env)
+char	*expand_dollar_qmark(t_mini *mini, char *content)
 {
 	char	*pos;
 	char	*before_dqmark;
@@ -29,7 +29,7 @@ char	*expand_dollar_qmark(char *content, t_env *env)
 		if (*pos == '$' && *(pos + 1) == '?' && quote_state == 0)
 		{
 			before_dqmark = ft_substr(newstr, 0, pos - newstr);
-			after_dqmark = ft_strjoin_free(ft_itoa(env->exit_status), pos + 2);
+			after_dqmark = ft_strjoin_free(ft_itoa(mini->exit_status), pos + 2);
 			free(newstr);
 			newstr = ft_strjoin(before_dqmark, after_dqmark);
 			pos++;

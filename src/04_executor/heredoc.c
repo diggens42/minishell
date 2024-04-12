@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_heredoc.c                                     :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:32:21 by mott              #+#    #+#             */
-/*   Updated: 2024/04/10 17:02:29 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/12 21:19:45 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	count_heredoc(t_ast *ast)
 	return (heredoc);
 }
 
-int	exec_here_doc(char *limiter, t_env *env)
+int	exec_here_doc(t_mini *mini, char *limiter)
 {
 	// fprintf(stderr, "\x1b[33mexec_here_doc: %s\n\x1b[0m", limiter);
 
@@ -39,8 +39,8 @@ int	exec_here_doc(char *limiter, t_env *env)
 	ft_pipe(fd);
 	while (true)
 	{
-		ft_putstr_fd(PROMPT_MULTI_LINE, env->fd_stdout);
-		line = get_next_line(env->fd_stdin);
+		ft_putstr_fd(PROMPT_MULTI_LINE, mini->fd_stdout);
+		line = get_next_line(mini->fd_stdin);
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		ft_putstr_fd(line, fd[1]);

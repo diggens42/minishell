@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   env2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 13:19:33 by mott              #+#    #+#             */
-/*   Updated: 2024/04/11 23:16:35 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:24:57 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	env_new(t_env **env, t_env *previous, char *key, char *value)
 	return (EXIT_SUCCESS);
 }
 
-static void	env_appand(t_env **env, char *key, char *value)
+static void	env_append(t_env **env, char *key, char *value)
 {
 	t_env	*current;
 
@@ -80,7 +80,7 @@ int	env_update(t_env **env, char *key, char *value)
 	{
 		if (key[ft_strlen(key) - 1] == '+')
 		{
-			env_appand(env, key, value);
+			env_append(env, key, value);
 			return (EXIT_SUCCESS);
 		}
 		if (ft_strcmp(current->key, key) == 0)

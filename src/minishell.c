@@ -6,43 +6,41 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/11 21:57:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/12 21:40:42 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	handle_input(char *cmd_line, t_env *env)
+static int	handle_input(t_mini *mini, char *cmd_line)
 {
-	t_token	*token;
-	t_ast	*ast;
 	int		exit_status;
 
 	if (quotes_syntax(cmd_line) == true)
 		return (2);
-	token = tokenizer(cmd_line); // free here?
-	exit_status = operator_syntax(token);
+	mini->token = tokenizer(cmd_line); // free here?
+	exit_status = operator_syntax(mini->token);
 	if (exit_status != EXIT_SUCCESS)
 	{
-		free_token_list(token);
-		env->exit_status = exit_status;
+		free_token_list(mini->token);
+		mini->exit_status = exit_status;
 		return (exit_status);
 	}
-	exit_status = parenthesis_syntax(token);
+	exit_status = parenthesis_syntax(mini->token);
 	if (exit_status != EXIT_SUCCESS)
 	{
-		free_token_list(token);
-		env->exit_status = exit_status;
+		free_token_list(mini->token);
+		mini->exit_status = exit_status;
 		return (exit_status);
 	}
 	// check_tokens(token);
-	ast = ast_parser(&token);
+	mini->ast = ast_parser(&mini->token);
 	// print_ast(ast, 0);
-	set_fd(env);
-	env->exit_status = exec_main(ast, env);
-	close_fd(env);
-	free_ast(ast);
-	return (env->exit_status);
+	set_fd(mini);
+	mini->exit_status = exec_main(mini, mini->ast);
+	close_fd(mini);
+	free_ast(mini->ast);
+	return (mini->exit_status);
 }
 
 static char	*multi_cmd_line(char *cmd_line)
@@ -62,7 +60,7 @@ static char	*multi_cmd_line(char *cmd_line)
 	return (cmd_line);
 }
 
-static int	read_eval_print_loop(t_env *env)
+static int	read_eval_print_loop(t_mini *mini)
 {
 	char	*cmd_line;
 
@@ -83,12 +81,12 @@ static int	read_eval_print_loop(t_env *env)
 		}
 		if (cmd_line[ft_strlen(cmd_line) - 1] == '\\')
 			cmd_line = multi_cmd_line(cmd_line);
-		env->exit_status = handle_input(cmd_line, env);
+		mini->exit_status = handle_input(mini, cmd_line);
 		free(cmd_line);
 	}
 }
 
-static int	run_script(char *filename, t_env *env)
+static int	run_script(t_mini *mini, char *filename)
 {
 	int		fd;
 	char	*line;
@@ -108,18 +106,19 @@ static int	run_script(char *filename, t_env *env)
 			free(line);
 			continue ;
 		}
-		env->exit_status = handle_input(line, env);
+		mini->exit_status = handle_input(mini, line);
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env;
+	t_mini	*mini;
 
-	env = init_env(envp);
+	mini = ft_calloc(1, sizeof(t_mini));
+	mini->env = init_env(envp);
 	if (argc > 1)
-		return (run_script(argv[1], env));
+		return (run_script(mini, argv[1]));
 	init_parent_signals();
 	init_readline_signal_flags();
-	return (read_eval_print_loop(env));
+	return (read_eval_print_loop(mini));
 }
