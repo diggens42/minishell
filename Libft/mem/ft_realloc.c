@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 16:22:35 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/13 16:26:09 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:33:01 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	*ft_realloc(void *ptr, size_t new_size)
 {
 	void	*new_ptr;
+
 	if (new_size == 0)
 	{
 		free(ptr);

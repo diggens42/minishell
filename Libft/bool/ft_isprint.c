@@ -6,16 +6,16 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 14:16:28 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 18:17:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:38:52 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-int	ft_isprint(int c)
+bool	ft_isprint(int c)
 {
 	if (c >= 32 && c <= 126)
-		return (1);
+		return (true);
 	else
-		return (0);
+		return (false);
 }

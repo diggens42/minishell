@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 18:01:12 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 18:17:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:31:54 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strndup(const char *str1, size_t n)
 {
 	char	*str2;
 	size_t	len;
-	
+
 	len = ft_strlen(str1);
 	if (len > n)
 		len = n;

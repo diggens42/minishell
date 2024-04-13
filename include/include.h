@@ -6,14 +6,14 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:42:34 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 00:50:10 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:20:17 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INCLUDE_H
 # define INCLUDE_H
 
-# include "../Libft/libft.h"
+# include "../libft/libft.h"
 # include "struct.h"
 # include "define.h"
 

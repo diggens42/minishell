@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 15:36:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/13 15:36:51 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:32:43 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strarray_len(char **array)
 {
-	int len;
+	int	len;
 
 	if (array == NULL)
 		return (0);

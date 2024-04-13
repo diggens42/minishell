@@ -6,16 +6,16 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 16:27:38 by fwahl             #+#    #+#             */
-/*   Updated: 2024/03/15 18:17:37 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/13 22:39:40 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-int	ft_isalpha(int c)
+bool	ft_isalpha(int c)
 {
 	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-		return (1);
+		return (true);
 	else
-		return (0);
+		return (false);
 }

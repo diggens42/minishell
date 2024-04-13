@@ -64,7 +64,7 @@ SRCS =	./src/minishell.c \
 
 OBJS = $(SRCS:.c=.o)
 
-LIBFT = ./Libft/libft.a
+LIBFT = ./libft/libft.a
 
 X = "\033[0m"
 R = "\033[31m"
@@ -75,7 +75,7 @@ B = "\033[34m"
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline  -o $@
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
 	@echo $(B)$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@$(X)
 
 %.o: %.c
@@ -83,17 +83,17 @@ $(NAME): $(OBJS)
 	@echo $(Y)$(CC) $(CFLAGS) -c $< -o $@$(X)
 
 $(LIBFT):
-	@$(MAKE) -C ./Libft
+	@$(MAKE) -C ./libft
 
 clean:
 	@rm -f $(OBJS)
 	@echo $(R)rm -f $(OBJS)$(X)
-	@$(MAKE) clean -C ./Libft
+	@$(MAKE) clean -C ./libft
 
 fclean: clean
 	@rm -f $(NAME)
 	@echo $(R)rm -f $(NAME)$(X)
-	@$(MAKE) fclean -C ./Libft
+	@$(MAKE) fclean -C ./libft
 
 re: fclean all
 

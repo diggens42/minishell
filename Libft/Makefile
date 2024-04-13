@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
 HEADER = libft.h
 
-SRCS =	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c \
+SRCS =	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_isspace.c \
 		\
 		ft_atoi.c ft_atol.c ft_atodbl.c ft_itoa.c ft_tolower.c ft_toupper.c \
 		\
@@ -37,7 +37,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 	$(foreach src,$(SRCS),mkdir -p $(OBJDIR)/$(dir $(src));)
 
-$(OBJDIR)/%.o: $(SRCS) $(HEADER) | $(OBJDIR)
+$(OBJDIR)/%.o: %.c $(HEADER) | $(OBJDIR)
 	@mkdir -p $(@D)
 	@echo "$(YELLOW)Libft is compiling...$(RESET)"
 	@$(CC) $(CFLAGS) -I. -c $< -o $@
