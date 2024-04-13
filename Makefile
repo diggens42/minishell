@@ -66,33 +66,31 @@ OBJS = $(SRCS:.c=.o)
 
 LIBFT = ./libft/libft.a
 
-X = "\033[0m"
-R = "\033[31m"
-G = "\033[32m"
-Y = "\033[33m"
-B = "\033[34m"
+RED = \033[0;31m
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+RESET = \033[0m
 
 all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
-	@echo $(B)$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@$(X)
+	@echo "$(GREEN)Minishell compilation finished$(RESET)"
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo $(Y)$(CC) $(CFLAGS) -c $< -o $@$(X)
+	@echo "$(YELLOW)Minishell is compiling...$(RESET)"
 
 $(LIBFT):
 	@$(MAKE) -C ./libft
 
 clean:
+	@echo "$(RED)Cleaning minishell output files$(RESET)"
 	@rm -f $(OBJS)
-	@echo $(R)rm -f $(OBJS)$(X)
 	@$(MAKE) clean -C ./libft
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo $(R)rm -f $(NAME)$(X)
 	@$(MAKE) fclean -C ./libft
 
 re: fclean all

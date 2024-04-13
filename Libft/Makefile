@@ -47,7 +47,7 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)Libft compilation finished$(RESET)"
 
 clean:
-	@echo "$(RED)Removing output files$(RESET)"
+	@echo "$(RED)Cleaning Libft output files$(RESET)"
 	@rm -f $(OBJS)
 
 fclean: clean
