@@ -33,13 +33,15 @@ RESET = \033[0m
 
 all: $(NAME)
 
+compile:
+	@echo "$(YELLOW)Libft is compiling...$(RESET)"
+
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 	$(foreach src,$(SRCS),mkdir -p $(OBJDIR)/$(dir $(src));)
 
-$(OBJDIR)/%.o: %.c $(HEADER) | $(OBJDIR)
+$(OBJDIR)/%.o: %.c compile $(HEADER) | $(OBJDIR)
 	@mkdir -p $(@D)
-	@echo "$(YELLOW)Libft is compiling...$(RESET)"
 	@$(CC) $(CFLAGS) -I. -c $< -o $@
 
 $(NAME): $(OBJS)
@@ -47,10 +49,10 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)Libft compilation finished$(RESET)"
 
 clean:
-	@echo "$(RED)Cleaning Libft output files$(RESET)"
 	@rm -f $(OBJS)
 
 fclean: clean
+	@echo "$(RED)Cleaning Libft output files$(RESET)"
 	@rm -f $(NAME)
 
 re: fclean all

@@ -73,13 +73,15 @@ RESET = \033[0m
 
 all: $(LIBFT) $(NAME)
 
+compile:
+	@echo "$(YELLOW)Minishell is compiling...$(RESET)"
+
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
 	@echo "$(GREEN)Minishell compilation finished$(RESET)"
 
-%.o: %.c
+%.o: %.c compile
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "$(YELLOW)Minishell is compiling...$(RESET)"
 
 $(LIBFT):
 	@$(MAKE) -C ./libft
