@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _parser.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/13 00:08:08 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:29:24 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ static t_ast *ast_logical(t_mini *mini, t_token **token, t_ast *left)
 			right = ast_cmd(mini, token);
 		if (*token != NULL && (*token)->type == PIPE)
 			right = ast_pipe(mini, token, right);
-		if (*token != NULL && is_logical((*token)->type))
-			right = ast_logical(mini, token, right);
 		logical->right = right;
 		node = logical;
 	}

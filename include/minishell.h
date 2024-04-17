@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
 # include "include.h"
 //-----------------------------------------------------------------------------------------//
 //------------------------------------------LEXER------------------------------------------//
@@ -52,6 +51,7 @@ bool			is_parenthesis(t_type type);
 //--------------expander_main------//
 void			expand(t_mini *mini, t_cmd **cmd);
 //--------------cmd----------------//
+char			*expand_str_with_quotes(t_mini *mini, char *str);
 void			proccess_commands(t_mini *mini, char **content);
 void			handle_command_quotes(bool *quotes, char *quote_type, char current);
 //--------------special_params-----//

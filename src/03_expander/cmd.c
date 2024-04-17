@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 21:12:48 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:34:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*quoted_handler(t_mini *mini, char **new_str, char *quote_next)
 	return (*new_str);
 }
 
-static char	*expand_str_with_quotes(t_mini *mini, char *str)
+char	*expand_str_with_quotes(t_mini *mini, char *str)
 {
 	char	*new_str;
 	char	*current;
