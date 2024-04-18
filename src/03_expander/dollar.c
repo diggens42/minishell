@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 16:23:41 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 18:39:40 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ char	*expand_dollar_sign(t_mini *mini, const char *content)
 	char	*var_value;
 	char	*expanded_content;
 
-	ft_printf("%s", content);
 	var_name = extract_var_name(content);
 	var_value = ft_getenv(var_name, mini->env);
 	if (!var_value)

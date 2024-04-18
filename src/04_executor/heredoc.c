@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:32:21 by mott              #+#    #+#             */
-/*   Updated: 2024/04/17 21:21:08 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 19:47:40 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	count_heredoc(t_ast *ast)
 
 int	exec_here_doc(t_mini *mini, char *limiter)
 {
-	// fprintf(stderr, "\x1b[33mexec_here_doc: %s\n\x1b[0m", limiter);
-
 	int		fd[2];
 	char	*line;
 

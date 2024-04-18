@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:06:05 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 23:16:21 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 20:30:46 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	builtin_export_sort(t_env **env, int env_size)
 	}
 }
 
-static int	builtin_export_print(t_env *env)
+int	builtin_export_print(t_env *env)
 {
 	t_env	*temp;
 	t_env	*temp2;
@@ -90,41 +90,17 @@ static int	builtin_export_print(t_env *env)
 	temp2 = temp;
 	while (temp != NULL)
 	{
-		ft_printf("declare -x %s", temp->key);
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(temp->key, STDOUT_FILENO);
 		if (temp->value != NULL)
-			ft_printf("=\"%s\"", temp->value);
-		ft_printf("\n", temp->value);
+		{
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(temp->value, STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
+		}
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		temp = temp->next;
 	}
 	free_env_list(temp2);
 	return (EXIT_SUCCESS);
-}
-
-int	builtin_export(char **argv, t_env **env)
-{
-	int		i;
-	char	*key;
-	char	*equal_sign;
-	char	*value;
-	int		exit_status;
-
-	if (argv[1] == NULL)
-		return (builtin_export_print(*env));
-	exit_status = EXIT_SUCCESS;
-	i = 0;
-	while (argv[++i] != NULL)
-	{
-		key = ft_strdup(argv[i]);
-		value = NULL;
-		equal_sign = ft_strchr(key, '=');
-		if (equal_sign != NULL)
-		{
-			*equal_sign = '\0';
-			value = equal_sign + 1;
-		}
-		if (env_update(env, key, value) == EXIT_FAILURE)
-			exit_status = EXIT_FAILURE;
-		free(key);
-	}
-	return (exit_status);
 }

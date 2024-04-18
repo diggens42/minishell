@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 17:17:33 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 19:29:24 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 20:03:42 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ bool	is_redirect(t_type type)
 
 bool	is_logical(t_type type)
 {
-	return(type == AND || type == OR);
+	return (type == AND || type == OR);
 }
 
 bool	is_parenthesis(t_type type)
 {
-	return(type == PARENTHESIS_L || type == PARENTHESIS_R);
+	return (type == PARENTHESIS_L || type == PARENTHESIS_R);
 }

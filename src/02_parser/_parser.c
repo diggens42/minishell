@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:14:42 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/17 18:29:24 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 19:44:37 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ static t_ast	*ast_pipe(t_mini *mini, t_token **token, t_ast *left)
 	return (left);
 }
 
-static t_ast *ast_logical(t_mini *mini, t_token **token, t_ast *left)
+static t_ast	*ast_logical(t_mini *mini, t_token **token, t_ast *left)
 {
-	t_ast *node;
-	t_ast *logical;
-	t_ast *right;
+	t_ast	*node;
+	t_ast	*logical;
+	t_ast	*right;
 
 	node = left;
 	while (*token != NULL && is_logical((*token)->type))
@@ -96,7 +96,6 @@ static t_ast *ast_logical(t_mini *mini, t_token **token, t_ast *left)
 	}
 	return (node);
 }
-
 
 t_ast	*ast_parser(t_mini *mini, t_token **token)
 {

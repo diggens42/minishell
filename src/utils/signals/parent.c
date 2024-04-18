@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals_parent.c                                   :+:      :+:    :+:   */
+/*   parent.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:10:15 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 23:17:58 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 20:04:15 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	init_parent_signals(void)
 {
 	signal(SIGINT, ctrl_c_handler);
 	signal(SIGQUIT, ctrl_backslash_handler);
-
 }
 
 void	init_readline_signal_flags(void)

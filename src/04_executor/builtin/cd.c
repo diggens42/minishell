@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:16:40 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 17:14:30 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 19:49:00 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ int	builtin_cd(char **argv, t_env **env)
 	}
 	else
 		dir = argv[1];
-	// fprintf(stderr, "\x1b[33mdir: %s\n\x1b[0m", dir);
 	return (ft_chdir(dir, env));
 }

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/04/18 17:20:42 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 19:48:10 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ char	*create_absolute_path(t_mini *mini, char *pathname)
 		else
 			ft_exit(mini, PATH_ERROR);
 	}
-	// return (ft_strdup(pathname));
-	return (pathname);
+	return (ft_strdup(pathname));
 }
 
 char	*create_relative_path(t_mini *mini, char *command)

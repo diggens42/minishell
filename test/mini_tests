@@ -1,6 +1,4 @@
 
-env | sort | grep -v SHLVL | grep -v ^_
-
 echo ----------echo--------------------
 echo
 eCHo Hello World!

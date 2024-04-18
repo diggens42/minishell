@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 23:16:29 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 19:52:39 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	free_env_node(t_env *node)
 	free(node);
 }
 
-int	builtin_unset(char **argv, t_env **env) //TODO
+int	builtin_unset(char **argv, t_env **env)
 {
 	t_env	*current;
 	t_env	*previous;

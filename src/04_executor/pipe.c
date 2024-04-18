@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/18 16:11:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 20:04:51 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static int	exec_pipe_command(t_mini *mini, t_ast *ast)
 {
-		// fprintf(stderr, "\x1b[33mexec_pipe_command: %s\n\x1b[0m", ast->cmd->argv[0]);
-
 	int	exit_status;
 
 	exit_status = EXIT_SUCCESS;
@@ -34,11 +32,6 @@ static int	exec_pipe_command(t_mini *mini, t_ast *ast)
 
 static int	exec_pipe_next(t_mini *mini, t_ast *ast)
 {
-	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mexec_pipe_next: %s\n\x1b[0m", ast->cmd->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mexec_pipe_next: %s\n\x1b[0m", token_type_to_string(ast->type));
-
 	int		fd[2];
 	pid_t	pid;
 	int		exit_status;
@@ -66,11 +59,6 @@ static int	exec_pipe_next(t_mini *mini, t_ast *ast)
 
 static int	exec_pipe_last(t_mini *mini, t_ast *ast)
 {
-	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mexec_pipe_last: %s\n\x1b[0m", ast->cmd->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mexec_pipe_last: %s\n\x1b[0m", token_type_to_string(ast->type));
-
 	pid_t	pid;
 	int		wstatus;
 
@@ -86,11 +74,6 @@ static int	exec_pipe_last(t_mini *mini, t_ast *ast)
 
 int	exec_pipe(t_mini *mini, t_ast *ast, int lvl)
 {
-	// if (ast->cmd != NULL)
-	// 	fprintf(stderr, "\x1b[33mexec_pipe: %s\n\x1b[0m", ast->cmd->argv[0]);
-	// else
-	// 	fprintf(stderr, "\x1b[33mexec_pipe: %s\n\x1b[0m", token_type_to_string(ast->type));
-
 	int	exit_status;
 
 	if (ast->left->type == PIPE)

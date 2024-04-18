@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:24:11 by mott              #+#    #+#             */
-/*   Updated: 2024/04/13 00:29:50 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 20:16:14 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,48 +37,48 @@ void	print_char_array(char **str)
 	}
 }
 
-static const char *token_type_to_string2(t_type type)
+static const char	*token_type_to_string2(t_type type)
 {
-	switch(type)
+	switch (type)
 	{
 		case UNKNOWN:
-			return "UNKNOWN";
+			return ("UNKNOWN");
 		case COMMAND:
-			return "COMMAND";
+			return ("COMMAND");
 		case SINGLE_QUOTE:
-			return "SINGLE_QUOTE";
+			return ("SINGLE_QUOTE");
 		case REDIR_IN:
-			return "REDIR_IN";
+			return ("REDIR_IN");
 		case REDIR_HEREDOC:
-			return "REDIR_HEREDOC";
+			return ("REDIR_HEREDOC");
 		case REDIR_OUT:
-			return "REDIR_OUT";
+			return ("REDIR_OUT");
 		case REDIR_APPEND:
-			return "REDIR_APPEND";
+			return ("REDIR_APPEND");
 		case PIPE:
-			return "PIPE";
+			return ("PIPE");
 		case DOLLAR:
-			return "DOLLAR";
+			return ("DOLLAR");
 		case DQMARK:
-			return "DQMARK";
+			return ("DQMARK");
 		case AND:
-			return "AND";
+			return ("AND");
 		case OR:
-			return "OR";
+			return ("OR");
 		case PARENTHESIS_L:
-			return "PARENTHESIS_L";
+			return ("PARENTHESIS_L");
 		case PARENTHESIS_R:
-			return "PARENTHESIS_R";
+			return ("PARENTHESIS_R");
 		case WILDCARD:
-			return "WILDCARD";
-		default:
-			return "INVALID TYPE";
+			return ("WILDCARD");
+		default :
+			return ("INVALID TYPE");
 	}
 }
 
 void	check_tokens(t_token *tokens)
 {
-	t_token *current_token;
+	t_token	*current_token;
 	int		i;
 
 	current_token = tokens;
@@ -97,37 +97,51 @@ void	check_tokens(t_token *tokens)
 
 char	*token_type_to_string(t_type type)
 {
-    switch (type) {
-        case COMMAND: return "COMMAND";
-        case PIPE: return "PIPE";
-        case AND: return "AND";
-        case OR: return "OR";
-		case REDIR_IN: return "REDIR_IN";
-		case REDIR_HEREDOC: return "REDIR_HEREDOC";
-		case REDIR_OUT: return "REDIR_OUT";
-		case REDIR_APPEND : return "REDIR_APPEND";
-		case DOLLAR : return "DOLLAR";
-		case DQMARK : return "DQMARK";
-		case SINGLE_QUOTE : return "SQUOTE";
-		case WILDCARD:	return "WILDCARD";
-        // Add other cases as necessary.
-        default: return "UNKNOWN";
-    }
+	switch (type)
+	{
+		case COMMAND:
+			return ("COMMAND");
+		case PIPE:
+			return ("PIPE");
+		case AND:
+			return ("AND");
+		case OR:
+			return ("OR");
+		case REDIR_IN:
+			return ("REDIR_IN");
+		case REDIR_HEREDOC:
+			return ("REDIR_HEREDOC");
+		case REDIR_OUT:
+			return ("REDIR_OUT");
+		case REDIR_APPEND:
+			return ("REDIR_APPEND");
+		case DOLLAR:
+			return ("DOLLAR");
+		case DQMARK:
+			return ("DQMARK");
+		case SINGLE_QUOTE:
+			return ("SQUOTE");
+		case WILDCARD:
+			return ("WILDCARD");
+		default :
+			return ("UNKNOWN");
+	}
 }
-void print_ast(t_ast* node, int level)
+
+void	print_ast(t_ast *node, int level)
 {
-	int j = 0;
-	int k = 0;
-    if (node == NULL) return;
+	int	i;
+	int	j;
+	int	k;
 
-    // Print indentation based on the level of depth in the tree.
-    for (int i = 0; i < level; ++i) {
-        // printf("  "); // Two spaces per level of depth.
-        fprintf(stderr, "  "); // Two spaces per level of depth.
-    }
-
+	j = 0;
+	k = 0;
+	if (node == NULL)
+		return ;
+	for (i = 0; i < level; ++i)
+		fprintf(stderr, "  ");
 	fprintf(stderr, "\x1b[34m(SUBLVL %d) %s:\x1b[0m", node->subshell_lvl, token_type_to_string2(node->type));
-    if (node->type == COMMAND)
+	if (node->type == COMMAND)
 	{
 		while (node->cmd->argv[j] != NULL)
 		{
@@ -142,12 +156,9 @@ void print_ast(t_ast* node, int level)
 				fprintf(stderr, "\x1b[34m    %s\x1b[0m", node->cmd->redir[k]->file);
 				k++;
 			}
-
 		}
-    }
-    printf("\n");
-
-    // Recursively print the left and right children, increasing the level of depth.
-    print_ast(node->left, level + 1);
-    print_ast(node->right, level + 1);
+	}
+	printf("\n");
+	print_ast(node->left, level + 1);
+	print_ast(node->right, level + 1);
 }

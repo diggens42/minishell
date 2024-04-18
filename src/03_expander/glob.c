@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   glob.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 01:08:43 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 19:46:26 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	**expand_wildcard(char *content)
 	free(temp);
 	return (res);
 }
+
 char	**insert_wildcard(char **argv, int *index, char **expanded_content)
 {
 	int		argc;
@@ -122,6 +123,5 @@ t_type	**set_type_wildcard(char **argv, int index)
 		*type[argc] = set_type(argv[argc], len);
 		argc++;
 	}
-
 	return (type);
 }

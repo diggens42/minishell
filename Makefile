@@ -50,6 +50,7 @@ SRCS =	./src/minishell.c \
 		./src/04_executor/builtin/env2.c \
 		./src/04_executor/builtin/exit.c \
 		./src/04_executor/builtin/export.c \
+		./src/04_executor/builtin/export2.c \
 		./src/04_executor/builtin/pwd.c \
 		./src/04_executor/builtin/unset.c \
 		\

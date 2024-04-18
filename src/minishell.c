@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/17 21:46:04 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 19:43:02 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 		mini->exit_status = exit_status;
 		return (exit_status);
 	}
-	// check_tokens(mini->token);
 	mini->ast = ast_parser(mini, &mini->token);
-	// print_ast(mini->ast, 0);
 	set_fd(mini);
 	mini->exit_status = exec_main(mini, mini->ast);
 	close_fd(mini);
@@ -88,30 +86,6 @@ static int	read_eval_print_loop(t_mini *mini)
 	}
 }
 
-// static int	run_script(t_mini *mini, char *filename)
-// {
-// 	int		fd;
-// 	char	*line;
-// 	int		exit_status;
-
-// 	fd = open(filename, O_RDONLY);
-// 	if (fd == -1)
-// 		return (127);
-// 	exit_status = EXIT_SUCCESS;
-// 	while (true)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (line == NULL)
-// 			return (exit_status);
-// 		if (*line == '#')
-// 		{
-// 			free(line);
-// 			continue ;
-// 		}
-// 		mini->exit_status = handle_input(mini, line);
-// 	}
-// }
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	*mini;
@@ -120,8 +94,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	mini = ft_calloc(1, sizeof(t_mini));
 	mini->env = init_env(envp);
-	// if (argc > 1)
-	// 	return (run_script(mini, argv[1]));
 	init_parent_signals();
 	init_readline_signal_flags();
 	return (read_eval_print_loop(mini));

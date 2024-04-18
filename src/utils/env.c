@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:34:32 by mott              #+#    #+#             */
-/*   Updated: 2024/04/17 17:05:50 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 20:19:22 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_env	*new_env_node(char *key, char *value)
 
 	node = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (node == NULL)
-		return (NULL);//TODO ADD MALLOC ERROR
+		return (NULL);
 	if (key != NULL)
 	{
 		node->key = ft_strdup(key);
@@ -55,28 +55,6 @@ t_env	*new_env_node(char *key, char *value)
 	}
 	return (node);
 }
-
-// t_env	*init_env(char **envp)
-// {
-// 	extern char	**environ;
-// 	t_env	*env;
-// 	char	*key;
-// 	char	*value;
-// 	int		i;
-
-// 	(void)envp;
-// 	env = NULL;
-// 	i = 0;
-// 	while (environ[i] != NULL)
-// 	{
-// 		key = ft_strtok(environ[i], "=");
-// 		value = ft_strtok(NULL, "=");
-// 		if (key && value)
-// 			append_env_node(&env, new_env_node(key, value));
-// 		i++;
-// 	}
-// 	return (env);
-// }
 
 t_env	*init_env(char **envp)
 {

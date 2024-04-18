@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 19:15:17 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 23:16:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 20:31:46 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	builtin_pwd(void)
 		perror("getcwd");
 		return (EXIT_FAILURE);
 	}
-	ft_printf("%s\n", cwd);
+	ft_putstr_fd(cwd, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	free(cwd);
 	return (EXIT_SUCCESS);
 }

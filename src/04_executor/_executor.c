@@ -6,12 +6,11 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 17:19:49 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/18 19:47:16 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 static int	exec_subshell(t_mini *mini, t_ast *ast)
 {
@@ -78,7 +77,7 @@ int	exec_main(t_mini *mini, t_ast *ast)
 			mini->exit_status = exec_main(mini, ast->right);
 	}
 	else if (ast->type == PIPE)
-			mini->exit_status = exec_pipe(mini, ast, 0);
+		mini->exit_status = exec_pipe(mini, ast, 0);
 	else
 		mini->exit_status = exec_single_command(mini, ast);
 	return (mini->exit_status);
