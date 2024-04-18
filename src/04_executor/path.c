@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 00:31:02 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/14 00:49:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*create_relative_path(char *command, t_env *env)
 
 	path = split_path(command, env);
 	pathname = find_pathname(path);
-	free_char_array(path);
+	ft_free_strarray(path);
 	if (pathname == NULL)
 	{
 		ft_perror(command, "command not found");

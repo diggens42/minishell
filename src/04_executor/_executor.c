@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/13 00:43:19 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/14 00:49:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void	exec_finish(t_mini *mini, char **argv)
 	if (execve(pathname, argv, envp) == ERROR)
 	{
 		free(pathname);
-		free_char_array(argv);
-		free_char_array(envp);
+		ft_free_strarray(argv);
+		ft_free_strarray(envp);
 		ft_perror(argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}

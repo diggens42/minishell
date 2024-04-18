@@ -127,7 +127,7 @@ void			ft_perror_4(char content);
 //--------------free--------------//
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
-void			free_char_array(char **str);
+void			ft_free_strarray(char **str);
 void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
 //--------------signal-s----------//
