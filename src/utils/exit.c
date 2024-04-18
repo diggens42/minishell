@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 21:38:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 16:15:30 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_exit(t_mini *mini,int exit_status)
+void	ft_exit(t_mini *mini, int exit_status)
 {
 	close_fd(mini);
 	free_env_list(mini->env);
+	free_ast(mini->ast);
+	free(mini);
 	exit(exit_status);
 }
 

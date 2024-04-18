@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 21:21:17 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 16:11:43 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static int	exec_pipe_command(t_mini *mini, t_ast *ast)
 	if (ast->cmd->redir[0] != NULL)
 		exit_status = exec_set_redir(mini, ast->cmd->redir);
 	if (exit_status == EXIT_FAILURE)
-		exit (exit_status);
+		ft_exit (mini, exit_status);
 	ast->cmd->argv = new_argv(ast->cmd->argv);
 	exit_status = exec_builtin(mini, ast->cmd->argv);
 	if (exit_status != ERROR)
-		exit (exit_status);
+		ft_exit (mini, exit_status);
 	exec_finish(mini, ast->cmd->argv);
 	return (exit_status);
 }

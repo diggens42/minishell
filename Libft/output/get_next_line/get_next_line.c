@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 20:36:04 by fwahl             #+#    #+#             */
-/*   Updated: 2024/02/12 20:17:16 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 21:30:15 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,26 +90,26 @@ static char	*get_remain(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char		*buffer;
-	char			*next_line;
+	static char	*buffer;
+	char		*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		if (buffer)
+			free(buffer);
 		return (NULL);
+	}
 	if (!buffer)
 	{
-		buffer = malloc((sizeof(char) * (BUFFER_SIZE + 1)));
+		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buffer)
 			return (NULL);
-		ft_memset(buffer, 0, BUFFER_SIZE + 1);
 	}
 	buffer = read_to_buff(fd, buffer);
 	if (buffer == NULL || (buffer[0] == '\0'))
 	{
 		if (buffer)
-		{
 			free(buffer);
-			buffer = NULL;
-		}
 		return (NULL);
 	}
 	next_line = get_line_from_buff(buffer);

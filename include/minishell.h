@@ -78,8 +78,8 @@ void			exec_finish(t_mini *mini, char **argv);
 int				exec_here_doc(t_mini *mini, char *limiter);
 int				count_heredoc(t_ast *ast);
 //--------------path---------------//
-char			*create_absolute_path(char *command);
-char			*create_relative_path(char *command, t_env *env);
+char			*create_absolute_path(t_mini *mini, char *command);
+char			*create_relative_path(t_mini *mini, char *command);
 //--------------pipe---------------//
 int				exec_pipe(t_mini *mini, t_ast *ast, int lvl);
 //--------------redir--------------//
@@ -127,7 +127,6 @@ void			ft_perror_4(char content);
 //--------------free--------------//
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
-void			free_char_array(char **str);
 void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
 //--------------signal-s----------//

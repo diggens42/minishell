@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 21:28:40 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 19:08:40 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,6 @@ void	free_env_list(t_env *env)
 	}
 }
 
-void	free_char_array(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != NULL)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
 void	free_type_array(t_type **type)
 {
 	int	i;
@@ -81,14 +68,12 @@ void	free_redir_array(t_redir **redir)
 
 void	free_ast(t_ast *ast)
 {
-	// int	i;
-
 	if (ast == NULL)
 		return ;
 	if (ast->cmd != NULL)
 	{
 		if (ast->cmd->argv != NULL)
-			free_char_array(ast->cmd->argv);
+			ft_free_strarray(ast->cmd->argv);
 		if (ast->cmd->type != NULL)
 			free_type_array(ast->cmd->type);
 		if (ast->cmd->redir != NULL)
