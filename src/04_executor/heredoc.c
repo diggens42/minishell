@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:32:21 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 21:19:45 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 21:21:08 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exec_here_doc(t_mini *mini, char *limiter)
 	int		fd[2];
 	char	*line;
 
-	limiter = ft_strjoin_free(limiter, "\n");
+	limiter = ft_strjoin(limiter, "\n");
 	ft_pipe(fd);
 	while (true)
 	{
@@ -46,7 +46,9 @@ int	exec_here_doc(t_mini *mini, char *limiter)
 		ft_putstr_fd(line, fd[1]);
 		free(line);
 	}
+	get_next_line(-1);
 	free(line);
+	free(limiter);
 	close(fd[1]);
 	return (fd[0]);
 }

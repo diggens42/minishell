@@ -79,7 +79,7 @@ echo hi || echo bye
 echo hi < > echo hi
 echo hi > < echo bye
 echo hi < < > echo bye
-	echo hi < > > echo bye
+echo hi < > > echo bye
 echo test | cat -e
 echo test | cat -e | cat -e
 echo test | cat -e | cat -e | cat -e

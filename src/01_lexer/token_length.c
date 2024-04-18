@@ -6,30 +6,30 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/17 16:45:48 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:51:39 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	get_quote_len(char *user_input)
+static int	get_quote_len(char *cmd_line)
 {
 	int		len;
 	char	quote_type;
 
-	quote_type = user_input[0];
+	quote_type = cmd_line[0];
 	len = 1;
-	while (user_input[len] != '\0' && user_input[len] != quote_type)
+	while (cmd_line[len] != '\0' && cmd_line[len] != quote_type)
 		len++;
-	if (user_input[len] == quote_type)
+	if (cmd_line[len] == quote_type)
 		len++;
-	while (!ft_isspace(user_input[len]) && !get_single_char_len(user_input[len])
-		&& user_input[len] != '\0')
+	while (!ft_isspace(cmd_line[len]) && !get_single_char_len(cmd_line[len])
+		&& cmd_line[len] != '\0')
 		len++;
 	return (len);
 }
 
-static int	get_double_char_len(char *user_input)
+static int	get_double_char_len(char *cmd_line)
 {
 	const char	*symbols[] = {"&&", "||", "<<", ">>", NULL};
 	int			len;
@@ -37,26 +37,26 @@ static int	get_double_char_len(char *user_input)
 	len = 0;
 	while (symbols[len] != NULL)
 	{
-		if (ft_strncmp(user_input, symbols[len], ft_strlen(symbols[len])) == 0)
+		if (ft_strncmp(cmd_line, symbols[len], ft_strlen(symbols[len])) == 0)
 			return (ft_strlen(symbols[len]));
 		len++;
 	}
 	return (0);
 }
 
-static int	get_dollar_len(char *user_input)
+static int	get_dollar_len(char *cmd_line)
 {
 	int		len;
 
 	len = 1;
-	if (user_input[1] == '?')
+	if (cmd_line[1] == '?')
 	{
-		if (user_input[2] != '\0' && !ft_isspace(user_input[2])
-			&& !get_single_char_len(user_input[2]))
+		if (cmd_line[2] != '\0' && !ft_isspace(cmd_line[2])
+			&& !get_single_char_len(cmd_line[2]))
 		{
 			len = 2;
-			while (user_input[len] != '\0' && !ft_isspace(user_input[len])
-				&& !get_single_char_len(user_input[len]))
+			while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
+				&& !get_single_char_len(cmd_line[len]))
 				len++;
 		}
 		else
@@ -64,11 +64,11 @@ static int	get_dollar_len(char *user_input)
 	}
 	else
 	{
-		while (user_input[len] != '\0' && !ft_isspace(user_input[len])
-			&& !get_single_char_len(user_input[len]))
+		while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
+			&& !get_single_char_len(cmd_line[len]))
 		{
-			if (!ft_isalnum(user_input[len]) && user_input[len] != '_'
-				&& user_input[len] != '/' && user_input[len] != '.')
+			if (!ft_isalnum(cmd_line[len]) && cmd_line[len] != '_'
+				&& cmd_line[len] != '/' && cmd_line[len] != '.')
 				break ;
 			len++;
 		}
@@ -76,7 +76,7 @@ static int	get_dollar_len(char *user_input)
 	return (len);
 }
 
-static int	get_command_len(char *user_input)
+static int	get_command_len(char *cmd_line)
 {
 	int		len;
 	bool	quotes;
@@ -85,31 +85,31 @@ static int	get_command_len(char *user_input)
 	len = 0;
 	quotes = false;
 	quote_type = '\0';
-	while (user_input[len] != '\0')
+	while (cmd_line[len] != '\0')
 	{
-		handle_command_quotes(&quotes, &quote_type, user_input[len]);
-		if (!quotes && (ft_isspace(user_input[len])
-				|| get_single_char_len(user_input[len])))
+		handle_command_quotes(&quotes, &quote_type, cmd_line[len]);
+		if (!quotes && (ft_isspace(cmd_line[len])
+				|| get_single_char_len(cmd_line[len])))
 			break ;
 		len++;
 	}
 	return (len);
 }
 
-int	set_token_length(char *user_input)
+int	set_token_length(char *cmd_line)
 {
 	int	len;
 
-	len = get_double_char_len(user_input);
+	len = get_double_char_len(cmd_line);
 	if (len > 0)
 		return (len);
-	else if (get_single_char_len(user_input[0]))
+	else if (get_single_char_len(cmd_line[0]))
 		return (1);
-	else if (user_input[0] == '"' || user_input[0] == '\'')
-		return (get_quote_len(user_input));
-	else if (user_input[0] == '$')
-		return (get_dollar_len(user_input));
+	else if (cmd_line[0] == '"' || cmd_line[0] == '\'')
+		return (get_quote_len(cmd_line));
+	else if (cmd_line[0] == '$')
+		return (get_dollar_len(cmd_line));
 	else
-		return (get_command_len(user_input));
+		return (get_command_len(cmd_line));
 	return (len);
 }

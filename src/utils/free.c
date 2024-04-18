@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:29:19 by mott              #+#    #+#             */
-/*   Updated: 2024/04/14 00:49:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:52:59 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	free_redir_array(t_redir **redir)
 
 void	free_ast(t_ast *ast)
 {
-	// int	i;
-
 	if (ast == NULL)
 		return ;
 	if (ast->cmd != NULL)

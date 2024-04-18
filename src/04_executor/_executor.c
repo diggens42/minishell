@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/14 00:49:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:52:17 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	exec_subshell(t_mini *mini, t_ast *ast)
 	if (pid == 0)
 	{
 		exit_status = exec_main(mini, ast);
-		exit(exit_status);
+		ft_exit(mini, exit_status);
 	}
 	waitpid(pid, &wstatus, 0);
 	return (WEXITSTATUS(wstatus));
@@ -105,7 +105,7 @@ int	exec_builtin(t_mini *mini, char **argv)
 		return (free(temp), builtin_env(mini->env));
 	else if (ft_strcmp("exit", temp) == 0)
 		return (free(temp), builtin_exit(argv, mini));
-	return (ERROR);
+	return (free(temp), ERROR);
 }
 
 void	exec_finish(t_mini *mini, char **argv)
@@ -114,16 +114,15 @@ void	exec_finish(t_mini *mini, char **argv)
 	char	**envp;
 
 	if (ft_strchr(argv[0], '/') != NULL)
-		pathname = create_absolute_path(argv[0]);
+		pathname = create_absolute_path(mini, argv[0]);
 	else
-		pathname = create_relative_path(argv[0], mini->env);
+		pathname = create_relative_path(mini, argv[0]);
 	envp = env_to_char_array(mini->env);
 	if (execve(pathname, argv, envp) == ERROR)
 	{
-		free(pathname);
-		ft_free_strarray(argv);
-		ft_free_strarray(envp);
 		ft_perror(argv[0], strerror(errno));
-		exit(EXIT_FAILURE);
+		free(pathname);
+		ft_free_strarray(envp);
+		ft_exit(mini, EXIT_FAILURE);
 	}
 }

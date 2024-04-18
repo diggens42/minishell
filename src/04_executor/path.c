@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/04/14 00:49:59 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:52:46 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*find_pathname(char **path)
 	return (NULL);
 }
 
-char	*create_absolute_path(char *pathname)
+char	*create_absolute_path(t_mini *mini, char *pathname)
 {
 	struct stat	statbuf;
 
@@ -61,31 +61,32 @@ char	*create_absolute_path(char *pathname)
 	if (S_ISDIR(statbuf.st_mode) == true)
 	{
 		ft_perror(pathname, "is a directory");
-		exit(PERMISSION_ERROR);
+		ft_exit(mini, PERMISSION_ERROR);
 	}
 	if (access(pathname, X_OK) == ERROR)
 	{
 		ft_perror(pathname, strerror(errno));
 		if (errno == 13)
-			exit(PERMISSION_ERROR);
+			ft_exit(mini, PERMISSION_ERROR);
 		else
-			exit(PATH_ERROR);
+			ft_exit(mini, PATH_ERROR);
 	}
+	// return (ft_strdup(pathname));
 	return (pathname);
 }
 
-char	*create_relative_path(char *command, t_env *env)
+char	*create_relative_path(t_mini *mini, char *command)
 {
 	char	**path;
 	char	*pathname;
 
-	path = split_path(command, env);
+	path = split_path(command, mini->env);
 	pathname = find_pathname(path);
 	ft_free_strarray(path);
 	if (pathname == NULL)
 	{
 		ft_perror(command, "command not found");
-		exit(PATH_ERROR);
+		ft_exit(mini, PATH_ERROR);
 	}
 	return (pathname);
 }

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   include.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:42:34 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/13 22:20:17 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:59:39 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INCLUDE_H
 # define INCLUDE_H
 
-# include "../libft/libft.h"
+# include "../Libft/libft.h"
 # include "struct.h"
 # include "define.h"
 

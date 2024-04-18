@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/13 00:41:36 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 21:46:04 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 
 	if (quotes_syntax(cmd_line) == true)
 		return (2);
-	mini->token = tokenizer(cmd_line); // free here?
+	mini->token = tokenizer(cmd_line);
 	exit_status = operator_syntax(mini->token);
 	if (exit_status != EXIT_SUCCESS)
 	{
@@ -70,7 +70,9 @@ static int	read_eval_print_loop(t_mini *mini)
 		add_history(cmd_line);
 		if (cmd_line == NULL)
 		{
-			ft_putstr_fd("\n", STDOUT_FILENO);
+			free_env_list(mini->env);
+			free(mini);
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			return (EXIT_SUCCESS);
 		}
 		if (cmd_line[0] == '\0'
@@ -86,38 +88,40 @@ static int	read_eval_print_loop(t_mini *mini)
 	}
 }
 
-static int	run_script(t_mini *mini, char *filename)
-{
-	int		fd;
-	char	*line;
-	int		exit_status;
+// static int	run_script(t_mini *mini, char *filename)
+// {
+// 	int		fd;
+// 	char	*line;
+// 	int		exit_status;
 
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-		return (127);
-	exit_status = EXIT_SUCCESS;
-	while (true)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			return (exit_status);
-		if (*line == '#')
-		{
-			free(line);
-			continue ;
-		}
-		mini->exit_status = handle_input(mini, line);
-	}
-}
+// 	fd = open(filename, O_RDONLY);
+// 	if (fd == -1)
+// 		return (127);
+// 	exit_status = EXIT_SUCCESS;
+// 	while (true)
+// 	{
+// 		line = get_next_line(fd);
+// 		if (line == NULL)
+// 			return (exit_status);
+// 		if (*line == '#')
+// 		{
+// 			free(line);
+// 			continue ;
+// 		}
+// 		mini->exit_status = handle_input(mini, line);
+// 	}
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	*mini;
 
+	(void)argc;
+	(void)argv;
 	mini = ft_calloc(1, sizeof(t_mini));
 	mini->env = init_env(envp);
-	if (argc > 1)
-		return (run_script(mini, argv[1]));
+	// if (argc > 1)
+	// 	return (run_script(mini, argv[1]));
 	init_parent_signals();
 	init_readline_signal_flags();
 	return (read_eval_print_loop(mini));

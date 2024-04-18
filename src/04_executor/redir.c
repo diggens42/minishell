@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 21:19:28 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:46:29 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 
 static int	exec_redir_in(t_mini *mini, char *file, int in)
 {
-	// fprintf(stderr, "\x1b[33mexec_redir_in: %s\n\x1b[0m", file);
+	int		fd;
+	char	*temp;
 
-	int fd;
-
-	// if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
-	// 	file = remove_quotes(file);
+	temp = expand_str_with_quotes(mini, file);
 	if (in == REDIR_IN)
-		fd = open(file, O_RDONLY);
+		fd = open(temp, O_RDONLY);
 	else
-		fd = exec_here_doc(mini, file);
+		fd = exec_here_doc(mini, temp);
 	if (fd == ERROR)
 	{
-		ft_perror(file, strerror(errno));
+		ft_perror(temp, strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	if (dup2(fd, STDIN_FILENO) == ERROR)
@@ -35,21 +33,20 @@ static int	exec_redir_in(t_mini *mini, char *file, int in)
 		return (EXIT_FAILURE);
 	}
 	close(fd);
+	free(temp);
 	return (EXIT_SUCCESS);
 }
 
-static int	exec_redir_out(char *file, int out)
+static int	exec_redir_out(t_mini *mini, char *file, int out)
 {
-	// fprintf(stderr, "\x1b[33mexec_redir_out: %s\n\x1b[0m", file);
+	int		fd;
+	char	*temp;
 
-	int fd;
-
-	// if (file[0] == '"' && file[ft_strlen(file) - 1] == '"')
-	// 	file = remove_quotes(file);
-	fd = open(file, O_WRONLY | O_CREAT | out, 0644);
+	temp = expand_str_with_quotes(mini, file);
+	fd = open(temp, O_WRONLY | O_CREAT | out, 0644);
 	if (fd == ERROR)
 	{
-		ft_perror(file, strerror(errno));
+		ft_perror(temp, strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	if (dup2(fd, STDOUT_FILENO) == ERROR)
@@ -58,6 +55,7 @@ static int	exec_redir_out(char *file, int out)
 		return (EXIT_FAILURE);
 	}
 	close(fd);
+	free(temp);
 	return (EXIT_SUCCESS);
 }
 
@@ -71,9 +69,9 @@ int	exec_set_redir(t_mini *mini, t_redir **redir)
 	while (redir[i] != NULL && exit_status == EXIT_SUCCESS)
 	{
 		if (redir[i]->type == REDIR_OUT)
-			exit_status = exec_redir_out(redir[i]->file, O_TRUNC);
+			exit_status = exec_redir_out(mini, redir[i]->file, O_TRUNC);
 		else if (redir[i]->type == REDIR_APPEND)
-			exit_status = exec_redir_out(redir[i]->file, O_APPEND);
+			exit_status = exec_redir_out(mini, redir[i]->file, O_APPEND);
 		else if (redir[i]->type == REDIR_IN)
 			exit_status = exec_redir_in(mini, redir[i]->file, REDIR_IN);
 		else if (redir[i]->type == REDIR_HEREDOC)

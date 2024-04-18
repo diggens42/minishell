@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
 # include "include.h"
 //-----------------------------------------------------------------------------------------//
 //------------------------------------------LEXER------------------------------------------//
@@ -52,6 +51,7 @@ bool			is_parenthesis(t_type type);
 //--------------expander_main------//
 void			expand(t_mini *mini, t_cmd **cmd);
 //--------------cmd----------------//
+char			*expand_str_with_quotes(t_mini *mini, char *str);
 void			proccess_commands(t_mini *mini, char **content);
 void			handle_command_quotes(bool *quotes, char *quote_type, char current);
 //--------------special_params-----//
@@ -78,8 +78,8 @@ void			exec_finish(t_mini *mini, char **argv);
 int				exec_here_doc(t_mini *mini, char *limiter);
 int				count_heredoc(t_ast *ast);
 //--------------path---------------//
-char			*create_absolute_path(char *command);
-char			*create_relative_path(char *command, t_env *env);
+char			*create_absolute_path(t_mini *mini, char *command);
+char			*create_relative_path(t_mini *mini, char *command);
 //--------------pipe---------------//
 int				exec_pipe(t_mini *mini, t_ast *ast, int lvl);
 //--------------redir--------------//
@@ -127,7 +127,6 @@ void			ft_perror_4(char content);
 //--------------free--------------//
 void			free_token_list(t_token *token_head);
 void			free_env_list(t_env *env);
-void			ft_free_strarray(char **str);
 void			free_type_array(t_type **type);
 void			free_ast(t_ast *ast);
 //--------------signal-s----------//

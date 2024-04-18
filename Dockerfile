@@ -20,6 +20,7 @@ WORKDIR /mnt
 
 # Command to run Valgrind for memory debugging:
 # valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./minishell
+# valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./minishell
 #   valgrind
 # --leak-check=full
 # --show-leak-kinds=all
