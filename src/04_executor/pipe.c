@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/18 20:04:51 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/19 21:32:06 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static int	exec_pipe_command(t_mini *mini, t_ast *ast)
 	if (ast->cmd->redir[0] != NULL)
 		exit_status = exec_set_redir(mini, ast->cmd->redir);
 	if (exit_status == EXIT_FAILURE)
-		ft_exit (mini, exit_status);
+		ft_exit(mini, exit_status);
 	ast->cmd->argv = new_argv(ast->cmd->argv);
 	exit_status = exec_builtin(mini, ast->cmd->argv);
 	if (exit_status != ERROR)
-		ft_exit (mini, exit_status);
+		ft_exit(mini, exit_status);
 	exec_finish(mini, ast->cmd->argv);
 	return (exit_status);
 }

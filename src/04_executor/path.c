@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:26:57 by mott              #+#    #+#             */
-/*   Updated: 2024/04/18 19:48:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/19 18:56:31 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ char	*create_absolute_path(t_mini *mini, char *pathname)
 {
 	struct stat	statbuf;
 
-	stat(pathname, &statbuf);
-	if (S_ISDIR(statbuf.st_mode) == true)
+	if (stat(pathname, &statbuf) == 0)
 	{
-		ft_perror(pathname, "is a directory");
-		ft_exit(mini, PERMISSION_ERROR);
+		if (S_ISDIR(statbuf.st_mode) == true)
+		{
+			ft_perror(pathname, "is a directory");
+			ft_exit(mini, PERMISSION_ERROR);
+		}
 	}
 	if (access(pathname, X_OK) == ERROR)
 	{

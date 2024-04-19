@@ -6,16 +6,16 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:42:34 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 20:36:00 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/19 12:20:23 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INCLUDE_H
 # define INCLUDE_H
 
-# include "../Libft/libft.h"
-# include "struct.h"
+# include "../libft/libft.h"
 # include "define.h"
+# include "struct.h"
 
 # include <stdio.h>
 # include <readline/readline.h>

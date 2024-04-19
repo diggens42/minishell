@@ -6,12 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 13:29:20 by mott              #+#    #+#             */
-/*   Updated: 2024/04/18 16:15:30 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/19 18:33:05 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// close file descriptor, free memory and exit minishell
 void	ft_exit(t_mini *mini, int exit_status)
 {
 	close_fd(mini);
@@ -52,6 +53,7 @@ void	ft_perror_3(char *content)
 	ft_putstr_fd("'\n", STDERR_FILENO);
 }
 
+// bash: unexpected EOF while looking for matching `content'
 void	ft_perror_4(char content)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);

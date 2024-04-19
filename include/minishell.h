@@ -108,7 +108,7 @@ int			builtin_pwd(void);
 int			builtin_unset(char **argv, t_env **env);
 //--------------utils--------------//
 int			env_update(t_env **env, char *key, char *value);
-int			is_valid_key(char *key);
+int			is_valid_key(char *key, char *builtin);
 int			builtin_export_print(t_env *env);
 //----------------------------------------------------------------------------//
 //-----------------------------------------UTILS------------------------------//

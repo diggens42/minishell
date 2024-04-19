@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 23:39:23 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 19:52:39 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/19 20:59:18 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,20 @@ static void	free_env_node(t_env *node)
 	free(node);
 }
 
+static int	unset_cmp(char *arg, t_env **current, t_env **previous, t_env **env)
+{
+	if (ft_strcmp((*current)->key, arg) == 0)
+	{
+		if (previous == NULL)
+			*env = (*current)->next;
+		else
+			(*previous)->next = (*current)->next;
+		free_env_node((*current));
+		return (EXIT_SUCCESS);
+	}
+	return (EXIT_FAILURE);
+}
+
 int	builtin_unset(char **argv, t_env **env)
 {
 	t_env	*current;
@@ -30,24 +44,14 @@ int	builtin_unset(char **argv, t_env **env)
 	i = 0;
 	while (argv[++i] != NULL)
 	{
-		if (is_valid_key(argv[i]) == EXIT_FAILURE)
-		{
-			ft_perror_2("unset", argv[i], "not a valid identifier");
+		if (is_valid_key(argv[i], "unset") == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		}
 		current = *env;
 		previous = NULL;
 		while (current != NULL)
 		{
-			if (ft_strcmp(current->key, argv[i]) == 0)
-			{
-				if (previous == NULL)
-					*env = current->next;
-				else
-					previous->next = current->next;
-				free_env_node(current);
+			if (unset_cmp(argv[i], &current, &previous, env) == EXIT_SUCCESS)
 				break ;
-			}
 			previous = current;
 			current = current->next;
 		}
