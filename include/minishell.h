@@ -75,7 +75,7 @@ int			exec_main(t_mini *mini, t_ast *ast);
 int			exec_builtin(t_mini *mini, char **argv);
 void		exec_finish(t_mini *mini, char **argv);
 //--------------heredoc------------//
-int			exec_here_doc(t_mini *mini, char *limiter);
+void		find_heredoc(t_mini *mini, t_ast *ast);
 int			count_heredoc(t_ast *ast);
 //--------------path---------------//
 char		*create_absolute_path(t_mini *mini, char *command);

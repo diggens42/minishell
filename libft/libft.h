@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 19:04:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/17 19:00:03 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/21 18:54:21 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ void			*ft_calloc(size_t count, size_t size);
 // IO related functions
 int				ft_printf(const char *f, ...);
 char			*get_next_line(int fd);
+int				gn_strlen(char *str);
+char			*gn_strchr(char *str, char c);
+char			*gn_strjoin(char *s1, char *s2);
+char			*gn_substr(char *str, int start, int n);
 void			ft_putbase(unsigned long num, int base, int upper);
 void			ft_putint(long num);
 void			ft_putptr(unsigned long num);

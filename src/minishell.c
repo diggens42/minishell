@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/18 19:43:02 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/21 18:17:47 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	handle_input(t_mini *mini, char *cmd_line)
 {
-	int		exit_status;
+	int	exit_status;
 
 	if (quotes_syntax(cmd_line) == true)
 		return (2);
@@ -35,6 +35,7 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 	}
 	mini->ast = ast_parser(mini, &mini->token);
 	set_fd(mini);
+	find_heredoc(mini, mini->ast);
 	mini->exit_status = exec_main(mini, mini->ast);
 	close_fd(mini);
 	free_ast(mini->ast);
@@ -43,8 +44,8 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 
 static char	*multi_cmd_line(char *cmd_line)
 {
-	char		*next_cmd_line;
-	char		*temp;
+	char	*next_cmd_line;
+	char	*temp;
 
 	while (cmd_line[ft_strlen(cmd_line) - 1] == '\\')
 	{
