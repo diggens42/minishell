@@ -5,114 +5,81 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/21 20:36:04 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/17 21:30:15 by mott             ###   ########.fr       */
+/*   Created: 2024/02/26 16:30:50 by mott              #+#    #+#             */
+/*   Updated: 2024/04/21 18:54:52 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../libft.h"
 
-static char	*get_line_from_buff(char *buffer)
+static char	*gn_read_line(int fd, char *temp)
 {
-	char	*line;
-	int		i;
-	int		j;
+	char	buffer[BUFFER_SIZE + 1];
+	char	*to_free;
+	int		nbytes;
 
-	i = 0;
-	while (buffer[i] != '\n' && buffer[i] != '\0')
-		i++;
-	if (buffer[i] == '\n')
-		i++;
-	line = malloc(sizeof(char) * (i + 1));
-	if (!line)
-		return (NULL);
-	j = 0;
-	while (i > j++)
-		line[j - 1] = buffer[j - 1];
-	line[i] = '\0';
-	return (line);
-}
-
-static char	*read_to_buff(int fd, char *buffer)
-{
-	size_t	nbytes;
-	char	read_string[BUFFER_SIZE + 1];
-	char	*temp;
-
-	if (read(fd, NULL, 0) == -1)
+	while (gn_strchr(temp, '\n') == NULL)
 	{
-		free(buffer);
-		return (NULL);
-	}
-	while (1)
-	{
-		nbytes = read(fd, read_string, BUFFER_SIZE);
-		if (nbytes == 0)
-			return (buffer);
-		if (nbytes <= BUFFER_SIZE)
-			read_string[nbytes] = '\0';
-		temp = ft_strjoin(buffer, read_string);
-		if (temp == NULL)
+		nbytes = read(fd, buffer, BUFFER_SIZE);
+		if (nbytes == -1)
+		{
+			if (temp != NULL)
+				free(temp);
 			return (NULL);
-		free(buffer);
-		buffer = temp;
-		if (ft_strchr(buffer, '\n'))
+		}
+		else if (nbytes == 0)
 			break ;
+		buffer[nbytes] = '\0';
+		to_free = temp;
+		temp = gn_strjoin(temp, buffer);
+		free(to_free);
 	}
-	return (buffer);
+	return (temp);
 }
 
-static char	*get_remain(char *buffer)
+static char	*gn_current_line(char *temp)
 {
-	char	*remain;
-	char	*buff_ptr;
-	char	*dest;
+	char	*current_line;
+	int		start;
+	int		n;
 
-	buff_ptr = buffer;
-	while (*buff_ptr && *buff_ptr != '\n')
-		buff_ptr++;
-	if (*buff_ptr == '\0')
-	{
-		free(buffer);
+	start = 0;
+	if (gn_strchr(temp, '\n') != NULL)
+		n = gn_strchr(temp, '\n') - temp + 1;
+	else
+		n = gn_strlen(temp);
+	current_line = gn_substr(temp, start, n);
+	return (current_line);
+}
+
+static char	*gn_next_line(char *temp)
+{
+	char	*next_line;
+	int		start;
+	int		n;
+
+	if (gn_strchr(temp, '\n') != NULL)
+		start = gn_strchr(temp, '\n') - temp + 1;
+	else
 		return (NULL);
-	}
-	remain = malloc(sizeof(char) * (ft_strlen(buff_ptr) + 1));
-	buff_ptr++;
-	dest = remain;
-	if (!remain)
+	n = gn_strlen(temp) - start;
+	if (n == 0)
 		return (NULL);
-	while (*buff_ptr != 0)
-		*dest++ = *buff_ptr++;
-	*dest = '\0';
-	free(buffer);
-	return (remain);
+	next_line = gn_substr(temp, start, n);
+	return (next_line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*next_line;
+	char		*temp;
+	char		*current_line;
+	static char	*next_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-	{
-		if (buffer)
-			free(buffer);
+	if (fd < 0)
 		return (NULL);
-	}
-	if (!buffer)
-	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (!buffer)
-			return (NULL);
-	}
-	buffer = read_to_buff(fd, buffer);
-	if (buffer == NULL || (buffer[0] == '\0'))
-	{
-		if (buffer)
-			free(buffer);
-		return (NULL);
-	}
-	next_line = get_line_from_buff(buffer);
-	buffer = get_remain(buffer);
-	return (next_line);
+	temp = gn_read_line(fd, next_line);
+	current_line = gn_current_line(temp);
+	next_line = gn_next_line(temp);
+	free(temp);
+	return (current_line);
 }

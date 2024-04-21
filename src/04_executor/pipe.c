@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/19 21:32:06 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/21 18:22:01 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int	exec_pipe_next(t_mini *mini, t_ast *ast)
 	int		fd[2];
 	pid_t	pid;
 	int		exit_status;
-	int		wstatus;
 
 	exit_status = EXIT_SUCCESS;
 	ft_pipe(fd);
@@ -52,8 +51,6 @@ static int	exec_pipe_next(t_mini *mini, t_ast *ast)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		ft_perror("dup2", strerror(errno));
 	close(fd[0]);
-	if (count_heredoc(ast) > 0)
-		waitpid(pid, &wstatus, 0);
 	return (exit_status);
 }
 

@@ -78,14 +78,14 @@ compile:
 	@echo "$(YELLOW)Minishell is compiling...$(RESET)"
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
 	@echo "$(GREEN)Minishell compilation finished$(RESET)"
 
-%.o: %.c compile
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c 
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	@$(MAKE) -C ./libft
+	$(MAKE) -C ./libft
 
 clean:
 	@echo "$(RED)Cleaning minishell output files$(RESET)"

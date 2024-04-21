@@ -13,7 +13,7 @@ SRCS =	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_isspa
 		\
 		ft_realloc.c ft_bzero.c ft_calloc.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c ft_free_strarray.c \
 		\
-		get_next_line.c get_next_line_bonus.c ft_printf.c put_chars.c put_numbers.c \
+		get_next_line.c get_next_line_utils.c ft_printf.c put_chars.c put_numbers.c \
 		ft_putbase.c ft_putchar_fd.c ft_putchar.c ft_putendl_fd.c ft_putint.c ft_putnbr_fd.c ft_putptr.c ft_putstr_fd.c ft_putstr.c \
 		\
 		ft_strarray_append.c ft_strarray_len.c ft_split.c ft_strdup.c ft_strndup.c ft_striteri.c ft_strjoin.c ft_strjoin_free.c \
