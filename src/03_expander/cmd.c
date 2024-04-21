@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 20:12:37 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/17 18:34:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/21 18:39:20 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ void	proccess_commands(t_mini *mini, char **content)
 
 	temp = *content;
 	*content = expand_dollar_qmark(mini, *content);
+	free(temp);
+	temp = *content;
+	*content = expand_dollar_skip_quoted(mini, *content);
 	free(temp);
 	temp = *content;
 	*content = expand_str_with_quotes(mini, *content);

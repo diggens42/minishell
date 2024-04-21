@@ -6,7 +6,7 @@
 /*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 21:14:18 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/21 18:43:01 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,6 @@ static char	*var_expand(t_mini *mini, const char *content, int *i, char *result)
 	return (new_result);
 }
 
-static char	*exit_status_expand(t_mini *mini, char *result)
-{
-	char	*temp;
-	char	*exit_status;
-
-	temp = result;
-	exit_status = ft_itoa(mini->exit_status);
-	result = ft_strjoin(result, exit_status);
-	free(temp);
-	free(exit_status);
-	return (result);
-}
-
 static char	*char_join(char *result, char c)
 {
 	char	*temp;
@@ -88,9 +75,36 @@ char	*expand_double_quote(t_mini *mini, const char *content)
 		if (content[i] == '$' && content [i + 1] == '?')
 		{
 			i += 2;
-			result = exit_status_expand(mini, result);
+			result = expand_exit_status(mini, result);
 		}
 		else if (content[i] == '$' && content [i + 1] != '?')
+		{
+			i++;
+			if ((ft_isalpha(content[i]) || content[i] == '_'))
+				result = var_expand(mini, content, &i, result);
+			else
+				result = char_join(result, '$');
+		}
+		else
+			result = char_join(result, content[i++]);
+	}
+	return (result);
+}
+
+char	*expand_dollar_skip_quoted(t_mini *mini, const char *content)
+{
+	char	*result;
+	int		i;
+	int		quote_state;
+
+
+	result = (char *)ft_calloc(1, sizeof(char));
+	quote_state = 0;
+	i = 0;
+	while (content[i])
+	{
+		quote_state = set_quote_state(quote_state, content[i]);
+		if (content[i] == '$' && content [i + 1] != '?' && quote_state == 0)
 		{
 			i++;
 			if ((ft_isalpha(content[i]) || content[i] == '_'))

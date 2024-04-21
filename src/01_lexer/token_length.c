@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_length.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/20 16:37:48 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/21 18:44:25 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,64 +44,22 @@ static int	get_double_char_len(char *cmd_line)
 	return (0);
 }
 
-static int	get_dollar_len(char *cmd_line)
+static void	handle_command_quotes(bool *quotes, char *quote_type, char current)
 {
-	int	len;
-
-	len = 1;
-	if (cmd_line[len] == '?')
+	if (current == '"' || current == '\'')
 	{
-		len++;
-		while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
-			&& !get_single_char_len(cmd_line[len]))
-			len++;
-		return (len);
-	}
-	else
-	{
-		while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
-			&& !get_single_char_len(cmd_line[len]))
+		if (!(*quotes))
 		{
-			if (!ft_isalnum(cmd_line[len]) && cmd_line[len] != '_'
-				&& cmd_line[len] != '/' && cmd_line[len] != '.')
-				break ;
-			len++;
+			*quotes = true;
+			*quote_type = current;
+		}
+		else if (*quote_type == current)
+		{
+			*quotes = false;
+			*quote_type = '\'';
 		}
 	}
-	return (len);
 }
-
-// static int	get_dollar_len(char *cmd_line)
-// {
-// 	int		len;
-
-// 	len = 1;
-// 	if (cmd_line[1] == '?')
-// 	{
-// 		if (cmd_line[2] != '\0' && !ft_isspace(cmd_line[2])
-// 			&& !get_single_char_len(cmd_line[2]))
-// 		{
-// 			len = 2;
-// 			while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
-// 				&& !get_single_char_len(cmd_line[len]))
-// 				len++;
-// 		}
-// 		else
-// 			return (2);
-// 	}
-// 	else
-// 	{
-// 		while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
-// 			&& !get_single_char_len(cmd_line[len]))
-// 		{
-// 			if (!ft_isalnum(cmd_line[len]) && cmd_line[len] != '_'
-// 				&& cmd_line[len] != '/' && cmd_line[len] != '.')
-// 				break ;
-// 			len++;
-// 		}
-// 	}
-// 	return (len);
-// }
 
 static int	get_command_len(char *cmd_line)
 {
@@ -134,8 +92,8 @@ int	set_token_length(char *cmd_line)
 		return (1);
 	else if (cmd_line[0] == '"' || cmd_line[0] == '\'')
 		return (get_quote_len(cmd_line));
-	else if (cmd_line[0] == '$')
-		return (get_dollar_len(cmd_line));
+	// else if (cmd_line[0] == '$')
+	// 	return (get_dollar_len(cmd_line));
 	else
 		return (get_command_len(cmd_line));
 	return (len);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
+/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 18:42:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/19 22:08:09 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/21 18:46:21 by fwahl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ t_type	set_type(char *content, int token_length)
 		type = token_type_two_symbols(content);
 	if (token_length > 1)
 	{
-		if (content[0] == '$' && content[1] != '?')
-			type = DOLLAR;
-		else if (content[0] == '\'' && content[token_length - 1] == '\'')
+		if (content[0] == '\'' && content[token_length - 1] == '\'')
 			type = SINGLE_QUOTE;
 		else if (content[0] == '"' && content[token_length - 1] == '"')
 			type = COMMAND;

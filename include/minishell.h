@@ -53,10 +53,11 @@ void		expand(t_mini *mini, t_cmd **cmd);
 //--------------cmd----------------//
 char		*expand_str_with_quotes(t_mini *mini, char *str);
 void		proccess_commands(t_mini *mini, char **content);
-void		handle_command_quotes(bool *quotes, char *quote_type, char current);
 //--------------special_params-----//
+char		*expand_dollar_skip_quoted(t_mini *mini, const char *content);
 char		*expand_dollar_sign(t_mini *mini, const char *content);
 char		*expand_dollar_qmark(t_mini *mini, char *content);
+char		*expand_exit_status(t_mini *mini, char *result);
 //--------------glob---------------//
 char		**expand_wildcard(char *content);
 char		**insert_wildcard(char **argv, int *index, char **expanded_content);
