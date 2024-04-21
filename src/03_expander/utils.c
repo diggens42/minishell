@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 19:24:03 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/10 20:38:19 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/20 16:44:31 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*remove_quotes(const char *content)
 
 	remove_quotes = ft_strdup(content + 1);
 	if (remove_quotes == NULL)
-		return (NULL); //TODO malloc error
+		return (NULL);
 	remove_quotes[ft_strlen(remove_quotes) - 1] = '\0';
 	return (remove_quotes);
 }

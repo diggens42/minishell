@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_length.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 17:51:39 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/20 16:37:48 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,16 @@ static int	get_double_char_len(char *cmd_line)
 
 static int	get_dollar_len(char *cmd_line)
 {
-	int		len;
+	int	len;
 
 	len = 1;
-	if (cmd_line[1] == '?')
+	if (cmd_line[len] == '?')
 	{
-		if (cmd_line[2] != '\0' && !ft_isspace(cmd_line[2])
-			&& !get_single_char_len(cmd_line[2]))
-		{
-			len = 2;
-			while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
-				&& !get_single_char_len(cmd_line[len]))
-				len++;
-		}
-		else
-			return (2);
+		len++;
+		while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
+			&& !get_single_char_len(cmd_line[len]))
+			len++;
+		return (len);
 	}
 	else
 	{
@@ -75,6 +70,38 @@ static int	get_dollar_len(char *cmd_line)
 	}
 	return (len);
 }
+
+// static int	get_dollar_len(char *cmd_line)
+// {
+// 	int		len;
+
+// 	len = 1;
+// 	if (cmd_line[1] == '?')
+// 	{
+// 		if (cmd_line[2] != '\0' && !ft_isspace(cmd_line[2])
+// 			&& !get_single_char_len(cmd_line[2]))
+// 		{
+// 			len = 2;
+// 			while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
+// 				&& !get_single_char_len(cmd_line[len]))
+// 				len++;
+// 		}
+// 		else
+// 			return (2);
+// 	}
+// 	else
+// 	{
+// 		while (cmd_line[len] != '\0' && !ft_isspace(cmd_line[len])
+// 			&& !get_single_char_len(cmd_line[len]))
+// 		{
+// 			if (!ft_isalnum(cmd_line[len]) && cmd_line[len] != '_'
+// 				&& cmd_line[len] != '/' && cmd_line[len] != '.')
+// 				break ;
+// 			len++;
+// 		}
+// 	}
+// 	return (len);
+// }
 
 static int	get_command_len(char *cmd_line)
 {

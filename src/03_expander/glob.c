@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 19:27:41 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 19:46:26 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/20 16:44:03 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ static char	**match_dir_entries(DIR *dir, char *pattern)
 	struct dirent	*ent;
 	char			*filename;
 
-	res = NULL;
-	while ((ent = readdir(dir)) != NULL)
+	while (true)
 	{
+		ent = readdir(dir);
+		if (ent == NULL)
+			break ;
 		filename = ent->d_name;
 		if (filename[0] == '.' && pattern[0] != '.')
 			continue ;
@@ -50,6 +52,25 @@ static char	**match_dir_entries(DIR *dir, char *pattern)
 	}
 	return (res);
 }
+
+// //iterates over all directory entries and appends matches to result string
+// static char	**match_dir_entries(DIR *dir, char *pattern)
+// {
+// 	char			**res;
+// 	struct dirent	*ent;
+// 	char			*filename;
+
+// 	res = NULL;
+// 	while ((ent = readdir(dir)) != NULL)
+// 	{
+// 		filename = ent->d_name;
+// 		if (filename[0] == '.' && pattern[0] != '.')
+// 			continue ;
+// 		if (match_wc(pattern, filename))
+// 			res = ft_strarray_append(res, filename);
+// 	}
+// 	return (res);
+// }
 
 //expands wildcard patterns by matching against files in cwd
 char	**expand_wildcard(char *content)
@@ -62,7 +83,7 @@ char	**expand_wildcard(char *content)
 	temp = ft_strdup(content);
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
-		return (NULL); // TODO handle error unable to get cwd
+		return (NULL);
 	dir = opendir(cwd);
 	res = match_dir_entries(dir, content);
 	closedir(dir);

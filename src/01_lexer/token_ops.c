@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_ops.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 13:18:10 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 01:13:03 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/20 14:25:00 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	token_add_back(t_token **token, t_token *new_token)
 	}
 }
 
-// TODO int->size_t?
 int	tokens_size(t_token *tokens)
 {
 	int	i;
