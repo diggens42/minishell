@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:41:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/22 20:22:31 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 21:23:05 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_cmd
 	char			**argv;
 	t_type			**type;
 	t_redir			**redir;
-	int				subshell_lvl;
 }	t_cmd;
 
 typedef struct s_ast
@@ -67,7 +66,6 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	bool			subshell;
-	int				subshell_lvl;
 }	t_ast;
 
 typedef struct s_mini
@@ -78,7 +76,6 @@ typedef struct s_mini
 	int		fd_stdin;
 	int		fd_stdout;
 	int		exit_status;
-	int		subshell_lvl;
 }	t_mini;
 
 #endif

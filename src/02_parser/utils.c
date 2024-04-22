@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 13:12:14 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/12 22:32:54 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/22 21:25:30 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	n_red(t_token *tokens)
 	return (n_red);
 }
 
-static t_cmd	*new_cmd_node(t_mini *mini, t_token *token)
+static t_cmd	*new_cmd_node(t_token *token)
 {
 	t_cmd	*cmd;
 	int		i;
@@ -56,7 +56,6 @@ static t_cmd	*new_cmd_node(t_mini *mini, t_token *token)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		ft_perror("malloc", strerror(errno));
-	cmd->subshell_lvl = mini->subshell_lvl;
 	cmd->argv = ft_calloc(n_cmd(token) + 1, sizeof(char *));
 	cmd->type = ft_calloc(n_cmd(token) + 1, sizeof(t_type *));
 	i = 0;
@@ -75,7 +74,7 @@ static t_cmd	*new_cmd_node(t_mini *mini, t_token *token)
 	return (cmd);
 }
 
-t_ast	*new_ast_node(t_mini *mini, t_token *token)
+t_ast	*new_ast_node(t_token *token)
 {
 	t_ast	*node;
 
@@ -83,11 +82,10 @@ t_ast	*new_ast_node(t_mini *mini, t_token *token)
 	if (!node)
 		ft_perror("malloc", strerror(errno));
 	node->type = token->type;
-	node->subshell_lvl = mini->subshell_lvl;
 	if (is_cmd(token->type) || is_redirect(token->type))
 	{
 		node->type = COMMAND;
-		node->cmd = new_cmd_node(mini, token);
+		node->cmd = new_cmd_node(token);
 	}
 	return (node);
 }
