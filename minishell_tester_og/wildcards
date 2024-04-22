@@ -1,0 +1,15 @@
+echo *.md
+echo built*
+echo oi*
+echo *.supp
+echo 'bye *' bo*s bye
+echo 'bye *' mini* bye
+echo *ME*
+echo "*"
+"*"
+manual*
+echo * | awk -v RS=" " '{print}' | sort
+echo 'bye *' t*.c bye
+echo *EMPTY hello READ* world
+echo "pip*"
+echo *bonus *.supp bonjour

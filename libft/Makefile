@@ -34,8 +34,8 @@ RESET = \033[0m
 all: $(NAME)
 
 $(OBJDIR):
-	mkdir -p $(OBJDIR)
-	$(foreach src,$(SRCS),mkdir -p $(OBJDIR)/$(dir $(src));)
+	@mkdir -p $(OBJDIR) > /dev/null 2>&1
+	@$(foreach src,$(SRCS),mkdir -p $(OBJDIR)/$(dir $(src));)
 
 $(OBJDIR)/%.o: %.c $(HEADER) | $(OBJDIR)
 	@mkdir -p $(@D)

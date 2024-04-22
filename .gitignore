@@ -56,6 +56,8 @@ dkms.conf
 .vscode
 examples
 minishell
+tester
+minishell_tester
 a
 b
 c
