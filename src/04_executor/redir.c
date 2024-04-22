@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:31:22 by mott              #+#    #+#             */
-/*   Updated: 2024/04/21 19:23:25 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 13:34:48 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static int	exec_redir_in(t_mini *mini, char *file)
 	int		fd;
 	char	*temp;
 
-	temp = expand_str_with_quotes(mini, file);
+	temp = ft_strdup(file);
+	proccess_commands(mini, &temp);
 	fd = open(temp, O_RDONLY);
 	if (fd == ERROR)
 	{
@@ -33,7 +34,6 @@ static int	exec_redir_in(t_mini *mini, char *file)
 	if (ft_strncmp(temp, "temp_heredoc_", 13) == 0)
 		unlink(temp);
 	free(temp);
-
 	return (EXIT_SUCCESS);
 }
 
@@ -42,7 +42,8 @@ static int	exec_redir_out(t_mini *mini, char *file, int out)
 	int		fd;
 	char	*temp;
 
-	temp = expand_str_with_quotes(mini, file);
+	temp = ft_strdup(file);
+	proccess_commands(mini, &temp);
 	fd = open(temp, O_WRONLY | O_CREAT | out, 0644);
 	if (fd == ERROR)
 	{

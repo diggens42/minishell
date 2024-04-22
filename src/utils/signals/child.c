@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals_child.c                                    :+:      :+:    :+:   */
+/*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 21:48:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/11 23:17:52 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/22 18:38:25 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static void	ctrl_c_handler_child(int signal)
 {
 	(void)signal;
-	ft_putstr_fd("\n", STDERR_FILENO);
+	ft_putstr_fd("^C\n", STDERR_FILENO);
 }
 
 static void	ctrl_backslash_handler_child(int signal)
 {
 	(void)signal;
-	ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+	ft_putstr_fd("^\\Quit: 3\n", STDERR_FILENO);
 }
 
 void	init_child_signals(void)

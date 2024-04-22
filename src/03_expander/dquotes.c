@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   dquotes.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:15:53 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/21 18:43:01 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:43:34 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//extracts a variable name or path starting at a specified index
+// extracts a variable name or path starting at a specified index
 static char	*var_extract(const char *content, int *start)
 {
 	char	*var_path;
@@ -96,7 +96,6 @@ char	*expand_dollar_skip_quoted(t_mini *mini, const char *content)
 	char	*result;
 	int		i;
 	int		quote_state;
-
 
 	result = (char *)ft_calloc(1, sizeof(char));
 	quote_state = 0;

@@ -6,13 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:40:44 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/20 15:12:10 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 20:24:37 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//removes single quotes from tokens content
+// removes single quotes from tokens content
 static void	process_single_quotes(char **content)
 {
 	char	*temp;
@@ -22,27 +22,7 @@ static void	process_single_quotes(char **content)
 	free(temp);
 }
 
-//expands a variable within a tokens content
-static void	process_dollar_sign(t_mini *mini, char **content)
-{
-	char	*temp;
-
-	temp = *content;
-	*content = expand_dollar_sign(mini, *content);
-	free(temp);
-}
-
-//expands a variable within a tokens content
-static void	process_dqmark_sign(t_mini *mini, char **content)
-{
-	char	*temp;
-
-	temp = *content;
-	*content = ft_itoa(mini->exit_status);
-	free(temp);
-}
-
-// //expands wildcards within a tokens content and creates token for each match
+// expands wildcards within a tokens content and creates token for each match
 static void	process_wildcard(char **content, t_cmd *cmd, int *index)
 {
 	char	**expanded_content;
@@ -57,7 +37,7 @@ static void	process_wildcard(char **content, t_cmd *cmd, int *index)
 	cmd->type = new_type;
 }
 
-//expands a token based on its type
+// expands a token based on its type
 void	expand(t_mini *mini, t_cmd **cmd)
 {
 	t_cmd	*temp;
@@ -71,10 +51,6 @@ void	expand(t_mini *mini, t_cmd **cmd)
 			proccess_commands(mini, &temp->argv[i]);
 		else if (*temp->type[i] == SINGLE_QUOTE)
 			process_single_quotes(&temp->argv[i]);
-		else if (*temp->type[i] == DOLLAR)
-			process_dollar_sign(mini, &temp->argv[i]);
-		else if (*temp->type[i] == DQMARK)
-			process_dqmark_sign(mini, &temp->argv[i]);
 		else if (*temp->type[i] == WILDCARD)
 		{
 			process_wildcard(&temp->argv[i], *cmd, &i);

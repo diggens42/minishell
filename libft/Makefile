@@ -33,14 +33,11 @@ RESET = \033[0m
 
 all: $(NAME)
 
-compile:
-	@echo "$(YELLOW)Libft is compiling...$(RESET)"
-
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 	$(foreach src,$(SRCS),mkdir -p $(OBJDIR)/$(dir $(src));)
 
-$(OBJDIR)/%.o: %.c compile $(HEADER) | $(OBJDIR)
+$(OBJDIR)/%.o: %.c $(HEADER) | $(OBJDIR)
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -I. -c $< -o $@
 

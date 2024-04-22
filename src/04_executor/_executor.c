@@ -6,12 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:47:26 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/21 14:27:43 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 14:31:59 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// creates a child process for the subshell and calls the main function again
 static int	exec_subshell(t_mini *mini, t_ast *ast)
 {
 	pid_t	pid;
@@ -29,6 +30,8 @@ static int	exec_subshell(t_mini *mini, t_ast *ast)
 	return (WEXITSTATUS(wstatus));
 }
 
+// handle single commands: expands command, sets redirections, checks for
+// builtin function and forrks a child process
 static int	exec_single_command(t_mini *mini, t_ast *ast)
 {
 	pid_t	pid;
@@ -56,6 +59,7 @@ static int	exec_single_command(t_mini *mini, t_ast *ast)
 	return (exit_status);
 }
 
+// starting point of the executor, runs recursively through the AST
 int	exec_main(t_mini *mini, t_ast *ast)
 {
 	if (ast == NULL)
@@ -83,6 +87,7 @@ int	exec_main(t_mini *mini, t_ast *ast)
 	return (mini->exit_status);
 }
 
+// checks for builtin function and executes it
 int	exec_builtin(t_mini *mini, char **argv)
 {
 	char	*temp;
@@ -107,6 +112,7 @@ int	exec_builtin(t_mini *mini, char **argv)
 	return (free(temp), ERROR);
 }
 
+// finally executes the command
 void	exec_finish(t_mini *mini, char **argv)
 {
 	char	*pathname;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_length.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:08:58 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/21 18:44:25 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:43:17 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ int	set_token_length(char *cmd_line)
 		return (1);
 	else if (cmd_line[0] == '"' || cmd_line[0] == '\'')
 		return (get_quote_len(cmd_line));
-	// else if (cmd_line[0] == '$')
-	// 	return (get_dollar_len(cmd_line));
 	else
 		return (get_command_len(cmd_line));
 	return (len);

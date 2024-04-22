@@ -12,7 +12,6 @@
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I include -I /usr/local/include/readline
-# CFLAGS = -Wall -Wextra -I include -I /usr/local/include/readline -g -fsanitize=address
 NAME = minishell
 
 SRCS =	./src/minishell.c \
@@ -54,7 +53,6 @@ SRCS =	./src/minishell.c \
 		./src/04_executor/builtin/pwd.c \
 		./src/04_executor/builtin/unset.c \
 		\
-		./src/utils/debug.c \
 		./src/utils/env.c \
 		./src/utils/exit.c \
 		./src/utils/free.c \
@@ -74,18 +72,15 @@ RESET = \033[0m
 
 all: $(LIBFT) $(NAME)
 
-compile:
-	@echo "$(YELLOW)Minishell is compiling...$(RESET)"
-
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $@
 	@echo "$(GREEN)Minishell compilation finished$(RESET)"
 
-%.o: %.c 
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	$(MAKE) -C ./libft
+	@$(MAKE) -C ./libft
 
 clean:
 	@echo "$(RED)Cleaning minishell output files$(RESET)"

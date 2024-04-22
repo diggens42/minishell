@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 11:54:37 by mott              #+#    #+#             */
-/*   Updated: 2024/04/21 18:17:47 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 19:59:50 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 	int	exit_status;
 
 	if (quotes_syntax(cmd_line) == true)
-		return (2);
+		return (SYNTAX_ERROR);
 	mini->token = tokenizer(cmd_line);
 	exit_status = operator_syntax(mini->token);
 	if (exit_status != EXIT_SUCCESS)
@@ -26,12 +26,11 @@ static int	handle_input(t_mini *mini, char *cmd_line)
 		mini->exit_status = exit_status;
 		return (exit_status);
 	}
-	exit_status = parenthesis_syntax(mini->token);
-	if (exit_status != EXIT_SUCCESS)
+	if (parenthesis_syntax(mini->token) == SYNTAX_ERROR)
 	{
 		free_token_list(mini->token);
-		mini->exit_status = exit_status;
-		return (exit_status);
+		mini->exit_status = SYNTAX_ERROR;
+		return (SYNTAX_ERROR);
 	}
 	mini->ast = ast_parser(mini, &mini->token);
 	set_fd(mini);

@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 00:41:19 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/21 13:55:23 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 20:22:31 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ typedef enum e_type
 	UNKNOWN,
 	COMMAND,
 	SINGLE_QUOTE,
-	DOLLAR,
-	DQMARK,
 	WILDCARD,
 	REDIR_IN,
 	REDIR_HEREDOC,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fwahl <fwahl@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:54:02 by mott              #+#    #+#             */
-/*   Updated: 2024/04/12 00:36:24 by fwahl            ###   ########.fr       */
+/*   Updated: 2024/04/22 15:21:08 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	**new_argv(char **old_argv)
 
 	i = 0;
 	while (old_argv[i] != NULL && ft_strcmp("", old_argv[i]) == 0)
-		i++;
+		free(old_argv[i++]);
 	j = 0;
 	while (old_argv[i + j] != NULL)
 		j++;

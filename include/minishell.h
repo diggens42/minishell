@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "include.h"
+
 //----------------------------------------------------------------------------//
 //------------------------------------------LEXER-----------------------------//
 //----------------------------------------------------------------------------//
@@ -77,7 +78,6 @@ int			exec_builtin(t_mini *mini, char **argv);
 void		exec_finish(t_mini *mini, char **argv);
 //--------------heredoc------------//
 void		find_heredoc(t_mini *mini, t_ast *ast);
-int			count_heredoc(t_ast *ast);
 //--------------path---------------//
 char		*create_absolute_path(t_mini *mini, char *command);
 char		*create_relative_path(t_mini *mini, char *command);
@@ -134,12 +134,5 @@ void		free_ast(t_ast *ast);
 void		init_parent_signals(void);
 void		init_child_signals(void);
 void		init_readline_signal_flags(void);
-
-//--------------debug--------------//
-void		token_print(t_token *tokens);
-void		print_char_array(char **str);
-void		check_tokens(t_token *tokens);
-void		print_ast(t_ast *node, int level);
-char		*token_type_to_string(t_type type);
 
 #endif

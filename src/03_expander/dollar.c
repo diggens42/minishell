@@ -6,14 +6,14 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 19:21:52 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/20 15:11:44 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 13:30:47 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-//extracs variable names starting after a '$' sign
-//and ending before first slash ('/') or null terminator ('\0')
+// extracs variable names starting after a '$' sign
+// and ending before first slash ('/') or null terminator ('\0')
 static char	*extract_var_name(const char *content)
 {
 	char	*slash_pos;
@@ -33,7 +33,7 @@ static char	*extract_var_name(const char *content)
 	return (var_name);
 }
 
-//constructs new string by replacing '$' prefixed variable with its env value
+// constructs new string by replacing '$' prefixed variable with its env value
 static char	*construct_new_content(const char *var_value, const char *content)
 {
 	char	*slash_pos;
@@ -61,7 +61,7 @@ static char	*construct_new_content(const char *var_value, const char *content)
 	return (new_content);
 }
 
-//replaces variables prefixed with $ (e.g. $HOME)
+// replaces variables prefixed with $ (e.g. $HOME)
 // with their corresponding environment values
 char	*expand_dollar_sign(t_mini *mini, const char *content)
 {
@@ -70,10 +70,11 @@ char	*expand_dollar_sign(t_mini *mini, const char *content)
 	char	*expanded_content;
 
 	var_name = extract_var_name(content);
-	var_value = ft_getenv(var_name, mini->env);
+	var_value = ft_strdup(ft_getenv(var_name, mini->env));
 	if (!var_value)
 		var_value = ft_strdup("");
 	expanded_content = construct_new_content(var_value, content);
 	free(var_name);
+	free(var_value);
 	return (expanded_content);
 }

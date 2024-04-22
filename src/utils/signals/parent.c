@@ -6,7 +6,7 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:10:15 by fwahl             #+#    #+#             */
-/*   Updated: 2024/04/18 20:04:15 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 20:07:24 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,17 @@ static void	ctrl_c_handler(int signal)
 	rl_redisplay();
 }
 
-static void	ctrl_backslash_handler(int signal)
-{
-	(void)signal;
-}
-
 void	init_parent_signals(void)
 {
 	signal(SIGINT, ctrl_c_handler);
-	signal(SIGQUIT, ctrl_backslash_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	init_readline_signal_flags(void)
 {
-	rl_catch_signals = 0;
-	rl_catch_sigwinch = 0;
-	rl_set_signals();
+	struct termios	terminal;
+
+	tcgetattr(1, &terminal);
+	terminal.c_lflag &= ~ECHOCTL;
+	tcsetattr(1, TCSAFLUSH, &terminal);
 }

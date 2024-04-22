@@ -6,12 +6,21 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 14:32:21 by mott              #+#    #+#             */
-/*   Updated: 2024/04/21 19:23:13 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 20:08:40 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+volatile sig_atomic_t	g_heredoc_int = 0;
+
+static void	ctrl_c_handler_heredoc(int signal)
+{
+	(void)signal;
+	g_heredoc_int = 1;
+}
+
+// creates a temporary file to read heredoc
 static char	*open_heredoc(int *fd)
 {
 	static int	i;
@@ -27,25 +36,32 @@ static char	*open_heredoc(int *fd)
 	return (filename);
 }
 
+// reads heredoc and writes to a temporary file
 static void	exec_heredoc(t_mini *mini, char *limiter, int fd)
 {
 	char	*line;
 
 	limiter = ft_strjoin(limiter, "\n");
+	proccess_commands(mini, &limiter);
+	signal(SIGINT, ctrl_c_handler_heredoc);
+	signal(SIGQUIT, SIG_IGN);
 	while (true)
 	{
 		ft_putstr_fd(PROMPT_MULTI_LINE, mini->fd_stdout);
 		line = get_next_line(mini->fd_stdin);
-		if (ft_strcmp(line, limiter) == 0)
+		if (line == NULL || g_heredoc_int == 1 || ft_strcmp(line, limiter) == 0)
 			break ;
 		ft_putstr_fd(line, fd);
 		free(line);
 	}
+	init_parent_signals();
 	get_next_line(-1);
-	free(line);
+	if (line)
+		free(line);
 	free(limiter);
 }
 
+// searches the AST for heredoc redirections
 void	find_heredoc(t_mini *mini, t_ast *ast)
 {
 	int		i;
@@ -71,20 +87,4 @@ void	find_heredoc(t_mini *mini, t_ast *ast)
 		}
 		i++;
 	}
-}
-
-int	count_heredoc(t_ast *ast)
-{
-	int	i;
-	int	heredoc;
-
-	i = 0;
-	heredoc = 0;
-	while (ast->cmd->redir[i] != NULL)
-	{
-		if (ast->cmd->redir[i]->type == REDIR_HEREDOC)
-			heredoc++;
-		i++;
-	}
-	return (heredoc);
 }

@@ -6,12 +6,13 @@
 /*   By: mott <mott@student.42heilbronn.de>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 12:54:09 by mott              #+#    #+#             */
-/*   Updated: 2024/04/21 18:22:01 by mott             ###   ########.fr       */
+/*   Updated: 2024/04/22 14:28:16 by mott             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// handle pipe commands (expansion, redirections and builtin functions)
 static int	exec_pipe_command(t_mini *mini, t_ast *ast)
 {
 	int	exit_status;
