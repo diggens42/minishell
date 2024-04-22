@@ -223,8 +223,6 @@ echo '$USER$USER'
 echo "$USER"
 echo "abc$USER"
 echo "$USER$USER"
-ls > file_$HOSTNAME'_'$USER
-cat < file_$HOSTNAME'_'$USER
 
 echo ----------pipe--------------------
 echo test | cat -e
