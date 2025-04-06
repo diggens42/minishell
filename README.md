@@ -9,6 +9,29 @@ Commands are parsed and executed through a **recursive descent parser** that bui
 
 ## 🔑 Key Features
 
+### 🖥️ Core Shell Behavior
+- Interactive prompt with command history (using `readline`)
+- Executes commands from:
+  - Relative paths (e.g. `./a.out`)
+  - Absolute paths (e.g. `/bin/ls`)
+  - `$PATH` environment variable lookup
+- Signal handling:
+  - `Ctrl-C`
+  - `Ctrl-D`
+  - `Ctrl-\`
+
+### 🧙 Built-in Commands
+
+| Command  | Description                            |
+|----------|----------------------------------------|
+| `echo`   | Prints arguments, supports `-n` option |
+| `cd`     | Changes directory (absolute or relative path) |
+| `pwd`    | Prints the current working directory   |
+| `export` | Sets environment variables             |
+| `unset`  | Removes environment variables          |
+| `env`    | Displays the environment               |
+| `exit`   | Exits the shell                        |
+
 ### 📦 Redirections
 - `<` — redirect input from file
 - `>` — redirect output (truncate)
